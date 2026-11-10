@@ -1,0 +1,797 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Ночь музеев 2026</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Onest:wght@400;500;600&display=swap">
+<style>
+/* Layout: one narrow night-time column — header, map card with zone chips, turno block, transport, full list by zone. Single dark theme by choice (it is a night event). */
+:root{
+  --ink:#0e1422;         /* night sky */
+  --ink-2:#161e30;       /* raised surface */
+  --line:#26314a;
+  --paper:#ece6d8;       /* text */
+  --muted:#8e98ad;
+  --sodium:#f3a640;      /* street lamp: free entry */
+  --coral:#ff6a58;       /* needs turno */
+  --lilac:#b9a3ff;       /* no booking but queue/limited */
+  --river:#13233b;
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--ink);color:var(--paper);font-family:var(--body);font-size:16px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 56px}
+.wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+a{color:var(--sodium)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--sodium);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;font-weight:700;letter-spacing:-.01em}
+h1{font-size:clamp(30px,7vw,52px);line-height:1.02}
+h2{font-size:clamp(20px,4.4vw,26px)}
+h3{font-size:15px;font-weight:500}
+p{margin:0}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+header{display:flex;flex-direction:column;gap:16px;padding-top:8px}
+.clock{display:flex;flex-wrap:wrap;gap:8px 24px;font-variant-numeric:tabular-nums}
+.clock div{display:flex;flex-direction:column}
+.clock b{font-family:var(--display);font-weight:500;font-size:22px;color:var(--sodium)}
+.clock span{font-size:13px;color:var(--muted)}
+.lede{max-width:62ch;color:#cfc9bc}
+
+/* map */
+.mapcard{background:var(--ink-2);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:12px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;font:500 13px var(--body);color:var(--paper);background:transparent;border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+svg#map{display:block;width:100%;height:auto;aspect-ratio:1/1;max-width:100%;background:var(--ink);touch-action:manipulation}
+#map .river{fill:var(--river)}
+#map .riachuelo{fill:none;stroke:var(--river);stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+#map .avenue{fill:none;stroke:#222c42;stroke-width:2;stroke-dasharray:6 6}
+#map .blabel{fill:#4f5b75;font:600 13px var(--body);letter-spacing:.12em;text-transform:uppercase}
+#map .rlabel{fill:#33496b;font:italic 500 15px var(--body);letter-spacing:.2em}
+#map .alabel{fill:#3a4560;font:500 10px var(--body);letter-spacing:.08em}
+#map .pt{cursor:pointer}
+#map .pt circle.dot{stroke:var(--ink);stroke-width:2}
+#map .pt.free circle.dot{fill:var(--sodium)}
+#map .pt.turno circle.dot{fill:var(--coral)}
+#map .pt.queue circle.dot{fill:var(--lilac)}
+#map .pt circle.halo{fill:none;stroke:var(--paper);stroke-width:2;opacity:0}
+#map .pt.on circle.halo{opacity:1}
+#map .pt.dim{opacity:.18}
+#map .glow{fill:var(--sodium);opacity:.09}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;padding:10px 14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.info{padding:16px 14px 18px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:6px;min-height:118px}
+.info .meta{font-size:13px;color:var(--muted)}
+.info .name{font-family:var(--display);font-weight:500;font-size:18px;line-height:1.2}
+.info .links{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:14px;margin-top:4px}
+.tag{display:inline-block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border-radius:4px;padding:2px 6px;margin-left:6px;vertical-align:2px}
+.tag.turno{background:var(--coral);color:var(--ink)}
+.tag.queue{background:var(--lilac);color:var(--ink)}
+.note{font-size:13px;color:var(--muted)}
+
+/* turno */
+section{display:flex;flex-direction:column;gap:16px}
+.tlist{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.trow{display:grid;grid-template-columns:1fr;gap:4px;padding:14px 0;border-bottom:1px solid var(--line)}
+.trow .t1{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.trow .t1 h3{font-size:16px}
+.trow .where{font-size:13px;color:var(--muted)}
+.slots{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.slots a{font:600 14px var(--body);font-variant-numeric:tabular-nums;text-decoration:none;border:1px solid var(--coral);color:var(--paper);border-radius:6px;padding:5px 10px}
+.slots a:hover{background:var(--coral);color:var(--ink)}
+.steps{counter-reset:s;display:flex;flex-direction:column;gap:12px;padding:0;margin:0;list-style:none}
+.steps li{counter-increment:s;display:grid;grid-template-columns:32px 1fr;gap:10px}
+.steps li::before{content:counter(s);font-family:var(--display);font-weight:500;color:var(--coral);font-size:18px;line-height:1.3}
+.steps li > div{min-width:0}
+.gloss{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 20px;font-size:14px}
+.gloss div{display:flex;gap:8px;border-bottom:1px dashed var(--line);padding:6px 0}
+.gloss b{font-weight:600;color:var(--paper);white-space:nowrap}
+.gloss span{color:var(--muted)}
+.box{background:var(--ink-2);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
+
+/* transport */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.tgrid div{display:flex;flex-direction:column;gap:2px}
+.tgrid b{font-family:var(--display);font-weight:500;font-size:15px}
+.tgrid span{font-size:14px;color:#cfc9bc}
+
+/* full list */
+details{border-top:1px solid var(--line)}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 0}
+summary::-webkit-details-marker{display:none}
+summary h3{font-size:17px;font-weight:500}
+summary .count{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+summary::after{content:"+";font-family:var(--display);color:var(--muted)}
+details[open] summary::after{content:"–"}
+.hint{font-size:14px;color:#cfc9bc;margin:-4px 0 12px}
+.barrio{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sodium);margin:14px 0 6px}
+.venues{list-style:none;margin:0;padding:0;columns:2 300px;column-gap:28px}
+.venues li{break-inside:avoid;padding:3px 0;font-size:14px}
+.venues a{color:var(--paper);text-decoration:none;border-bottom:1px solid var(--line)}
+.venues a:hover{border-color:var(--sodium)}
+.venues small{color:var(--muted)}
+footer{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+#map g.vp{transition:transform .5s ease}
+</style>
+
+<div class="wrap">
+<header>
+  <span class="eyebrow">Буэнос-Айрес · 22-я edición</span>
+  <h1>La Noche<br>de los Museos</h1>
+  <div class="clock">
+    <div><b>14.11</b><span>суббота</span></div>
+    <div><b>19:00–02:00</b><span>основное время</span></div>
+    <div><b>350+</b><span>площадок</span></div>
+    <div><b>0 $</b><span>вход везде</span></div>
+  </div>
+  <p class="lede">Почти всё работает без записи, вход по мере прихода, пока есть места. Турно нужно в нескольких точках, они отмечены красным на схеме и собраны в отдельный блок ниже вместе с пошаговой инструкцией.</p>
+</header>
+
+<div class="mapcard">
+  <div class="chips" role="group" aria-label="Район">
+    <button class="chip" data-zone="all" aria-pressed="true">Весь город</button>
+    <button class="chip" data-zone="centro" aria-pressed="false">Центр</button>
+    <button class="chip" data-zone="sur" aria-pressed="false">Сан-Тельмо · Ла-Бока</button>
+    <button class="chip" data-zone="recoleta" aria-pressed="false">Реколета</button>
+    <button class="chip" data-zone="palermo" aria-pressed="false">Палермо</button>
+    <button class="chip" data-zone="norte" aria-pressed="false">Бельграно · Нуньес</button>
+    <button class="chip" data-zone="oeste" aria-pressed="false">Кабальито и запад</button>
+  </div>
+  <svg id="map" viewBox="0 0 1000 1000" role="img" aria-label="Схема Буэнос-Айреса с главными площадками"></svg>
+  <div class="legend">
+    <span><i style="background:var(--sodium)"></i>свободный вход</span>
+    <span><i style="background:var(--coral)"></i>нужно турно</span>
+    <span><i style="background:var(--lilac)"></i>без записи, но очередь или мало мест</span>
+  </div>
+  <div class="info" id="info" aria-live="polite">
+    <span class="meta">Нажмите на точку</span>
+    <span class="name">На схеме 80+ главных площадок</span>
+    <span class="note">Это схема, а не GPS-карта: точки стоят примерно. Точный адрес открывается в Google Maps по ссылке в карточке. Полный список всех площадок по районам ниже.</span>
+  </div>
+</div>
+
+<section id="turno">
+  <span class="eyebrow">Только по записи</span>
+  <h2>Где нужно турно</h2>
+  <div class="tlist">
+    <div class="trow">
+      <div class="t1"><h3>Экскурсия по Plaza de Mayo</h3><span class="tag turno">турно</span></div>
+      <span class="where">Сбор: Av. Leandro N. Alem y Bartolomé Mitre, у памятника Хуану де Гарай · Eventbrite</span>
+      <p>История площади и зданий вокруг. Выберите время старта:</p>
+      <div class="slots">
+        <a href="https://www.eventbrite.com.ar/e/2003791707939" target="_blank" rel="noopener">19:00</a>
+        <a href="https://www.eventbrite.com.ar/e/2003791897506" target="_blank" rel="noopener">19:30</a>
+        <a href="https://www.eventbrite.com.ar/e/2003791952671" target="_blank" rel="noopener">20:00</a>
+        <a href="https://www.eventbrite.com.ar/e/2003792037926" target="_blank" rel="noopener">20:30</a>
+        <a href="https://www.eventbrite.com.ar/e/2003792184364" target="_blank" rel="noopener">21:00</a>
+        <a href="https://www.eventbrite.com.ar/e/2003792390982" target="_blank" rel="noopener">21:30</a>
+      </div>
+      <span class="note">Если пойдёт дождь, отмену пришлют на почту за 2 часа до старта.</span>
+    </div>
+    <div class="trow">
+      <div class="t1"><h3>Banco Galicia, 16-й этаж</h3><span class="tag turno">турно</span></div>
+      <span class="where">Tte. Gral. Juan D. Perón 430, San Nicolás · 19:00–00:00</span>
+      <p>Коллекция банка к 120-летию. На первый этаж пускают свободно, на 16-й только по регистрации: <a href="https://www.eventosagr.com/eventoseminent/14112026" target="_blank" rel="noopener">eventosagr.com/eventoseminent/14112026</a></p>
+    </div>
+    <div class="trow">
+      <div class="t1"><h3>«Piel» в Centro Audiovisual Inmersivo</h3><span class="tag turno">турно</span></div>
+      <span class="where">Jorge Newbery 3037, Colegiales · Eventbrite</span>
+      <p>Иммерсивная выставка Фернанды «Бичи» Хименес. Бронь: <a href="https://pielmuestrainmersiva.eventbrite.com.ar" target="_blank" rel="noopener">pielmuestrainmersiva.eventbrite.com.ar</a></p>
+    </div>
+    <div class="trow">
+      <div class="t1"><h3>MIJU, залы музея</h3><span class="tag turno">турно</span></div>
+      <span class="where">Av. de los Italianos 851, Puerto Madero · 19:00–00:00 · для детей 0–12</span>
+      <p>Сад с играми открыт без записи. В залы бесплатно, но только по брони на сайте музея: <a href="https://buenosaires.gob.ar/cultura/museos/museo-de-la-imaginacion-y-el-juego" target="_blank" rel="noopener">buenosaires.gob.ar → MIJU</a></p>
+    </div>
+    <div class="trow">
+      <div class="t1"><h3>Museo Mitre, Biblioteca Americana</h3><span class="tag turno">турно</span></div>
+      <span class="where">San Martín 336, San Nicolás · визиты в библиотеку в 22:00 и 23:30</span>
+      <p>Сам дом-музей свободно. В библиотеку с личной коллекцией Митре нужна предварительная запись, мест мало. Ссылку на запись музей публикует у себя в соцсетях.</p>
+    </div>
+    <div class="trow">
+      <div class="t1"><h3>Polo Circo, подготовительные мастерские</h3><span class="tag turno">турно</span></div>
+      <span class="where">Av. Juan de Garay y Combate de los Pozos · 9–13 ноября, 10:00–13:30 и 15:00–18:30</span>
+      <p>Француз Оливье Гроссетет строит с публикой огромную скульптуру из картона. Сама стройка 14.11 с 14:00 открыта всем, на мастерские до неё — форма: <a href="https://festivalesba.org/polocirco" target="_blank" rel="noopener">festivalesba.org/polocirco</a></p>
+    </div>
+  </div>
+
+  <div class="box">
+    <h3>Без записи, но планируйте заранее</h3>
+    <p><b>Teatro Colón</b> — ночная экскурсия 23:45–04:00, без регистрации, места ограничены. <b>Torre Monumental</b> — подъём каждые 30 минут, только живая очередь, по словам организаторов ожидание может превысить 3 часа, двери закрывают в 01:00. <b>Palacio Barolo</b> — открыт только нижний уровень, на маяк не пускают. <b>Colón Fábrica</b> — 18:00–00:00, вход гарантирован.</p>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Инструкция</span>
+  <h2>Как взять турно</h2>
+  <ol class="steps">
+    <li><div><b>Откройте ссылку из списка выше.</b> Почти все записи идут через Eventbrite. Если страница на испанском, в Chrome нажмите «Перевести» в адресной строке.</div></li>
+    <li><div><b>Нажмите «Reservar» или «Obtener entradas».</b> Цена будет 0 — платить ничего не нужно.</div></li>
+    <li><div><b>Выберите количество (Cantidad).</b> Обычно можно взять несколько мест на одно имя, лимит виден в окне.</div></li>
+    <li><div><b>Заполните Nombre, Apellido, Correo electrónico.</b> Имя латиницей, как в паспорте или DNI. Почту вводите внимательно: на неё придёт билет и сообщение об отмене при дожде.</div></li>
+    <li><div><b>Подтвердите: «Registrarse» / «Finalizar».</b> Через минуту на почту придёт письмо с QR-кодом. Сохраните его в телефоне, интернет на месте бывает плохой.</div></li>
+    <li><div><b>Если мест нет («Agotado»),</b> загляните ещё раз ближе к субботе: люди отменяют брони. Иногда есть кнопка «Lista de espera» — лист ожидания.</div></li>
+  </ol>
+  <div class="gloss">
+    <div><b>Inscripción previa</b><span>запись заранее</span></div>
+    <div><b>Reserva</b><span>бронь</span></div>
+    <div><b>Cupos limitados</b><span>мест мало</span></div>
+    <div><b>Agotado</b><span>мест нет</span></div>
+    <div><b>Por orden de llegada</b><span>живая очередь</span></div>
+    <div><b>Entrada libre y gratuita</b><span>вход свободный</span></div>
+    <div><b>En continuado</b><span>непрерывно всю ночь</span></div>
+    <div><b>Punto de encuentro</b><span>место сбора</span></div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Как передвигаться</span>
+  <h2>Транспорт бесплатный</h2>
+  <div class="tgrid">
+    <div><b>Subte и Premetro</b><span>С 18:00 до закрытия, все линии. Пропуск не нужен.</span></div>
+    <div><b>Colectivos и eBus</b><span>С 18:00 до 03:00 с Pase Libre: покажите его водителю на экране.</span></div>
+    <div><b>Ecobici</b><span>До 4 поездок по 45 минут, с 19:00 до 03:00.</span></div>
+  </div>
+  <p class="note">Pase Libre скачивается на <a href="https://festivalesba.org" target="_blank" rel="noopener">festivalesba.org</a> или через Boti — чат-бот города в WhatsApp, номер +54 9 11 5050-0147: напишите «Noche de los Museos» и выберите «Pase Libre». В прошлые годы на бесплатных автобусах была наклейка события.</p>
+</section>
+
+<section id="all">
+  <span class="eyebrow">Все площадки</span>
+  <h2>Полный список по районам</h2>
+  <p class="note">Нажмите на название — откроется адрес в Google Maps. Красная пометка — нужно турно.</p>
+  <div id="lists"></div>
+</section>
+
+<footer>
+  <span>Источники: <a href="https://festivalesba.org/museos/" target="_blank" rel="noopener">festivalesba.org/museos</a> (официальная программа), <a href="https://www.timeout.com/es/buenos-aires/noche-de-los-museos-agenda-que-hacer" target="_blank" rel="noopener">Time Out Buenos Aires</a>, <a href="https://www.argentina.gob.ar/noticias/la-secretaria-de-cultura-de-la-nacion-participa-de-la-noche-de-los-museos-2026-en-la-ciudad" target="_blank" rel="noopener">Secretaría de Cultura de la Nación</a>.</span>
+  <span>Собрано 10.11.2026. Программа может меняться — перед выходом сверяйтесь с официальным сайтом.</span>
+</footer>
+</div>
+
+<script>
+const ZONES={
+  all:{n:"Весь город"},
+  centro:{n:"Центр",tip:"Если мало времени: Cabildo → Casa de la Cultura → MUJU → Palacio Libertad, всё пешком за 15 минут."},
+  sur:{n:"Сан-Тельмо · Ла-Бока",tip:"Если мало времени: Museo Moderno и MACBA по соседству, затем на юг к Usina del Arte и набережной Педро де Мендоса."},
+  recoleta:{n:"Реколета",tip:"Если мало времени: MNBA → Centro Cultural Recoleta → Museo Roca, все в пределах 10 минут."},
+  palermo:{n:"Палермо",tip:"Если мало времени: MALBA → Museo de Arte Popular → Planetario вдоль Libertador."},
+  norte:{n:"Бельграно · Нуньес",tip:"Если мало времени: Larreta, Sarmiento и Yrurtia стоят в двух кварталах друг от друга у Barrancas de Belgrano."},
+  oeste:{n:"Кабальито и запад",tip:"Если мало времени: Museo de Ciencias Naturales, потом ретро-машины на Av. Boedo."}
+};
+// [name, lat, lng, zone, type, note, address]
+const P=[
+["Teatro Colón",-34.6010,-58.3831,"centro","queue","Ночная экскурсия 23:45–04:00 по залам с оперными певцами. Без записи, места ограничены.","Libertad 621"],
+["Palacio Libertad",-34.6034,-58.3687,"centro","free","Открыт с 16:00: выставка студии Disney, иммерсивный зал Молины Кампоса, концерт фаду Камане в 20:00.","Sarmiento 151"],
+["Centro Cultural Borges",-34.5990,-58.3747,"centro","free","Открыт с 16:00. «Wunderkammer» Николы Костантино, танго-шоу в 00:00.","Viamonte 525"],
+["Museo Mitre",-34.6016,-58.3730,"centro","turno","Дом-музей свободно; Biblioteca Americana — только по записи, визиты в 22:00 и 23:30.","San Martín 336"],
+["Banco Galicia",-34.6040,-58.3735,"centro","turno","Коллекция к 120-летию банка. Первый этаж свободно, 16-й этаж по регистрации.","Tte. Gral. Juan D. Perón 430"],
+["Экскурсия по Plaza de Mayo",-34.6072,-58.3703,"centro","turno","Старты каждые 30 минут с 19:00 до 21:30, сбор у памятника Хуану де Гарай. Запись на Eventbrite.","Av. Leandro N. Alem y Bartolomé Mitre"],
+["Cabildo",-34.6088,-58.3735,"centro","free","Выставка «Celeste Bandera» Норы Иньесты, фольклор в 19:00, джаз в 21:00.","Bolívar 65"],
+["Museo Casa Rosada",-34.6083,-58.3693,"centro","free","Выставка о Бельграно, оркестр «Tambor de Tacuarí», урок танго.","Av. Paseo Colón 100"],
+["Casa de la Cultura",-34.6087,-58.3767,"centro","free","Здание газеты La Prensa: семь музыкальных «станций» в патио каждый час с 19:00 до 01:00, спектакль о Пуччини в типографии.","Av. de Mayo 575"],
+["MUJU! Museo del Humor",-34.6097,-58.3753,"centro","free","Открывается заново: выставка Калои, ринг карикатуристов, джем-рисование.","Adolfo Alsina 419"],
+["Manzana de las Luces",-34.6107,-58.3745,"centro","free","Быт Буэнос-Айреса XIX века по раскопкам, исторический спектакль в 21:00.","Perú 272"],
+["Museo Etnográfico",-34.6115,-58.3729,"centro","free","Народы Огненной Земли и музей антропологии столетней давности с египетским саркофагом.","Moreno 350"],
+["Ретро-вагоны Línea A",-34.6086,-58.3742,"centro","queue","Поездка на старинных вагонах La Brugeoise в 00:00.","Estación Perú, Línea A"],
+["Palacio Barolo",-34.6096,-58.3856,"centro","free","Открыт только нижний уровень с выставкой, на маяк не пускают.","Hipólito Yrigoyen 1363"],
+["Congreso de la Nación",-34.6097,-58.3925,"centro","free","Залы обеих палат и исторический читальный зал библиотеки.","Av. Rivadavia 1850"],
+["Edificio del Molino",-34.6092,-58.3918,"centro","free","Знаменитая кондитерская изнутри: реставрация, фото, живая музыка.","Av. Rivadavia 1815"],
+["Museo Beatle",-34.6044,-58.3916,"centro","free","Крупнейшая коллекция Beatles по Книге Гиннесса, акустика в 20:00 и 22:00.","Av. Corrientes 1660"],
+["Torre Monumental",-34.5928,-58.3748,"centro","queue","Подъём на смотровую 6-го этажа каждые 30 минут. Только живая очередь, ожидание может быть 3+ часа, закрытие дверей в 01:00.","Av. Ramos Mejía 1315"],
+["Museo Nacional Ferroviario",-34.5905,-58.3767,"centro","free","Вагоны, локомотивы и макеты железных дорог.","Av. del Libertador 405"],
+["Estación Retiro Mitre",-34.5912,-58.3737,"centro","free","Балкон и терраса вокзала открыты только в эту ночь, поезд-музей с вагоном Иоанна Павла II.","Av. Ramos Mejía 1358"],
+["Museo Fernández Blanco",-34.5945,-58.3790,"centro","free","DJ в саду, шелкография, фотографии фуэгинов XIX–XX веков.","Suipacha 1422"],
+["MUNTREF Museo de la Inmigración",-34.5890,-58.3685,"centro","free","Бывший Отель иммигрантов: история общин, музыка и танцы в 20:00.","Av. Antártida Argentina s/n"],
+["Fragata Sarmiento",-34.6085,-58.3652,"centro","free","Учебный фрегат ВМС, экскурсии до 02:00, оркестр в 21:30.","Alicia Moreau de Justo 900"],
+["Corbeta Uruguay",-34.6135,-58.3640,"centro","free","Старейший корабль ВМС на плаву (1874), морские узлы и сигнальные флаги в 21:15.","Alicia Moreau de Justo 500"],
+["Colección Amalita",-34.6035,-58.3650,"centro","free","Ретроспектива Хорхе Гумьера Майера и первая музейная выставка Мариэлы Скафати.","Olga Cossettini 141"],
+["MIJU",-34.6150,-58.3560,"centro","turno","19:00–00:00. Сад с играми свободно, залы бесплатно по брони на сайте. Для детей 0–12.","Av. de los Italianos 851"],
+["Museo de Arte Moderno",-34.6219,-58.3716,"sur","free","Выставка к 70-летию музея, ярмарка книги по гуманитарным наукам.","Av. San Juan 350"],
+["MACBA",-34.6214,-58.3706,"sur","free","Сесар Патерносто, Орнелла Почетти, ансамбль скрипачей в 21:30.","Av. San Juan 328"],
+["Museo Histórico Nacional",-34.6283,-58.3697,"sur","free","Парк Лесама, перкуссия в 19:30, квартет «Quillén» в 23:30.","Defensa 1600"],
+["La Pulpería Argentina",-34.6232,-58.3713,"sur","free","Впервые участвует: музей пульперии, зал Доньи Петроны, фольклор и танго.","Defensa 1350"],
+["Museo Argentino del Títere",-34.6205,-58.3790,"sur","free","Больше 500 кукол и марионеток со всего мира.","Piedras 905"],
+["Museo Penitenciario",-34.6207,-58.3716,"sur","free","Здание первой женской тюрьмы страны, стены 1735 года.","Humberto 1° 378"],
+["Usina del Arte",-34.6285,-58.3570,"sur","free","Лазерный мэппинг фасада с вашим силуэтом, DJ на площади до 02:00, фудкорт с 17:00.","Caffarena 1"],
+["Museo del Cine",-34.6290,-58.3586,"sur","free","50 лет музея, детский киноклуб в 19:00, Super 8 в 23:00.","Caffarena 51"],
+["Museo Quinquela Martín",-34.6377,-58.3628,"sur","free","Зал носовых фигур кораблей с ароматами, танго в 22:00, болеро в 23:00.","Av. Don Pedro de Mendoza 1835"],
+["Fundación Andreani",-34.6390,-58.3595,"sur","free","Видеоинсталляции Сильви Блоше, DJ на набережной.","Av. Pedro de Mendoza 1987"],
+["Colón Fábrica",-34.6397,-58.3562,"sur","free","Декорации, реквизит и костюмы Колона, 18:00–00:00. Вход гарантирован, бронь не нужна.","Av. Pedro de Mendoza 2163"],
+["Experiencia Riachuelo",-34.6383,-58.3612,"sur","queue","Ночные прогулки на катере от причала до моста Николаса Авельянеды, можно с собакой.","Av. Don Pedro de Mendoza 1900"],
+["Bomberos de La Boca",-34.6340,-58.3600,"sur","free","Первая добровольная пожарная часть страны (1884), детская программа в 21:00.","Brandsen 567"],
+["Túneles de Santa Felicitas",-34.6383,-58.3785,"sur","free","Музей тоннелей и мэппинг «Времена года» Вивальди в скрытом храме.","Pinzón 1480"],
+["Museo Nacional de Bellas Artes",-34.5840,-58.3930,"recoleta","free","Открыт с 17:00, последний вход 01:30. Гобелены Гойи из королевских коллекций Испании.","Av. del Libertador 1473"],
+["Centro Cultural Recoleta",-34.5869,-58.3925,"recoleta","free","Концерты на террасе с 20:00, DJ в Patio del Aljibe, винил на тротуаре в 00:00.","Junín 1930"],
+["Museo Nacional de Arte Decorativo",-34.5812,-58.3968,"recoleta","free","Дворец Эррасурис, джаз и музыка Studio Ghibli в 20:30.","Av. del Libertador 1902"],
+["MARQ",-34.5873,-58.3850,"recoleta","free","«Hecho en la Argentina»: промдизайн 1935–1985.","Av. del Libertador 999"],
+["Museo Roca",-34.5880,-58.3970,"recoleta","free","Насыщенная программа: танго, джаз в 23:50 и милонга до 02:00.","Vicente López 2220"],
+["Facultad de Derecho UBA",-34.5830,-58.3918,"recoleta","free","Перформанс на парадной лестнице, музыка каждый час.","Av. Figueroa Alcorta 2263"],
+["Museo Xul Solar",-34.5915,-58.4080,"recoleta","free","88 работ коллекции, танец, расклад таро «за шапку» в 23:30.","Laprida 1212"],
+["Museo Borges",-34.5937,-58.4055,"recoleta","free","40 лет без Борхеса: личная библиотека, трости, рукописи.","Anchorena 1660"],
+["Museo del Holocausto",-34.5955,-58.3895,"recoleta","free","Свидетельство выжившего в 21:00.","Montevideo 919"],
+["Palacio de las Aguas Corrientes",-34.6036,-58.3965,"recoleta","free","Экскурсии по дворцу водопровода, блюз-рок.","Riobamba 750"],
+["Casa del Bicentenario · Museo del Grabado",-34.5985,-58.3963,"recoleta","free","Национальная труппа современного танца в 21:00, документальное кино в 22:00.","Riobamba 985"],
+["Museos de Medicina UBA",-34.5992,-58.3990,"recoleta","free","Музей анатомии (300+ препаратов), гистология под микроскопом, история медицины.","Paraguay 2155"],
+["Museo Casa Carlos Gardel",-34.6043,-58.4103,"recoleta","free","Серенада на балконе Гарделя в 19, 20 и 21 ч, концерт танго в 22, 23 и 00.","Jean Jaurès 735"],
+["MALBA",-34.5772,-58.4035,"palermo","free","«Viva Frida» и юбилейная выставка коллекции к 25-летию.","Av. Figueroa Alcorta 3415"],
+["Planetario Galileo Galilei",-34.5697,-58.4115,"palermo","free","19:00–02:00: сеанс под куполом, оркестр с музыкой Джона Уильямса в 20:30. При дожде не отменяют.","Av. Sarmiento s/n"],
+["Museo Sívori",-34.5700,-58.4140,"palermo","free","DJ под звёздами в саду, шелкография, танго в 23:00 и 00:00.","Av. Infanta Isabel 555"],
+["Museo de Arte Popular José Hernández",-34.5777,-58.4007,"palermo","free","Ярмарка желаний Алазита, серебряники вживую, чамаме в 22:00.","Av. del Libertador 2373"],
+["Museo Evita",-34.5795,-58.4185,"palermo","free","Личные вещи Эвиты, инсталляция о первом голосовании женщин 1951 года.","Lafinur 2988"],
+["Casa Victoria Ocampo",-34.5790,-58.4040,"palermo","free","Модерн Бустильо, лирика Juventus Lyrica в 21:00.","Rufino de Elizalde 2831"],
+["C3 Centro Cultural de la Ciencia",-34.5852,-58.4330,"palermo","free","Интерактивные залы о времени и случайности, почтово-телеграфный музей.","Godoy Cruz 2270"],
+["CAI — выставка «Piel»",-34.5760,-58.4440,"palermo","turno","Иммерсивная выставка, только по брони на Eventbrite.","Jorge Newbery 3037, Colegiales"],
+["Cementerio Británico",-34.5840,-58.4590,"palermo","free","Ночные экскурсии: масонские надгробия, «Шекспир на Британском» в 23:00.","Av. Elcano 4568, Chacarita"],
+["Feria del libro Plaza Italia",-34.5812,-58.4210,"palermo","free","40 лотков старых и редких книг, 19:00–00:00.","Av. Santa Fe 4200"],
+["Museo Larreta",-34.5622,-58.4557,"norte","free","Андалузский сад: DJ, фламенко в 21, 22, 23 ч, театральные экскурсии.","Juramento 2291"],
+["Museo Histórico Sarmiento",-34.5618,-58.4545,"norte","free","«Sarmiento escritor», танго в 22:30.","Cuba 2079"],
+["Museo Casa de Yrurtia",-34.5605,-58.4535,"norte","free","100 лет памятнику Доррего, танец «Крылатая победа».","O'Higgins 2390"],
+["Museo Nacional del Hombre",-34.5615,-58.4430,"norte","free","Культурная карта Аргентины, автоматы La Musaranga.","3 de Febrero 1370"],
+["Kinzen",-34.5635,-58.4420,"norte","free","Бонсай, икебана, хокку; показ ханьфу и музыка гуциня в 22:00.","Migueletes 1857"],
+["Museo River Plate",-34.5452,-58.4497,"norte","free","Кубки, футболки, хор клуба в 21:00.","Av. Figueroa Alcorta 7597"],
+["Exactas UBA",-34.5420,-58.4425,"norte","free","Минералы, интерактивная математика MateUBA, escape rooms.","Ciudad Universitaria, pab. 2"],
+["Espacio Memoria ex ESMA",-34.5370,-58.4640,"norte","free","50 лет со дня переворота 1976 года, экскурсии всю ночь.","Av. del Libertador 8151"],
+["Museo Malvinas",-34.5388,-58.4660,"norte","free","Флора, фауна, история и война на Мальвинах.","Santiago Calzadilla 1301"],
+["Museo Histórico Saavedra",-34.5480,-58.4870,"norte","free","Театральная прогулка по XIX веку, каллиграфия, La Chilinga в 23:30.","Crisólogo Larralde 6309"],
+["Centro Ana Frank",-34.5575,-58.4690,"norte","free","Постоянная выставка и свидетельства о Холокосте.","Superí 2647, Coghlan"],
+["Museo de Ciencias Naturales",-34.6050,-58.4383,"oeste","free","Все залы музея, учёные и популяризаторы рассказывают.","Av. Ángel Gallardo 470"],
+["Museo del Subte (Centenera)",-34.6268,-58.4370,"oeste","free","Исторический подвижной состав и плитка метро.","Del Barco Centenera 777"],
+["Museo Perlotti",-34.6125,-58.4425,"oeste","free","Скульпторы за работой, экскурсии до 00:30.","Pujol 644"],
+["Ретро-машины на Av. Boedo",-34.6230,-58.4165,"oeste","free","250 классических автомобилей под открытым небом.","Av. Boedo entre Independencia y San Juan"],
+["Archivo General de la Nación",-34.6370,-58.4005,"oeste","free","История рока в Аргентине: фото и видео, театральная экскурсия в 22:00.","Rondeau 2277"],
+["Polo Circo",-34.6300,-58.3975,"oeste","turno","Строим гигантскую картонную скульптуру 14:00–01:00, открыто всем. Мастерские 9–13.11 по записи.","Av. Juan de Garay y Combate de los Pozos"],
+["Museo Barrio de Flores",-34.6320,-58.4630,"oeste","free","Впервые показывают акварели Лолы Фрексас.","Ramón Falcón 2207"],
+["Templo del Fútbol (Argentinos Juniors)",-34.6065,-58.4755,"oeste","free","50 лет дебюту Марадоны, джаз-бэнд в 21:00.","Gavilán 2151"]
+];
+
+// --- projection ---
+const LNG0=-58.500,LAT1=-34.530,K=7374,COS=Math.cos(34.6*Math.PI/180);
+const X=lng=>(lng-LNG0)*COS*K, Y=lat=>(LAT1-lat)*K;
+const pth=a=>a.map(([la,ln],i)=>(i?"L":"M")+X(ln).toFixed(1)+" "+Y(la).toFixed(1)).join(" ");
+const NS="http://www.w3.org/2000/svg";
+const svg=document.getElementById("map");
+const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e};
+const vp=el("g",{class:"vp"});
+
+const coast=[[-34.520,-58.470],[-34.536,-58.455],[-34.540,-58.438],[-34.548,-58.430],[-34.560,-58.415],[-34.572,-58.398],[-34.582,-58.380],[-34.588,-58.362],[-34.598,-58.355],[-34.607,-58.349],[-34.612,-58.338],[-34.625,-58.335],[-34.633,-58.344],[-34.637,-58.352],[-34.645,-58.330],[-34.700,-58.300],[-34.500,-58.300],[-34.500,-58.470]];
+el("path",{class:"river",d:pth(coast)+"Z"},vp);
+el("path",{class:"riachuelo",d:pth([[-34.637,-58.352],[-34.6395,-58.362],[-34.643,-58.373],[-34.6505,-58.385],[-34.652,-58.400],[-34.661,-58.420],[-34.670,-58.440]])},vp);
+el("path",{class:"avenue",d:pth([[-34.6075,-58.3700],[-34.6100,-58.3900],[-34.6150,-58.4300],[-34.6280,-58.4700],[-34.6380,-58.5000]])},vp);
+const t=(x,y,s,c)=>{const e=el("text",{x,y,class:c},vp);e.textContent=s};
+t(X(-58.372),Y(-34.5590),"RÍO DE LA PLATA","rlabel");
+t(X(-58.448),Y(-34.6100),"Av. Rivadavia","alabel");
+[["CENTRO",-34.5990,-58.3920],["SAN TELMO",-34.6175,-58.3830],["LA BOCA",-34.6320,-58.3690],["RECOLETA",-34.5945,-58.4010],["PALERMO",-34.5745,-58.4290],["BELGRANO",-34.5550,-58.4590],["NÚÑEZ",-34.5395,-58.4790],["CABALLITO",-34.6170,-58.4450],["ALMAGRO",-34.6005,-58.4240],["P. PATRICIOS",-34.6400,-58.4110],["FLORES",-34.6400,-58.4720],["P. MADERO",-34.6190,-58.3590]]
+  .forEach(([s,la,ln])=>t(X(ln),Y(la),s,"blabel"));
+
+// glow under each point (street lamps)
+P.forEach(p=>el("circle",{class:"glow",cx:X(p[2]),cy:Y(p[1]),r:16},vp));
+const nodes=P.map((p,i)=>{
+  const g=el("g",{class:"pt "+p[4],tabindex:"0",role:"button","aria-label":p[0]},vp);
+  el("circle",{class:"halo",cx:X(p[2]),cy:Y(p[1]),r:12},g);
+  el("circle",{class:"dot",cx:X(p[2]),cy:Y(p[1]),r:7},g);
+  el("circle",{cx:X(p[2]),cy:Y(p[1]),r:18,fill:"transparent"},g);
+  const go=()=>select(i); g.addEventListener("click",go);
+  g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}});
+  return g;
+});
+
+const info=document.getElementById("info");
+const gm=a=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(a+", Buenos Aires, Argentina");
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function select(i){
+  const p=P[i];
+  nodes.forEach((n,j)=>n.classList.toggle("on",j===i));
+  const tag=p[4]==="turno"?'<span class="tag turno">турно</span>':p[4]==="queue"?'<span class="tag queue">очередь</span>':"";
+  info.innerHTML=`<span class="meta">${esc(ZONES[p[3]].n)} · ${esc(p[6])}</span>
+  <span class="name">${esc(p[0])}${tag}</span>
+  <span>${esc(p[5])}</span>
+  <span class="links"><a href="${gm(p[6])}" target="_blank" rel="noopener">Открыть в Google Maps</a>${p[4]==="turno"?'<a href="#turno">Как записаться</a>':""}</span>`;
+}
+
+// zone zoom
+let zone="all";
+function setZone(z){
+  zone=z;
+  document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.zone===z));
+  nodes.forEach((n,i)=>n.classList.toggle("dim",z!=="all"&&P[i][3]!==z));
+  let s=1,tx=0,ty=0;
+  if(z!=="all"){
+    const pts=P.filter(p=>p[3]===z);
+    const xs=pts.map(p=>X(p[2])),ys=pts.map(p=>Y(p[1]));
+    const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+    const span=Math.max(x1-x0,y1-y0)+140;
+    s=Math.min(3.2,1000/span);
+    const cx=(x0+x1)/2,cy=(y0+y1)/2;
+    tx=500-cx*s; ty=500-cy*s;
+  }
+  vp.style.transform=`translate(${tx}px,${ty}px) scale(${s})`;
+  vp.style.transformOrigin="0 0";
+  // keep dots readable when zoomed
+  svg.querySelectorAll(".dot").forEach(d=>d.setAttribute("r",(7/Math.sqrt(s)).toFixed(1)));
+  svg.querySelectorAll(".halo").forEach(d=>d.setAttribute("r",(12/Math.sqrt(s)).toFixed(1)));
+  svg.querySelectorAll(".blabel,.rlabel,.alabel").forEach(d=>d.style.fontSize=(d.classList.contains("rlabel")?15:d.classList.contains("alabel")?10:13)/s+"px");
+  if(z!=="all"){
+    info.innerHTML=`<span class="meta">Район</span><span class="name">${esc(ZONES[z].n)}</span><span>${esc(ZONES[z].tip)}</span><span class="note">Нажмите на точку, чтобы увидеть программу.</span>`;
+  }
+}
+document.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>setZone(c.dataset.zone)));
+
+// --- full list ---
+// "#Zone|hint" starts a zone, "@Barrio" a barrio, "name; address" a venue, "*" prefix = turno
+const LIST=`#Центр|Сан-Николас, Монтсеррат, Ретиро и Пуэрто-Мадеро — самая плотная зона, удобно ходить пешком.
+@San Nicolás
+AGIP — Museo de los tributos; Viamonte 900
+Almacén y Bar Lavalle; Lavalle 1699
+Arthaus; Bartolomé Mitre 434
+*Banco Galicia (16-й этаж); Tte. Gral. Juan D. Perón 430
+Bolsa de Comercio; 25 de Mayo 305
+Casa Argento (чистка обуви, кафе); 25 de Mayo 328
+Casa de Salta; Av. Roque Sáenz Peña 933
+Casa Ushuaia; Sarmiento 650
+Catedral Anglicana San Juan Bautista; 25 de Mayo 276
+Centro Cultural Borges; Viamonte 525
+CC Embajada de Paraguay; Tucumán 1833
+CC Universitario Paco Urondo; 25 de Mayo 201
+Espacio Cultural de la Democracia (SIGEN); Av. Corrientes 379
+Galería Palermo H; Tucumán 712
+Galería Llordi; Libertad 541
+Gallery 619; San Martín 353
+Gran Logia Masónica (Palacio Cangallo); Tte. Gral. Juan D. Perón 1242
+Museo SADAIC; Lavalle 1547
+Museo ARCA; Hipólito Yrigoyen 370
+Museo Banco Provincia; Sarmiento 364
+Museo Beatle; Av. Corrientes 1660
+Museo Electoral; 25 de Mayo 245
+Museo Banco de la Nación; Av. Rivadavia 325
+Museo del Banco Central; San Martín 216
+Museo Judío; Libertad 769
+*Museo Mitre (Biblioteca Americana); San Martín 336
+Museo Nacional de Arte Oriental; Viamonte 525
+Museo Templo del Otro Partido; Bartolomé Mitre 480
+Nueva Escuela de Diseño y Comunicación; Av. Callao 67
+Palacio Libertad; Sarmiento 151
+Prefectura Naval; Av. Eduardo Madero 235
+Radio Nacional; Maipú 555
+Teatro Colón; Libertad 621
+Universidad de la Defensa Nacional; Maipú 262
+@Montserrat
+Auditoría General de la Nación; Av. Rivadavia 1745
+Biblioteca del Congreso; Hipólito Yrigoyen 1750
+Casa de la Cultura; Av. de Mayo 575
+Centro Laurak Bat; Belgrano 1144
+Colegio San Francisco; Moreno 343
+Manzana de las Luces; Perú 272
+Consejo de la Magistratura; Av. Julio A. Roca 530
+Defensoría del Pueblo; Av. Belgrano 570
+Departamento Central de la PFA; Moreno 1502
+Edificio del Molino; Av. Rivadavia 1815
+Espacio Histórico de la PFA; Av. de Mayo 1333
+Estudio Abierto Palacio Barolo (10-й этаж); Av. de Mayo 1370
+Museo Argentino del Seguro; Bolívar 332
+Instituto de Musicología Carlos Vega; México 564
+Legislatura porteña; Av. Julio A. Roca 575
+Ministerio de Defensa; Azopardo 250
+MUJU! Museo del Humor; Adolfo Alsina 419
+Museo Botica del Ángel; Luis Sáenz Peña 543
+Museo Casa Fernández Blanco; Hipólito Yrigoyen 1420
+Museo Casa Rosada; Av. Paseo Colón 100
+Museo de la Aduana; Azopardo 350
+Museo de la Ciudad; Defensa 187
+Museo del Mate; Av. de Mayo 853
+Museo Etnográfico; Moreno 350
+Museo Franciscano; Alsina 380
+Museo del Cabildo; Bolívar 65
+Palacio Barolo (только нижний уровень); Hipólito Yrigoyen 1363
+Palacio Raggio; Moreno 502
+Paseo en coches La Brugeoise (00:00); Estación Perú, Línea A
+SACRA; Solís 760
+Sitio Arqueológico La Cisterna; Moreno 550
+UADE Art; Lima 717
+Universidad ISALUD; Venezuela 847
+@Retiro
+Braque Galería de Arte; San Martín 975
+British Arts Centre; Suipacha 1333
+Centro Cultural Coreano; Maipú 972
+Círculo Italiano; Libertad 1264
+Confitería La Ideal; Suipacha 384
+Espacio de Arte Fundación OSDE; Arroyo 807
+Estación Retiro Mitre; Av. Ramos Mejía 1358
+Fundación Klemm; Marcelo T. de Alvear 626
+IES en Lenguas Vivas J. R. Fernández; Carlos Pellegrini 1485
+MUNTREF Museo de la Inmigración; Av. Antártida Argentina s/n
+Museo de la Escuela de Ciencias del Mar; Av. Antártida Argentina 425
+Museo de Gendarmería; Av. Ramón Castillo 788
+Museo Fernández Blanco — Palacio; Suipacha 1422
+Museo del ISER; Ramos Mejía 1398
+Museo Marítimo Cerviño; Av. Antártida Argentina 1535
+Museo Nacional Ferroviario; Av. del Libertador 405
+Museo Scout Nacional; Libertad 1282
+Sociedad Científica Argentina; Santa Fe 1145
+Torre Monumental (живая очередь); Av. Ramos Mejía 1315
+@Puerto Madero
+Corbeta ARA Uruguay; Alicia Moreau de Justo 500
+Fragata ARA Presidente Sarmiento; Alicia Moreau de Justo 900
+Colección Amalita; Olga Cossettini 141
+Museo de la Cárcova; Av. España 1701
+*MIJU (залы по брони); Av. de los Italianos 851
+Pabellón de las Bellas Artes UCA; Alicia Moreau de Justo 1300
+#Сан-Тельмо · Ла-Бока|Исторический юг: Сан-Тельмо, Ла-Бока, Барракас и Конститусьон. Набережная Педро де Мендоса — хороший пеший отрезок.
+@San Telmo
+Casa Cultural Pepa Noia; Brasil 444
+Casa Ezeiza; Defensa 1179
+Casal de Catalunya; Chacabuco 863
+*Экскурсия по Plaza de Mayo (Casco Histórico); Alem y Bartolomé Mitre
+Centro de Capitanes de Ultramar; Av. Independencia 611
+Club Atlético San Telmo; Perú 1360
+Colegio 7 J. M. de Pueyrredón; Chacabuco 922
+El Pasaje de La Luna; Pasaje San Lorenzo 365
+Espacio Cultural Plaza Defensa; Defensa 535
+Estudio CAT; Chacabuco 974
+Galería del Viejo Hotel; Balcarce 1053
+Antártida: General Hernán Pujato; Paseo Colón 1407
+Instituto Industrial Luis A. Huergo; Perú 759
+Instituto Jesús María; Carlos Calvo 922
+INTA; Chile 460
+La Pulpería Argentina; Defensa 1350
+MEGA Museo de la Emigración Gallega; Chacabuco 955
+Museo Argentino del Títere; Piedras 905
+MACBA; Av. San Juan 328
+Museo de Arte Moderno; Av. San Juan 350
+Museo El Ángel; Perú 555
+Museo Histórico Nacional; Defensa 1600
+Museo Penitenciario; Humberto 1° 378
+@La Boca
+Bar Notable El Portuario; Pinzón 102
+Bomberos Voluntarios de La Boca; Brandsen 567
+Cantinas de la calle Necochea; Necochea 1210
+CC El Conventillo de Nelly; Av. Suárez 557
+Sindicato Conductores Navales; Pinzón 318
+Colón Fábrica; Av. Pedro de Mendoza 2163
+Casa Amarilla (Estudios Históricos Navales); Av. Martín García y Av. Almirante Brown
+Escuela 13 República de Chile; Suárez 1145
+Escuela Técnica 31 Maestro Quinquela; Av. Pedro de Mendoza 1777
+Experiencia Riachuelo (катер); Av. Pedro de Mendoza 1900
+Fundación Andreani; Av. Pedro de Mendoza 1987
+Fundación Larivière; Caboto 564
+Galería Social Rimini; Necochea 1234
+Hogar de la Infancia; Martín Rodríguez 864
+Jardín Benito Quinquela Martín; Lamadrid 648
+Memorias de San Juan Evangelista; Olavarría 486
+Museo Benito Quinquela Martín; Av. Pedro de Mendoza 1835
+Museo del Cine; Caffarena 51
+Museo Histórico de La Boca; Av. Almirante Brown 1399
+Museo MARCO La Boca; Av. Almirante Brown 1031
+Pinacoteca Luis León de los Santos; Av. Suárez 1131
+Puerto Riachuelo; Av. Pedro de Mendoza 1540
+RadioBar Buenos Aires; Wenceslao Villafañe 65
+Usina del Arte; Caffarena 1
+@Barracas
+Sociedad Luz; Suárez 1301
+Casa Scout Luis Postiglione; Av. Gral. Iriarte 2345
+Centro Metropolitano del Gaming BIG; Algarrobo 1041
+Escuela de Comercio 1; Benito Quinquela Martín 1649
+Escuela Técnica 14 Libertad; Santa Magdalena 431
+ESEA Manuel Belgrano; Wenceslao Villafañe 1342
+Espacio Peces; Santa Elena 440
+Estación III Bomberos Barracas; Brandsen 1046
+Museo Santa Felicitas (тоннели); Pinzón 1480
+Reciclaje Electrónico Esquinazo; Juan Darquier 981
+@Constitución
+Colegio 1 Bernardino Rivadavia; Av. San Juan 1545
+Santa Casa de Ejercicios (Mama Antula); Av. Independencia 1190
+SuperBatuque Museo de Juguetes; Santiago del Estero 1945
+#Реколета|Реколета и Бальванера: большие национальные музеи вдоль Libertador и медицинские музеи UBA.
+@Recoleta
+Azulay Art; Av. del Libertador 1028
+Casa del Teatro (зал Гарделя); Av. Santa Fe 1243
+Casa Madre del Instituto del Carmen; Paraguay 1766
+Casa Nacional del Bicentenario; Riobamba 985
+Cassia House; Laprida 1811
+Centro Cultural Recoleta; Junín 1930
+Club Argentino de Ajedrez; Paraguay 1859
+Escuela 1 Juan José Castelli; Ayacucho 1680
+Escuela Normal 1 Lenguas Vivas; Av. Córdoba 1951
+Estación IV Bomberos Recoleta; Laprida 1739
+Facultad de Derecho UBA; Av. Figueroa Alcorta 2263
+Fundación Beethoven; Av. Santa Fe 1452
+Grupo Scout Benito Meana; Junín 1445
+IES 1 Alicia Moreau de Justo; Av. Córdoba 2016
+Instituto de la Visión; Marcelo T. de Alvear 2261
+Liceo 1 Museo Niní Marshall; Santa Fe 2778
+MARQ Museo de Arquitectura y Diseño; Av. del Libertador 999
+Morris Arte Gráfico; Av. Santa Fe 2729
+Museo Borges; Anchorena 1660
+Museos de Medicina, Anatomía e Histología UBA; Paraguay 2155
+Museo Casa de Ricardo Rojas; Charcas 2837
+Museo de Ciencia y Técnica (Ingeniería); Av. Las Heras 2214
+Museo de Farmacia y de Farmacobotánica; Junín 954
+Museo de la Televisión; Av. Figueroa Alcorta 2977
+Museo del Holocausto; Montevideo 919
+Museo del Hospital de Clínicas; Av. Córdoba 2351
+Museo del Hospital de Niños; Gallo 1330
+Museo del Hospital Rivadavia; Av. Las Heras 2670
+Museo Nacional de Arte Decorativo; Av. del Libertador 1902
+Museo Nacional de Bellas Artes; Av. del Libertador 1473
+Museo Nacional del Grabado; Riobamba 985
+Museo Notarial; Av. Callao 1542
+Museo Roca; Vicente López 2220
+Museo Xul Solar; Laprida 1212
+Pinacoteca y Biblioteca Nacional de Maestros; Pizzurno 935
+@Balvanera
+Casa Museo Bernardo Houssay; Viamonte 2790
+CC Rector Ricardo Rojas; Av. Corrientes 2038
+Congreso de la Nación; Av. Rivadavia 1850
+Museo Casa Carlos Gardel; Jean Jaurès 735
+Palacio de las Aguas Corrientes; Riobamba 750
+Santuario de Cromañón; Bartolomé Mitre 3060
+Sociedad Hebraica Argentina; Sarmiento 2233
+#Палермо|Палермо с соседями: Колехьялес, Чакарита, Вилья-Креспо. Музеи у парков стоят далеко друг от друга — удобнее на Ecobici.
+@Palermo
+Casa Museo Alfredo Palacios; Charcas 4741
+Casa Polaca; J. L. Borges 2076
+Casa Victoria Ocampo; Rufino de Elizalde 2831
+Centro Cultural Casa Walsh; Nicaragua 4445
+C3 Centro Cultural de la Ciencia; Godoy Cruz 2270
+Club de Pescadores; Av. Costanera Rafael Obligado
+Colegio 4 Nicolás Avellaneda; El Salvador 5528
+El jardín de la plaza; Charcas 4446
+Espacio Cultural Ari Cho; Thames 1980
+Espacio Cultural Armenia; Armenia 1366
+Escuela 9 Genaro Berón de Astrada; El Salvador 4037
+Escuela 30 Granaderos de San Martín; Av. del Libertador 4903
+Feria de libros Plaza Italia; Av. Santa Fe 4200
+Feria Palermo Viejo; Costa Rica entre Malabia y Armenia
+Museo Evita; Lafinur 2988
+Instituto Nacional Sanmartiniano; Mariscal Castilla 2752
+MALBA; Av. Figueroa Alcorta 3415
+Margian Galería; Gral. Savio 418
+MOA (монументы города); Av. Berro 3880
+Montecarlo Bar Notable; Paraguay 5499
+Museo de Arte Popular José Hernández; Av. del Libertador 2373
+Museo Sívori; Av. Infanta Isabel 555
+Museo Regimiento Patricios; Av. Intendente Bullrich 481
+Museo Policial (Anexo); Av. Figueroa Alcorta 3701
+Planetario Galileo Galilei; Av. Sarmiento s/n
+Zonderflag; Nicaragua 4880
+@Colegiales
+*Centro Audiovisual Inmersivo — «Piel»; Jorge Newbery 3037
+Galería Caminos del Arte; Conde 1298
+La Academia Tango Club; Matienzo 3136
+@Chacarita
+Cementerio Británico; Av. Elcano 4568
+Club Atlético Chacarita Juniors; Teodoro García 3550
+Escuela Técnica 32 San Martín; Teodoro García 3899
+Fundación Pio Roncoroni; Olleros 3877
+LABA; Fraga 648
+@Villa Crespo
+CeDoB Pinie Katz; Lavalleja 182
+Centro Venezolano Argentino; Julián Álvarez 866
+Escuela 1 T. de la Quintana de Escalada; Av. Corrientes 5332
+Estación VI Bomberos; Av. Corrientes 5340
+#Бельграно · Нуньес|Север: Бельграно, Нуньес, Сааведра, Коглан, Вилья-Уркиса, Агрономия, Вилья-Девото.
+@Belgrano
+Casa de las Artes Umerez; Cuba 1930
+Escuela de Comercio 7 Manuel Belgrano; Av. Monroe 3061
+Facultad de Ciencias Exactas UBA; Ciudad Universitaria, Intendente Güiraldes 2160
+Instituto Superior Santa Ana; Av. del Libertador 6155
+Kinzen Casa de Té; Migueletes 1857
+Museo Nacional del Hombre; 3 de Febrero 1370
+Museo Casa de Yrurtia; O'Higgins 2390
+Museo de Arte Español Enrique Larreta; Juramento 2291
+Museo Expresionista Edmund Valladares; Cuba 2441
+Museo Histórico Sarmiento; Cuba 2079
+Museo River Plate; Av. Figueroa Alcorta 7597
+@Núñez
+Cruz Roja Filial Saavedra; Quesada 2602
+Espacio Memoria ex ESMA; Av. del Libertador 8151
+Expo Bondi Solidaria (старые автобусы); Av. Cantilo y Av. General Paz
+Museo Lorenzo Raggio; Av. del Libertador 8635
+Museo Defensores de Belgrano; Av. Comodoro Rivadavia 1450
+Museo Lomas de Núñez Upper School; Arcos 4531
+Museo Malvinas; Santiago Calzadilla 1301
+@Saavedra
+Instituto Divina Providencia; Arias 2915
+Instituto Santa María de Nazareth; Av. Ricardo Balbín 4131
+Museo Histórico Saavedra + Museo de las Escuelas; Crisólogo Larralde 6309
+@Coghlan · Villa Urquiza · Agronomía · Devoto
+Centro Ana Frank; Superí 2647
+Centro Cultural 25 de Mayo; Av. Triunvirato 4444
+Biblioteca y Museo de Anatomía Veterinaria UBA; Av. Chorroarín 280
+Espacio de Memoria El Altillo; Av. San Martín 4453
+MUMaAg Maquinaria Agrícola; Av. Francisco Beiró 2599
+Escuela 28 Bartolomé Ayrolo; Av. Lincoln 4325
+#Кабальито и запад|Кабальито, Альмагро, Боэдо, Сан-Кристобаль, Парке-Патрисиос, Флорес и дальше на запад.
+@Caballito
+Asociación Amigos de la Astronomía; Av. Patricias Argentinas 550
+Barbería La Época; Neuquén 761
+CC de Jubilados; Paysandú 1221
+Club Italiano; Av. Rivadavia 4731
+Fundación Caleidoscopio; Beauchef 479
+Fundación Instituto Leloir; Av. Patricias Argentinas 435
+Laboratorio Centenera — Museo del Subte; Del Barco Centenera 777
+Museo de Ciencias Naturales B. Rivadavia; Av. Ángel Gallardo 470
+Museo de Esculturas Luis Perlotti; Pujol 644
+Museo Histórico Desiderio Davel; Av. Díaz Vélez 4821
+Museo Ferro Carril Oeste; Av. Avellaneda 1240
+Museo de Anestesia; Fragata Presidente Sarmiento 541
+Napule Galleria d'Arte; José A. Terry 300
+@Almagro
+Biblioteca Argentina para Ciegos; Pasaje Lezica 3909
+CC Tití Rossi; Sánchez de Loria 695
+Colegio 3 Mariano Moreno; Av. Rivadavia 3577
+Escuela 16 Ramos Mejía; Don Bosco 4200
+Escuela de la Joya; Lezica 3955
+Escuela Normal 7 José María Torres; Av. Corrientes 4261
+ESEA en Cerámica 1; Bulnes 45
+Espacio Cultural Portal Rojo; Quito 4231
+Fundación Esteban Lisa; Rocamora 4555
+Instituto Sudamericano Modelo; Río de Janeiro 671
+Museo de la Inmigración Calabresa; Hipólito Yrigoyen 3950
+Museo Escuela de Adultos 22; Boedo 657
+Museo Madre Eufrasia; Humahuaca 3696
+UTN Facultad Regional Buenos Aires; Medrano 951
+@Boedo
+Ретро-автомобили на проспекте; Av. Boedo entre Independencia y San Juan
+Museo Monte de Piedad Banco Ciudad; Boedo 870
+Polideportivo Pando (San Lorenzo); José Mármol 1715
+@San Cristóbal
+Aves Argentinas; Matheu 1246
+Asociación Caminos Abiertos; Estados Unidos 2957
+Escuela de Comercio 5; Av. Entre Ríos 757
+Escuela Normal 8; La Rioja 1042
+@Parque Patricios · Parque Chacabuco
+Archivo General de la Nación; Rondeau 2277
+Biblioteca y Museo Bernasconi; Catamarca 2099
+Casa Museo Tomás Espora; Av. Caseros 2526
+Estación II Bomberos Patricios; Av. Caseros 2849
+Museo del Hospital Udaondo; Av. Caseros 2061
+*Polo Circo (мастерские 9–13.11 по записи); Av. Juan de Garay y Combate de los Pozos
+Templete + старые автобусы; Av. Caseros 3250
+921 Casa Cultural; San José de Calasanz 921
+Espacio Adán Buenosayres; Eva Perón 1400
+Museo del Inmigrante Italiano; Provincias Unidas 353
+@Flores
+Escuela 15 República del Uruguay; Carabobo 253
+MEMU Escuela Museo de Bellas Artes; Yerbal 2370
+Estación VII Bomberos Flores; Ramón Falcón 2255
+Museo Barrio de Flores; Ramón Falcón 2207
+@Дальний запад и юг
+Polo Bandoneón (Pompeya); Av. Sáenz 1480
+Junta de Estudios Históricos (Lugano); Aquino 5995
+ESEA Lola Mora (Lugano); Av. Soldado de la Frontera 5155
+Estación X Bomberos Lugano; Cafayate y Ana Díaz
+CC Macedonio Fernández (Mataderos); Martiniano Leguizamón 1470
+Vecchia República (Mataderos); Av. Larrazábal 1251
+Escuela Técnica 27 (Monte Castro); Virgilio 1980
+Museo de Arte Cerámico Arranz (Villa Luro); Magariños Cervantes 5068
+Templo del Fútbol, Argentinos Juniors (Villa Mitre); Gavilán 2151
+Racing Club Sede Capital (Villa del Parque); Nogoyá 3051`;
+
+const out=document.getElementById("lists");
+let cur=null,ul=null,count=0,cnt=null;
+const close=()=>{if(cnt)cnt.textContent=count+" мест"};
+LIST.split("\n").forEach(line=>{
+  if(line.startsWith("#")){
+    close();
+    const [n,h]=line.slice(1).split("|");
+    cur=document.createElement("details");
+    cur.innerHTML=`<summary><h3>${esc(n)}</h3><span class="count"></span></summary><p class="hint">${esc(h)}</p>`;
+    cnt=cur.querySelector(".count");count=0;out.appendChild(cur);
+  }else if(line.startsWith("@")){
+    const b=document.createElement("div");b.className="barrio";b.textContent=line.slice(1);cur.appendChild(b);
+    ul=document.createElement("ul");ul.className="venues";cur.appendChild(ul);
+  }else if(line.trim()){
+    const turno=line.startsWith("*");const [n,a]=(turno?line.slice(1):line).split("; ");
+    const li=document.createElement("li");
+    li.innerHTML=`<a href="${gm(a)}" target="_blank" rel="noopener">${esc(n)}</a>${turno?'<span class="tag turno">турно</span>':""}<br><small>${esc(a)}</small>`;
+    ul.appendChild(li);count++;
+  }
+});
+close();
+</script>
+
+</body></html>
