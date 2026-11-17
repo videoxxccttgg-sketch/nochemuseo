@@ -740,6 +740,19 @@ h1{margin:0;font:700 clamp(24px,7.2vw,42px)/1.05 var(--font-display);letter-spac
 .locmsg{margin:0;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-size:13px}
 .plan{margin:0;font-size:13px;color:var(--muted);max-width:65ch}
 
+.tag.no{color:var(--muted)}
+.tag.prog{color:var(--celeste)}
+.houses li.off .row,.houses li.off .go{opacity:.45}
+.houses li.off .who strong{text-decoration:line-through}
+.pin.no b{filter:grayscale(1);opacity:.4}
+.ed{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;padding:0 4px 10px 41px}
+.ed button{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:500 12px/1 var(--font-body);padding:8px 10px;border-radius:999px;cursor:pointer}
+.ed button[data-set="ok"][aria-pressed="true"]{background:var(--ok);border-color:var(--ok);color:var(--night)}
+.ed button[data-set="no"][aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:var(--night)}
+.editbar{display:grid;gap:8px;margin:0 0 14px;padding:12px;border:1px dashed var(--sol);border-radius:12px;font-size:13px}
+.editbar p{margin:0}
+.editbar textarea{width:100%;background:var(--night);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px;font:12px/1.4 ui-monospace,monospace;resize:vertical}
+
 /* точки */
 .pin{background:none;border:0}
 .pin b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;border:2px solid var(--night);box-shadow:0 0 0 1.5px rgba(255,255,255,.35);font:700 12px/1 var(--font-body);color:var(--night);transition:transform .15s}
@@ -812,6 +825,11 @@ footer{font-size:12px;color:var(--muted);max-width:65ch}
     </section>
 
     <section aria-label="Список домов">
+      <div class="editbar" id="editbar" hidden>
+        <p><b>Режим проверки.</b> Откройте IG дома, затем отметьте участие. Изменения сразу видны у вас в браузере. Чтобы они появились у всех, нажмите «Скопировать статусы» и замените в index.html строку <code>const STATUS = …;</code> на скопированную.</p>
+        <textarea id="edout" rows="2" readonly aria-label="Строка статусов для index.html"></textarea>
+        <button class="chip" type="button" id="edcopy">Скопировать статусы</button>
+      </div>
       <h2>Дома <span id="count"></span></h2>
       <ol class="houses" id="houses"></ol>
     </section>
@@ -820,8 +838,9 @@ footer{font-size:12px;color:var(--muted);max-width:65ch}
   <section class="notes">
     <h2>Перед выходом</h2>
     <ul>
-      <li>Дом Buenos Aires закрывается в 22:00, Entre Ríos в 22:30. Salta начинает в 19:00. Остальные своё время не объявили, ориентир 18:00–00:00.</li>
-      <li>«Подтверждено»: провинция сама анонсировала участие в 2026 году. «Уточнить»: официальной заявки на 2026 год мы не нашли, дом взят из афиши. Проверьте его Instagram: кнопка IG в списке или ссылка в карточке на карте.</li>
+      <li>Дом Buenos Aires закрывается в 22:00, Entre Ríos в 22:30. Salta начинает в 19:00. Концерт в Catamarca идёт с 18:30 до 22:00. Остальные своё время не объявили, общее время события 18:00–00:00.</li>
+      <li>По данным El Destape от 16 ноября, участвуют 23 представительства из 24, все 22 дома этой карты есть в списке маршрутов 2026 года.</li>
+      <li>Участие всех 22 домов подтверждено. У домов с пометкой «программа в IG» программа пока не опубликована: уточнить её можно в Instagram дома, кнопка IG в списке или ссылка «Уточнить программу» в карточке на карте.</li>
       <li>Аккаунты, помеченные в карточке «взят из афиши», мы не сверили с самим профилем, они могут быть неточными. Для Tucumán официальный аккаунт не нашёлся, ссылка ведёт на поиск.</li>
       <li>Общей программы организатор CONFEDRO в 2026 году не публиковал, его Instagram не обновляется с 2024 года. Описание события есть на <a href="https://buenosaires.gob.ar/Descubrir%20BA/la-noche-de-las-casas-de-provincia">странице Ciudad de Buenos Aires</a>, пока в версии 2025 года.</li>
             <li>О записи анонсы 2026 года не сообщают, в 2025 году она не требовалась. Дегустации и розыгрыши идут в порядке очереди.</li>
@@ -835,9 +854,11 @@ footer{font-size:12px;color:var(--muted);max-width:65ch}
     <a href="https://noticias.santacruz.gob.ar/organismos/gabinete/casa-de-santa-cruz/santa-cruz-participara-de-la-noche-de-las-casas-de-provincia-2026-con-gastronomia-musica-y-tecnologia">Prensa Santa Cruz</a>,
     <a href="https://www.casadeentrerios.gov.ar/?p=28380">Casa de Entre Ríos</a>,
     <a href="https://bairespost.com/rio-negro-llevara-musica-arte-y-la-experiencia-del-tren-patagonico-a-buenos-aires/">Baires Post о Río Negro</a>,
+    <a href="http://www.eldestapeweb.com/sociedad/noche-casas-provincia-2026-programacion-horarios-circuitos-recorrer-20261116133732">El Destape, 16 ноября</a>,
+    <a href="https://diariotextual.com/inicio/index.php/2026/11/16/la-pampa-se-prepara-para-la-noche-de-las-casas-de-provincia-en-caba/">Diario Textual о La Pampa</a>,
     <a href="https://holasalta.com/post/la-casa-de-salta-lleva-la-tradicion-de-los-valles-calchaquies-y-su-musica-a-la-avenida-9-de-julio/">Hola Salta</a>,
     <a href="https://buenosaires.gob.ar/Descubrir%20BA/la-noche-de-las-casas-de-provincia">Buenos Aires Ciudad, выпуск 2025</a>.
-    Данные на 15 ноября 2026.
+    Данные на 16 ноября 2026.
     <p class="lic">Сайт только информационный и не связан с организаторами. Сведения взяты из открытых источников и официальных аккаунтов домов провинций. Копировать и распространять можно свободно, разрешение не нужно.</p>
   </footer>
 </div>
@@ -859,7 +880,7 @@ const HOUSES = [
   {n: 'Chubut', ig: 'casadelchubut', igv: 0, a: 'Sarmiento 1172', x: 1172, y: 300, c: 2, s: 'chk'},
   {n: 'San Juan', ig: 'casadesanjuanenbsas', igv: 0, a: 'Sarmiento 1251', x: 1251, y: 300, c: 2, s: 'chk'},
   {n: 'Salta', ig: 'casadesaltaok', igv: 1, a: 'Av. Roque Sáenz Peña 933', x: 933, y: 327, c: 2, s: 'ok', h: 'с 19:00', t: 'Музыка Сальты, ремесленный рынок, Casa de la Magia из Seclantás. Diagonal Norte, рядом с Обелиском.'},
-  {n: 'La Pampa', ig: 'casadelapampa', igv: 0, a: 'Suipacha 346', x: 900, y: 346, c: 2, s: 'chk', t: 'В официальном списке 2025 года дома не было.'},
+  {n: 'La Pampa', ig: 'casadelapampa', igv: 0, a: 'Suipacha 346', x: 900, y: 346, c: 2, s: 'ok', t: 'Sabores de La Pampa: колбасы, сыры, джин, вина, пасты и чай от местных производителей, музыка и ремёсла.'},
   {n: 'Entre Ríos', ig: 'casadeentrerios', igv: 0, a: 'Suipacha 844', x: 900, y: 844, c: 2, s: 'ok', h: 'до 22:30', t: 'Музыка, стенд дворца San José, автоспорт, туристические регионы.'},
   {n: 'Jujuy', ig: 'casadejujuy_buenosaires', igv: 1, a: 'Av. Santa Fe 967', x: 967, y: 1100, c: 2, s: 'chk'},
   {n: 'Misiones', ig: 'casademisiones', igv: 0, a: 'Av. Santa Fe 989', x: 989, y: 1100, c: 2, s: 'chk'},
@@ -867,10 +888,13 @@ const HOUSES = [
   {n: 'Chaco', ig: 'chacoenbuenosaires', igv: 1, a: 'Av. Callao 322', x: 1800, y: 322, c: 3, s: 'chk'},
   {n: 'Córdoba', ig: 'casadelaprovdecordoba', igv: 0, a: 'Av. Callao 332', x: 1800, y: 332, c: 3, s: 'chk'},
   {n: 'Mendoza', ig: 'casademendozabsas', igv: 0, a: 'Av. Callao 445', x: 1800, y: 445, c: 3, s: 'chk'},
-  {n: 'La Rioja', ig: 'casadelariojaba', igv: 0, a: 'Av. Callao 755', x: 1800, y: 755, c: 3, s: 'chk', t: 'В официальном списке 2025 года дома не было. В других источниках адрес Callao 745.'},
-  {n: 'Catamarca', ig: 'casadecatamarca', igv: 0, a: 'Av. Córdoba 2080', x: 2080, y: 800, c: 3, s: 'chk', t: 'В афише стоит Paraguay 2080. Город в 2025 году указывал Av. Córdoba 2080.'},
+  {n: 'La Rioja', ig: 'casadelariojaba', igv: 0, a: 'Av. Callao 755', x: 1800, y: 755, c: 3, s: 'chk', t: 'В других источниках адрес Callao 745.'},
+  {n: 'Catamarca', ig: 'casadecatamarca', igv: 0, a: 'Av. Córdoba 2080', x: 2080, y: 800, c: 3, s: 'ok', h: 'концерт 18:30–22:00', t: 'Фестиваль: Carlos Tito, Dúo Bazán и другие, коплас, дегустации, тканые изделия. В прессе адрес Paraguay 2080, город в 2025 году указывал Av. Córdoba 2080.'},
   {n: 'San Luis', ig: 'casadesanluisba', igv: 1, a: 'Azcuénaga 1087', x: 2300, y: 1087, c: 3, s: 'chk', t: 'Особняк Lagomarsino в стиле ар-нуво.'},
 ];
+
+// Ручная проверка по Instagram. Строку целиком заменяет кнопка «Скопировать статусы» в режиме #edit.
+const STATUS = {};
 
 // Порядок обхода и точки поворота по улицам (x = номер вдоль восток–запад, y = вдоль юг–север)
 const ROUTE = {
@@ -884,17 +908,23 @@ const ROUTE = {
 };
 const PLAN = [3, 2, 1]; // рекомендованный порядок маршрутов за вечер
 HOUSES.forEach(h => { h.o = ROUTE[h.c].order.indexOf(h.n) + 1; h.of = ROUTE[h.c].order.length; });
+let local = {};
+try { local = JSON.parse(localStorage.getItem('casas-status') || '{}'); } catch (e) {}
+const EDIT = location.hash === '#edit';
+HOUSES.forEach(h => { h.s0 = h.s; h.s = (EDIT && local[h.n]) || STATUS[h.n] || h.s; });
 HOUSES.sort((a, b) => PLAN.indexOf(a.c) - PLAN.indexOf(b.c) || a.o - b.o);
 
-const TAG = {ok: 'подтверждено', chk: 'уточнить'};
+const TAG = {ok: 'подтверждено', chk: 'подтверждено', no: 'не участвует'};
 const igUrl = h => h.ig ? `https://www.instagram.com/${h.ig}/` : 'https://www.google.com/search?q=' + encodeURIComponent('site:instagram.com "Casa de ' + h.n + '" Buenos Aires');
 const igLabel = h => h.ig ? '@' + h.ig : 'найти Instagram';
-const CHECK = 'Официальной заявки на 2026 год не нашли. Проверьте участие и часы в Instagram дома.';
+const CHECK = 'Программу дом пока не опубликовал.';
+const NO = 'Дом не участвует в 2026 году.';
 const gmaps = h => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(h.a + ', Buenos Aires, Argentina');
 const $ = id => document.getElementById(id);
 
 // ---------- список и фильтр (работают и без карты) ----------
 let filter = 0, current = -1, map = null, markers = [], lines = {};
+let refreshMarker = () => {};
 
 $('filters').innerHTML = [0, ...PLAN].map(c => {
   const count = c ? HOUSES.filter(h => h.c === c).length : HOUSES.length;
@@ -902,13 +932,49 @@ $('filters').innerHTML = [0, ...PLAN].map(c => {
   return `<button class="chip" type="button" data-c="${c}" aria-pressed="${c === 0}">${label} <small>${count}</small></button>`;
 }).join('') + '<button class="chip loc" type="button" id="locate">◎ Где я</button>';
 
+function renderList() {
 $('houses').innerHTML = HOUSES.map((h, i) => {
   const grp = i === 0 || HOUSES[i - 1].c !== h.c ? `<li class="grp" data-c="${h.c}">${PLAN.indexOf(h.c) + 1}-й по счёту · маршрут ${h.c} · ${ROUTES[h.c]}</li>` : '';
-  const tags = (h.h ? `<span class="tag early">${h.h}</span>` : '') + (h.s ? `<span class="tag ${h.s}">${TAG[h.s]}</span>` : '');
+  const tags = (h.h ? `<span class="tag early">${h.h}</span>` : '') + (h.s ? `<span class="tag ${h.s === 'no' ? 'no' : 'ok'}">${TAG[h.s]}</span>${h.s === 'chk' ? '<span class="tag prog">программа в IG</span>' : ''}` : '');
   return `${grp}<li data-c="${h.c}">
     <button class="row" type="button" data-i="${i}"><b class="dot c${h.c}">${h.o}</b><span class="who"><strong>${h.n}</strong><small>${h.a}</small></span><span class="tags">${tags}</span></button>
-    <a class="go ig" href="${igUrl(h)}" aria-label="Instagram: ${igLabel(h)}" title="${igLabel(h)}">IG</a><a class="go" href="${gmaps(h)}" aria-label="Открыть в Google Maps: ${h.a}" title="Google Maps">↗</a></li>`;
+    <a class="go ig" href="${igUrl(h)}" aria-label="Уточнить программу в Instagram: ${igLabel(h)}" title="Уточнить программу: ${igLabel(h)}">IG</a><a class="go" href="${gmaps(h)}" aria-label="Открыть в Google Maps: ${h.a}" title="Google Maps">↗</a>${EDIT ? `<div class="ed">
+      <button type="button" data-set="ok" data-n="${h.n}" aria-pressed="${h.s === 'ok'}">✓ Участвует</button>
+      <button type="button" data-set="no" data-n="${h.n}" aria-pressed="${h.s === 'no'}">✗ Не участвует</button>
+      <button type="button" data-set="" data-n="${h.n}">Сброс</button></div>` : ''}</li>`;
 }).join('');
+if (current >= 0) document.querySelector(`.row[data-i="${current}"]`).setAttribute('aria-current', 'true');
+document.querySelectorAll('#houses li').forEach(li => li.hidden = !!filter && +li.dataset.c !== filter);
+document.querySelectorAll('.row').forEach(r => r.closest('li').classList.toggle('off', HOUSES[+r.dataset.i].s === 'no'));
+}
+renderList();
+
+// ---------- режим проверки: открыть страницу с #edit ----------
+const statusLine = () => {
+  const o = {};
+  HOUSES.forEach(h => { if (h.s !== h.s0) o[h.n] = h.s; });
+  return 'const STATUS = ' + JSON.stringify(o) + ';';
+};
+if (EDIT) {
+  $('editbar').hidden = false;
+  $('houses').addEventListener('click', e => {
+    const b = e.target.closest('[data-set]');
+    if (!b) return;
+    const h = HOUSES.find(x => x.n === b.dataset.n);
+    h.s = b.dataset.set || STATUS[h.n] || h.s0;
+    local[h.n] = b.dataset.set;
+    if (!b.dataset.set) delete local[h.n];
+    try { localStorage.setItem('casas-status', JSON.stringify(local)); } catch (e) {}
+    renderList();
+    refreshMarker(HOUSES.indexOf(h));
+    $('edout').value = statusLine();
+  });
+  $('edout').value = statusLine();
+  $('edcopy').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText($('edout').value); $('edcopy').textContent = 'Скопировано'; }
+    catch (e) { $('edout').select(); $('edcopy').textContent = 'Выделено: скопируйте вручную'; }
+  });
+}
 
 function applyFilter(c) {
   filter = c;
@@ -1007,10 +1073,12 @@ if (window.L) {
   markers = HOUSES.map((h, i) => {
     const m = L.marker(h.ll, {title: h.n, alt: `${h.n}, ${h.a}`, riseOnHover: true,
       icon: L.divIcon({className: 'pin', html: `<b class="c${h.c}">${h.o}</b>`, iconSize: [24, 24], popupAnchor: [0, -10]})});
-    m.bindPopup(`<h3>${h.n}</h3><p>${h.a}</p><p class="dim">Маршрут ${h.c} · ${ROUTES[h.c]} · остановка ${h.o} из ${h.of}<br>${h.h ? 'Открыт ' + h.h : '18:00–00:00'}${h.s ? ' · ' + TAG[h.s] : ''}</p>${h.s === 'chk' ? `<p class="warn">${CHECK}</p>` : ''}${h.t ? `<p>${h.t}</p>` : ''}<p><a href="${igUrl(h)}">${h.ig ? 'Instagram @' + h.ig : 'Найти Instagram в Google'} ↗</a>${h.ig && !h.igv ? '<br><span class="dim">аккаунт взят из афиши, может быть неточным</span>' : ''}${!h.ig ? '<br><span class="dim">официальный аккаунт не нашли</span>' : ''}</p><p><a href="${gmaps(h)}">Открыть в Google Maps ↗</a></p>`, {autoPanPaddingTopLeft: [14, 60], autoPanPaddingBottomRight: [14, 14], maxWidth: 280});
+    m.bindPopup(() => `<h3>${h.n}</h3><p>${h.a}</p><p class="dim">Маршрут ${h.c} · ${ROUTES[h.c]} · остановка ${h.o} из ${h.of}<br>${h.h ? 'Открыт ' + h.h : '18:00–00:00'}${h.s ? ' · ' + TAG[h.s] : ''}</p>${h.s === 'chk' ? `<p class="dim">${CHECK}</p>` : ''}${h.s === 'no' ? `<p class="warn">${NO}</p>` : ''}${h.t ? `<p>${h.t}</p>` : ''}<p><a href="${igUrl(h)}">Уточнить программу ${h.ig ? 'в Instagram @' + h.ig : '(поиск Instagram в Google)'} ↗</a>${h.ig && !h.igv ? '<br><span class="dim">аккаунт взят из афиши, может быть неточным</span>' : ''}${!h.ig ? '<br><span class="dim">официальный аккаунт не нашли</span>' : ''}</p><p><a href="${gmaps(h)}">Открыть в Google Maps ↗</a></p>`, {autoPanPaddingTopLeft: [14, 60], autoPanPaddingBottomRight: [14, 14], maxWidth: 280});
     m.on('click', () => select(i, false));
+    m.on('add', () => refreshMarker(i));
     return m;
   });
+  refreshMarker = i => markers[i]?.getElement()?.classList.toggle('no', HOUSES[i].s === 'no');
 
   // «Где я»: браузер спрашивает разрешение только после нажатия
   let me = null;
@@ -1026,7 +1094,7 @@ if (window.L) {
           L.circle(p, {radius: Math.min(pos.coords.accuracy, 300), className: 'me-acc', interactive: false}),
           L.circleMarker(p, {radius: 7, className: 'me-dot', interactive: false}),
         ]).addTo(map);
-        const pool = HOUSES.filter(h => !filter || h.c === filter);
+        const pool = HOUSES.filter(h => (!filter || h.c === filter) && h.s !== 'no');
         const near = pool.reduce((a, h) => map.distance(p, h.ll) < map.distance(p, a.ll) ? h : a);
         const d = Math.round(map.distance(p, near.ll));
         if (d > 5000) { say('Вы далеко от центра: ближайший дом в ' + (d / 1000).toFixed(1) + ' км.'); map.setView(p, 13); return; }
