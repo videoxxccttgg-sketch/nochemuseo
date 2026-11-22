@@ -157,7 +157,17 @@ input[type=datetime-local]::-webkit-calendar-picker-indicator{filter:invert(.8) 
 .tick.on{color:#FFB79C}
 .tick.gold{color:var(--gold)}
 
-.loader{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);font-family:var(--serif);font-style:italic;font-size:18px;color:var(--gold);pointer-events:none;transition:opacity .8s;z-index:6}
+.boot{position:absolute;inset:0;z-index:40;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity 1s ease,visibility 1s}
+.boot.done{opacity:0;visibility:hidden;pointer-events:none}
+.boot-ring{width:min(180px,40vw);height:auto;overflow:visible}
+.boot-ticks{transform-origin:60px 60px;animation:spin 14s linear infinite}
+.boot-scan{transform-origin:60px 60px;animation:spin 2.4s cubic-bezier(.6,.1,.4,.9) infinite}
+.boot-arc{transition:stroke-dashoffset .5s ease}
+@keyframes spin{to{transform:rotate(360deg)}}
+.boot-word{font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:.32em;color:var(--gold);margin-right:-.32em}
+.boot-text{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--haze);min-height:1.4em}
+.boot-pct{font-size:12px;color:var(--dim);letter-spacing:.08em}
+@media (max-width:900px){.boot{position:fixed}}
 
 /* ---------------- СТРАНИЦА ---------------- */
 .page{max-width:1240px;margin:0 auto;padding:0 28px}
@@ -284,6 +294,13 @@ input[type=datetime-local]::-webkit-calendar-picker-indicator{filter:invert(.8) 
 .reg-done .no small{font-family:var(--sans);font-size:13px;font-weight:400;color:var(--gold);margin-left:10px;vertical-align:middle}
 .reflink{display:flex;gap:8px;margin-top:12px}
 .reflink input{flex:1;min-width:0}
+.photo-row{display:flex;gap:16px;align-items:center;padding:14px;border:1px dashed var(--gold-soft);border-radius:4px;margin-bottom:6px}
+#photoPrev{width:72px;height:96px;border-radius:3px;box-shadow:0 0 0 1px var(--gold);flex:none}
+.photo-ph{width:72px;height:96px;border-radius:3px;border:1px solid rgba(154,163,199,.25);flex:none;display:grid;place-items:center;color:var(--dim);font-size:26px;font-family:var(--serif)}
+.photo-btns{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.photo-btn{padding:9px 16px;font-size:13px;cursor:pointer}
+.vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;clip:rect(0 0 0 0)}
+.linkbtn{font-size:13px;color:var(--haze);text-decoration:underline;text-underline-offset:3px}
 .cert-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 @media (max-width:560px){.reg-row{grid-template-columns:1fr}}
 footer{margin-top:110px;padding:34px 0 50px;border-top:1px solid var(--gold-soft);font-size:12.5px;color:var(--dim);line-height:1.7}
@@ -341,7 +358,18 @@ footer a{color:var(--haze)}
     <div class="mark mark-ra" id="raMark">—</div>
     <div class="mark mark-dec" id="decMark">—</div>
   </div>
-  <div class="loader" id="loader" data-i18n="loader">Проявляем пластинку…</div>
+  <div class="boot" id="loader" role="status" aria-live="polite">
+    <svg class="boot-ring" viewBox="0 0 120 120" aria-hidden="true">
+      <g class="boot-ticks"><line x1="60" y1="6" x2="60" y2="14" transform="rotate(0 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(6 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(12 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(18 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(24 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(30 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(36 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(42 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(48 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(54 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(60 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(66 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(72 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(78 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(84 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(90 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(96 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(102 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(108 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(114 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(120 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(126 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(132 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(138 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(144 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(150 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(156 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(162 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(168 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(174 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(180 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(186 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(192 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(198 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(204 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(210 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(216 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(222 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(228 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(234 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(240 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(246 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(252 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(258 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(264 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(270 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(276 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(282 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(288 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(294 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(300 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(306 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(312 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(318 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(324 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(330 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(336 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(342 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(348 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(354 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/></g>
+      <circle cx="60" cy="60" r="44" fill="none" stroke="rgba(205,163,73,.18)" stroke-width="1"/>
+      <circle class="boot-arc" id="bootArc" cx="60" cy="60" r="44" fill="none" stroke="#FF6A3D" stroke-width="2" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="276.5" transform="rotate(-90 60 60)"/>
+      <g class="boot-scan"><path d="M60 60 L60 22" stroke="rgba(255,106,61,.55)" stroke-width="1"/><circle cx="60" cy="22" r="2.2" fill="#FF6A3D"/></g>
+      <circle cx="60" cy="60" r="3.5" fill="#FF6A3D"/><circle cx="60" cy="60" r="9" fill="none" stroke="rgba(255,106,61,.5)"/>
+    </svg>
+    <div class="boot-word">STARBEAM</div>
+    <div class="boot-text" data-i18n="loader">Проявляем пластинку…</div>
+    <div class="boot-pct num" id="bootPct">0%</div>
+  </div>
 
   <div class="topline">
     <a class="wordmark" href="#top">STARBEAM</a>
@@ -491,6 +519,20 @@ footer a{color:var(--haze)}
           <button class="ship" data-style="star_trek"><b>Aether</b><p data-i18n="shipA">Дальний разведчик с двумя варп‑кольцами, по мотивам концепта NASA IXS.</p><span class="sel" data-i18n="shipSel">Выбран, летит в сцене</span></button>
         </div>
 
+        <div class="photo-row">
+          <div class="photo-ph" id="photoPh" aria-hidden="true">☺</div>
+          <canvas id="photoPrev" width="144" height="192" hidden></canvas>
+          <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+            <span style="font-size:12px;color:var(--haze)" data-i18n="photoLabel">Фото пилота, необязательно</span>
+            <div class="photo-btns">
+              <label class="btn btn-line photo-btn" for="photoInput"><span id="photoBtnTxt">Добавить фото</span></label>
+              <input class="vh" type="file" id="photoInput" accept="image/*" />
+              <button type="button" class="linkbtn" id="photoRemove" hidden data-i18n="photoRemove">Убрать фото</button>
+            </div>
+            <p class="fine" data-i18n="photoNote">Фото не уходит на сервер и нигде не сохраняется: оно есть только на этой странице и исчезает при обновлении.</p>
+          </div>
+        </div>
+
         <form class="reg" id="regForm" novalidate>
           <div class="f">
             <label for="callsignInput" data-i18n="lCall">Позывной пилота <span>до 24 символов, будет на документе</span></label>
@@ -523,7 +565,7 @@ footer a{color:var(--haze)}
           <button class="btn btn-hot" id="downloadCertBtn" data-i18n="dlId">Скачать Galactic ID</button>
           <button class="btn btn-line" id="copyPostBtn2" data-i18n="copyPost2">Скопировать пост со ссылкой</button>
         </div>
-        <p class="fine" style="margin-top:10px" data-i18n="certFine">PNG 1200×1500. QR‑код на документе ведёт на сайт по твоей ссылке.</p>
+        <p class="fine" style="margin-top:10px" data-i18n="certFine">PNG 1200×1500. На телефоне откроется меню «Поделиться»: выбери «Сохранить изображение», и документ окажется в Фото. QR‑код ведёт на сайт по твоей ссылке.</p>
       </div>
     </div>
   </section>
@@ -640,6 +682,7 @@ const LOC = { ru: 'ru-RU', en: 'en-US', es: 'es-AR' };
 const L = {
   ru: {
     title: 'STARBEAM — куда долетел свет твоего рождения',
+    photoAdd: 'Добавить фото', photoChange: 'Заменить фото', photoAdded: 'Фото добавлено на документ', photoFail: 'Не удалось открыть фото. Попробуй JPG или PNG.',
     km: 'км', lyS: 'св. л.', lyLong: 'световых лет', sec: 'с', min: 'мин', h: 'ч',
     zen: 'твой луч', copyFail: 'Не удалось скопировать', pngFail: 'Не удалось собрать PNG',
     mNew: 'Новолуние', mFull: 'Полнолуние', mWaxC: 'Растущий серп', mFirst: 'Первая четверть', mWaxG: 'Растущая Луна', mWanC: 'Убывающий серп', mLast: 'Последняя четверть', mWanG: 'Убывающая Луна',
@@ -674,6 +717,8 @@ const L = {
   },
   en: {
     title: 'STARBEAM — where the light of your birth is now',
+    photoAdd: 'Add a photo', photoChange: 'Change photo', photoAdded: 'Photo added to your ID', photoFail: 'Could not open the photo. Try a JPG or PNG.',
+    photoLabel: 'Pilot photo, optional', photoRemove: 'Remove photo', photoNote: 'Your photo never leaves this device and is not saved anywhere: it lives only on this page and disappears when you reload it.',
     km: 'km', lyS: 'ly', lyLong: 'light years', sec: 's', min: 'min', h: 'h',
     zen: 'your beam', copyFail: 'Could not copy', pngFail: 'Could not build the PNG',
     mNew: 'New Moon', mFull: 'Full Moon', mWaxC: 'Waxing crescent', mFirst: 'First quarter', mWaxG: 'Waxing gibbous', mWanC: 'Waning crescent', mLast: 'Last quarter', mWanG: 'Waning gibbous',
@@ -725,12 +770,14 @@ const L = {
     lCall: 'Pilot call sign <span>up to 24 characters, printed on your ID</span>', phCall: 'For example, Rustam or Orion‑7', lContact: 'Email or Telegram', phContact: 'you@mail.com or @nick',
     lWallet: 'Solana wallet <span>optional</span>', phWallet: 'Wallet address',
     noSign: 'No.', regDoneP: 'You are in the logbook. Send this link to friends — it shows who you brought in.', copy: 'Copy',
-    dlId: 'Download Galactic ID', copyPost2: 'Copy a post with your link', certFine: 'PNG 1200×1500. The QR code on the ID opens the site with your link.',
+    dlId: 'Download Galactic ID', copyPost2: 'Copy a post with your link', certFine: 'PNG 1200×1500. On a phone it opens the share menu: choose “Save image” to keep it in Photos. The QR code opens the site with your link.',
     footer1: 'Earth and Moon: textures based on NASA Blue Marble and Earth at Night (via three.js). Sky map: Axel Mellinger’s Milky Way panorama and DSS2 via the CDS hips2fits service (Strasbourg). Eyepiece surveys: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), Pan‑STARRS1, 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Picture of the day: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanets: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archive: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Cities: Open‑Meteo.',
     footer2: 'Calculations: sidereal time IAU 1982, IAU 1976 precession to J2000, Sun and Moon by simplified Meeus formulas (0.1–0.5°). Voyager positions are approximate. NASA is not affiliated with this project and does not endorse it.',
   },
   es: {
     title: 'STARBEAM — hasta dónde llegó la luz de tu nacimiento',
+    photoAdd: 'Agregar foto', photoChange: 'Cambiar foto', photoAdded: 'Foto agregada al documento', photoFail: 'No se pudo abrir la foto. Probá con JPG o PNG.',
+    photoLabel: 'Foto del piloto, opcional', photoRemove: 'Quitar foto', photoNote: 'Tu foto no sale de este dispositivo ni se guarda en ningún lado: existe solo en esta página y desaparece al recargarla.',
     km: 'km', lyS: 'a. l.', lyLong: 'años luz', sec: 's', min: 'min', h: 'h',
     zen: 'tu rayo', copyFail: 'No se pudo copiar', pngFail: 'No se pudo generar el PNG',
     mNew: 'Luna nueva', mFull: 'Luna llena', mWaxC: 'Luna creciente', mFirst: 'Cuarto creciente', mWaxG: 'Gibosa creciente', mWanC: 'Luna menguante', mLast: 'Cuarto menguante', mWanG: 'Gibosa menguante',
@@ -781,7 +828,7 @@ const L = {
     lCall: 'Nombre de piloto <span>hasta 24 caracteres, va en el documento</span>', phCall: 'Por ejemplo, Rustam u Orión‑7', lContact: 'Email o Telegram', phContact: 'vos@mail.com o @nick',
     lWallet: 'Billetera Solana <span>opcional</span>', phWallet: 'Dirección de la billetera',
     noSign: 'N.º', regDoneP: 'Estás en la bitácora. Mandá este enlace a tus amigos: muestra a quién trajiste vos.', copy: 'Copiar',
-    dlId: 'Descargar Galactic ID', copyPost2: 'Copiar publicación con tu enlace', certFine: 'PNG 1200×1500. El código QR del documento abre el sitio con tu enlace.',
+    dlId: 'Descargar Galactic ID', copyPost2: 'Copiar publicación con tu enlace', certFine: 'PNG 1200×1500. En el celular se abre el menú para compartir: elegí «Guardar imagen» para tenerlo en Fotos. El código QR abre el sitio con tu enlace.',
     footer1: 'Tierra y Luna: texturas basadas en NASA Blue Marble y Earth at Night (vía three.js). Mapa del cielo: panorama de la Vía Láctea de Axel Mellinger y DSS2 vía el servicio CDS hips2fits (Estrasburgo). Relevamientos del ocular: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), Pan‑STARRS1, 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Foto del día: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanetas: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archivo: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Ciudades: Open‑Meteo.',
     footer2: 'Cálculos: hora sidérea IAU 1982, precesión IAU 1976 a J2000, Sol y Luna con fórmulas simplificadas de Meeus (0,1–0,5°). Las posiciones de las Voyager son aproximadas. La NASA no está vinculada a este proyecto ni lo respalda.',
   },
@@ -852,8 +899,17 @@ async function copyText(text, msg) {
   catch { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
     try { document.execCommand('copy'); toast(msg); } catch { toast(t('copyFail')); } ta.remove(); }
 }
-function download(canvas, name) {
-  canvas.toBlob((b) => { if (!b) return toast(t('pngFail')); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); }, 'image/png');
+// На телефонах — системное меню «Поделиться» (на iPhone там «Сохранить изображение» в Фото); иначе обычная загрузка
+async function download(canvas, name) {
+  const blob = await new Promise((res) => canvas.toBlob(res, 'image/png'));
+  if (!blob) { toast(t('pngFail')); return false; }
+  const file = new File([blob], name, { type: 'image/png' });
+  if (matchMedia('(pointer: coarse)').matches && navigator.canShare?.({ files: [file] })) {
+    try { await navigator.share({ files: [file] }); return true; }
+    catch (e) { if (e.name === 'AbortError') return false; } // иначе — обычная загрузка ниже
+  }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000); return true;
 }
 const hipsCut = (hips, ra, dec, fov, w) => `${HIPS2FITS}?hips=${encodeURIComponent(hips)}&ra=${ra.toFixed(5)}&dec=${dec.toFixed(5)}&fov=${fov}&width=${w}&height=${w}&projection=TAN&format=jpg`;
 function loadImg(url) { return new Promise((res, rej) => { const i = new Image(); i.crossOrigin = 'anonymous'; i.onload = () => res(i); i.onerror = rej; i.src = url; }); }
@@ -977,7 +1033,13 @@ controls.enableDamping = true; controls.dampingFactor = 0.06; controls.enablePan
 controls.minDistance = 1.15; controls.maxDistance = 420; controls.rotateSpeed = 0.5;
 
 const loadMgr = new THREE.LoadingManager();
-loadMgr.onLoad = () => { $('loader').style.opacity = 0; };
+// экран загрузки: прогресс по текстурам Земли/Луны и карте неба; закрывается по готовности или через 12 с
+let bootDone = false;
+function finishBoot() { if (bootDone) return; bootDone = true; setBoot(1); setTimeout(() => $('loader').classList.add('done'), 350); }
+function setBoot(f) { $('bootArc').style.strokeDashoffset = String(276.5 * (1 - f)); $('bootPct').textContent = Math.round(f * 100) + '%'; }
+loadMgr.onProgress = (_u, loaded, total) => { if (!bootDone && total) setBoot(Math.min(0.98, loaded / total)); };
+loadMgr.onLoad = finishBoot;
+setTimeout(finishBoot, 12000);
 const texLoader = new THREE.TextureLoader(loadMgr);
 texLoader.setCrossOrigin('anonymous');
 function tex(url, srgb = true) { const t = texLoader.load(url); if (srgb) t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; }
@@ -986,7 +1048,7 @@ function tex(url, srgb = true) { const t = texLoader.load(url); if (srgb) t.colo
 function skyDir(ra, dec) { const a = ra * DEG, d = dec * DEG; return new THREE.Vector3(-Math.cos(d) * Math.cos(a), Math.sin(d), Math.cos(d) * Math.sin(a)); }
 
 // --- небесная сфера: реальная фотокарта всего неба (CAR, ICRS) через CDS hips2fits
-const skyMat = new THREE.MeshBasicMaterial({ side: THREE.BackSide, depthWrite: false, color: 0xffffff });
+const skyMat = new THREE.MeshBasicMaterial({ side: THREE.BackSide, depthWrite: false, color: 0x000000 }); // чёрное, пока не пришла карта неба (иначе белая вспышка)
 const skyMesh = new THREE.Mesh(new THREE.SphereGeometry(R_SKY, 96, 48), skyMat);
 scene.add(skyMesh);
 function applySkyTexture(t) {
@@ -1555,7 +1617,64 @@ function loadApod() {
 const mono = (w, s) => `${w} ${s}px Geologica, sans-serif`;
 const serifF = (w, s) => `${w} ${s}px "Cormorant Garamond", Georgia, serif`;
 let certTimer;
-function scheduleCert() { clearTimeout(certTimer); certTimer = setTimeout(renderCert, 600); }
+let certPending = false;
+function scheduleCert() { certPending = true; clearTimeout(certTimer); certTimer = setTimeout(renderCert, 600); }
+
+/* =====================================================================
+   ФОТО ПИЛОТА — только в памяти страницы: не отправляется, не пишется в localStorage,
+   исчезает при обновлении (и при возврате на страницу из кэша браузера)
+   ===================================================================== */
+let pilotPhoto = null, ghostPhoto = null;
+async function loadPhoto(file) {
+  if (file.size > 40e6) throw new Error('size');
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+    // кадр 3:4 по центру, чуть выше середины — там обычно лицо; ориентацию EXIF браузер применяет сам
+    const PW = 600, PH = 800, ar = PW / PH; let sw = img.naturalWidth, sh = img.naturalHeight, sx = 0, sy = 0;
+    if (!sw || !sh) throw new Error('decode');
+    if (sw / sh > ar) { const nw = sh * ar; sx = (sw - nw) / 2; sw = nw; } else { const nh = sw / ar; sy = (sh - nh) * 0.3; sh = nh; }
+    const c = document.createElement('canvas'); c.width = PW; c.height = PH; c.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, PW, PH);
+    // «призрачная» копия как на EU ID: золотистый монохром с мягким краем (вручную — ctx.filter нет в старом Safari)
+    const gc = document.createElement('canvas'); gc.width = 300; gc.height = 400; const gg = gc.getContext('2d'); gg.drawImage(c, 0, 0, 300, 400);
+    const d = gg.getImageData(0, 0, 300, 400), px = d.data;
+    for (let i = 0; i < px.length; i += 4) { const y = 0.3 * px[i] + 0.59 * px[i + 1] + 0.11 * px[i + 2]; px[i] = y; px[i + 1] = y * 0.8; px[i + 2] = y * 0.45; }
+    gg.putImageData(d, 0, 0);
+    gg.globalCompositeOperation = 'destination-in';
+    const gr = gg.createRadialGradient(150, 175, 50, 150, 200, 210); gr.addColorStop(0, 'rgba(0,0,0,1)'); gr.addColorStop(1, 'rgba(0,0,0,0)');
+    gg.fillStyle = gr; gg.fillRect(0, 0, 300, 400);
+    pilotPhoto = c; ghostPhoto = gc;
+  } finally { URL.revokeObjectURL(url); }
+}
+function photoUI() {
+  const has = !!pilotPhoto;
+  $('photoPrev').hidden = !has; $('photoPh').hidden = has; $('photoRemove').hidden = !has;
+  $('photoBtnTxt').textContent = t(has ? 'photoChange' : 'photoAdd');
+  if (has) { const pc = $('photoPrev'); pc.getContext('2d').drawImage(pilotPhoto, 0, 0, pc.width, pc.height); }
+}
+function clearPhoto() { pilotPhoto = ghostPhoto = null; const pc = $('photoPrev'); pc.getContext('2d').clearRect(0, 0, pc.width, pc.height); photoUI(); }
+$('photoInput').addEventListener('change', async (e) => {
+  const f = e.target.files?.[0]; e.target.value = ''; if (!f) return;
+  try { await loadPhoto(f); photoUI(); await renderCert(); toast(t('photoAdded')); }
+  catch { toast(t('photoFail')); }
+});
+$('photoRemove').onclick = () => { clearPhoto(); renderCert(); };
+window.addEventListener('pageshow', (e) => { if (e.persisted && pilotPhoto) { clearPhoto(); renderCert(); } });
+// гильош — тонкие волновые линии, защитный фон документа
+function drawGuilloche(g, x0, y0, w, h) {
+  g.save(); g.beginPath(); g.rect(x0, y0, w, h); g.clip();
+  g.lineWidth = 0.7;
+  for (let i = 0; i < 26; i++) {
+    g.strokeStyle = i % 2 ? 'rgba(205,163,73,.07)' : 'rgba(169,184,255,.05)';
+    g.beginPath();
+    for (let x = x0; x <= x0 + w; x += 6) {
+      const k = (x - x0) / w, y = y0 + h * (i + 0.5) / 26 + 18 * Math.sin(k * Math.PI * 6 + i * 0.42) * Math.sin(k * Math.PI + i * 0.2);
+      x === x0 ? g.moveTo(x, y) : g.lineTo(x, y);
+    }
+    g.stroke();
+  }
+  g.restore();
+}
 
 /* --- локальное хранилище (может отсутствовать — всё в try/catch) */
 const store = {
@@ -1571,11 +1690,12 @@ let pilot = store.get('sb_pilot'); // { serial, ref, callsign }
   const m = /[?&]ref=([a-z0-9]{6,12})(?:&|$)/i.exec(location.search);
   if (m && !store.get('sb_ref')) store.set('sb_ref', m[1].toLowerCase());
 })();
-const sbReady = () => /^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(CONFIG.SUPABASE_URL) && CONFIG.SUPABASE_ANON_KEY.length > 30;
+const sbReady = () => /^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(CONFIG.SUPABASE_URL) && CONFIG.SUPABASE_ANON_KEY.length > 30 && !CONFIG.SUPABASE_ANON_KEY.startsWith('sb_secret_'); // секретный ключ в браузер не пускаем
 async function sbRpc(fn, body = {}) {
   const r = await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/rpc/${fn}`, {
     method: 'POST',
-    headers: { apikey: CONFIG.SUPABASE_ANON_KEY, Authorization: `Bearer ${CONFIG.SUPABASE_ANON_KEY}`, 'Content-Type': 'application/json' },
+    // новые ключи sb_publishable_… — только в заголовке apikey (это не JWT); старый anon‑ключ eyJ… — ещё и в Authorization
+    headers: { apikey: CONFIG.SUPABASE_ANON_KEY, 'Content-Type': 'application/json', ...(CONFIG.SUPABASE_ANON_KEY.startsWith('sb_') ? {} : { Authorization: `Bearer ${CONFIG.SUPABASE_ANON_KEY}` }) },
     body: JSON.stringify(body),
   });
   const j = await r.json().catch(() => null);
@@ -1735,7 +1855,16 @@ async function renderCert() {
 
   // 4. позывной и номер
   g.fillStyle = '#CDA349'; g.font = fnt(500, 17, F_SANS); g.fillText('Pilot', 72, 690);
-  const cs = callsign(); g.fillStyle = '#FFFFFF'; fitFont(g, cs, 600, 132, W - 144, F_SERIF, 56); g.fillText(cs, 68, 800);
+  if (pilotPhoto) { // основной портрет в золотой рамке + микротекст
+    const px = W - 72 - 240, py = 560, pw = 240, ph = 320;
+    g.fillStyle = '#000'; g.fillRect(px - 6, py - 6, pw + 12, ph + 12);
+    g.drawImage(pilotPhoto, px, py, pw, ph);
+    g.strokeStyle = '#CDA349'; g.lineWidth = 1.5; g.strokeRect(px - 6.5, py - 6.5, pw + 13, ph + 13);
+    g.strokeStyle = 'rgba(205,163,73,.5)'; g.lineWidth = 1; g.strokeRect(px + .5, py + .5, pw - 1, ph - 1);
+    g.save(); g.fillStyle = 'rgba(205,163,73,.6)'; g.font = fnt(500, 8, F_SANS); g.letterSpacing = '1px';
+    let mt = ''; while (mt.length < 90) mt += 'STARBEAM PILOT ' + (pilot ? pilot.serial : pilotHash()) + ' '; g.beginPath(); g.rect(px - 6, py + ph + 10, pw + 12, 12); g.clip(); g.fillText(mt, px - 6, py + ph + 18); g.restore();
+  }
+  const cs = callsign(); g.fillStyle = '#FFFFFF'; fitFont(g, cs, 600, 132, pilotPhoto ? W - 144 - 290 : W - 144, F_SERIF, 48); g.fillText(cs, 68, 800);
   g.font = fnt(600, 36, F_SERIF);
   if (pilot) {
     const noTxt = `No. ${String(pilot.serial).padStart(4, '0')}`; g.fillStyle = '#CDA349'; g.fillText(noTxt, 72, 852);
@@ -1753,6 +1882,9 @@ async function renderCert() {
   g.fillStyle = '#EEF0FF'; g.font = fnt(500, 17, F_SANS); g.fillText(`α ${sky.ra.toFixed(2)}°   δ ${fmtDec(sky.dec, 2)}`, zx, 1338);
   g.textAlign = 'left';
 
+  // защитный фон: гильош и «призрачное» фото‑подложка под телеметрией
+  drawGuilloche(g, M + 1, 900, W - 2 * M - 2, 450);
+  if (ghostPhoto) { g.save(); g.globalAlpha = 0.2; g.drawImage(ghostPhoto, W - 72 - 330, 930, 330, 440); g.restore(); }
   // 6. телеметрия
   const X = 520, CW = W - 72 - X;
   g.fillStyle = '#9AA3C7'; g.font = fnt(400, 16, F_SANS); g.fillText('Light travelled since birth', X, 924);
@@ -1775,9 +1907,11 @@ async function renderCert() {
   const [m1, m2] = mrzLines(); g.fillStyle = 'rgba(205,163,73,.85)'; fitFont(g, m1, 500, 27, 880, F_MONO, 16); g.fillText(m1, 72, 1404); g.fillText(m2, 72, 1440);
   drawQr(g, shareLink(), W - 72 - 96, 1372, 96);
   g.restore();
+  certPending = false;
 }
 $('callsignInput').addEventListener('input', scheduleCert);
-$('downloadCertBtn').onclick = async () => { await renderCert(); download($('passportCanvas'), `starbeam_pilot_${pilot ? pilot.serial : pilotHash()}.png`); toast(t('idDownloaded')); };
+// холст уже отрисован заранее — сохраняем сразу, чтобы iPhone не потерял «жест пользователя» для меню «Поделиться»
+$('downloadCertBtn').onclick = async () => { if (certPending) await renderCert(); if (await download($('passportCanvas'), `starbeam_pilot_${pilot ? pilot.serial : pilotHash()}.png`)) toast(t('idDownloaded')); };
 
 $('copyPostBtn').onclick = $('copyPostBtn2').onclick = () => {
   const tm = telemetry(Date.now()), sr = STARS.filter((s) => s.ly <= tm.ly).length, er = exoplanets.filter((p) => p.ly <= tm.ly).length;
@@ -1797,7 +1931,7 @@ $('shareCardBtn').onclick = () => {
   g.fillText(t('cardSphere', { s: STARS.filter((s) => s.ly <= tm.ly).length, e: exoplanets.filter((p) => p.ly <= tm.ly).length }), 56, 444);
   g.fillStyle = '#8A97A8'; g.font = mono(600, 14); g.fillText('NASA Blue Marble · CDS DSS2 · Mellinger', 56, 620);
   drawZenithDisc(g, 1030, 500, 112);
-  download(c, `starbeam_x_${Date.now()}.png`); toast(t('cardDone'));
+  download(c, `starbeam_x_${Date.now()}.png`).then((ok) => ok && toast(t('cardDone')));
 };
 
 /* =====================================================================
@@ -1831,7 +1965,7 @@ function setLang(l) {
   apply('data-i18n-aria', 'Aria', (e) => e.getAttribute('aria-label'), (e, v) => e.setAttribute('aria-label', v));
   apply('data-i18n-alt', 'Alt', (e) => e.alt, (e, v) => { e.alt = v; });
   document.querySelectorAll('#langs button').forEach((b) => b.classList.toggle('on', b.dataset.lang === l));
-  localizeData(); renderCityPresets(); regTexts();
+  localizeData(); renderCityPresets(); regTexts(); photoUI();
   if (document.activeElement !== cityInput) cityInput.value = cityName(city.name);
   $('aladinStatus').textContent = t(aladinOk ? 'aladinOk' : 'aladinConn'); setFov(fov);
   if (!$('apodImg').innerHTML) { $('apodTitle').textContent = t('apodTitle0'); $('apodText').textContent = t('apodLoading'); }
@@ -1854,7 +1988,6 @@ setLang(pickLang()); cityInput.value = cityName(city.name);
 resize(); buildLadder(); recompute(); setCam('earth');
 initAladin(); loadExoplanets(); initRegistration();
 requestAnimationFrame(frame);
-setTimeout(() => { $('loader').style.opacity = 0; }, 12000);
 </script>
 </body>
 </html>
