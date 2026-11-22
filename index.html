@@ -24,6 +24,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Geologica:wght@300;400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.css" />
 <script src="/config.js"></script>
@@ -297,6 +298,9 @@ input[type=datetime-local]::-webkit-calendar-picker-indicator{filter:invert(.8) 
 .photo-row{display:flex;gap:16px;align-items:center;padding:14px;border:1px dashed var(--gold-soft);border-radius:4px;margin-bottom:6px}
 #photoPrev{width:72px;height:96px;border-radius:3px;box-shadow:0 0 0 1px var(--gold);flex:none}
 .photo-ph{width:72px;height:96px;border-radius:3px;border:1px solid rgba(154,163,199,.25);flex:none;display:grid;place-items:center;color:var(--dim);font-size:26px;font-family:var(--serif)}
+.bgrow{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--star);cursor:pointer}
+.bgrow input{accent-color:var(--beam);width:16px;height:16px}
+.bgrow em{font-style:normal;color:var(--dim);font-size:12px}
 .photo-btns{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .photo-btn{padding:9px 16px;font-size:13px;cursor:pointer}
 .vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;clip:rect(0 0 0 0)}
@@ -494,7 +498,7 @@ footer a{color:var(--haze)}
           <a id="apodLink" href="https://apod.nasa.gov/" target="_blank" rel="noopener" data-i18n="apodOpen">Открыть на apod.nasa.gov</a>
         </div>
         <div class="cut">
-          <div class="cut-img"><img id="cutImg" alt="Снимок неба в точке зенита" data-i18n-alt="aCut" crossorigin="anonymous" /></div>
+          <div class="cut-img"><img id="cutImg" alt="Снимок неба в точке зенита" data-i18n-alt="aCut" /></div>
           <div><h3 style="font-size:20px" data-i18n="cutH">Кадр зенита</h3><p><span data-i18n="cut1">Поле 0,45°, обзор</span> <span id="cutSurvey">DSS2</span>. <span data-i18n="cut2">Этот кадр попадёт в твой Galactic ID.</span></p></div>
         </div>
       </div>
@@ -529,7 +533,8 @@ footer a{color:var(--haze)}
               <input class="vh" type="file" id="photoInput" accept="image/*" />
               <button type="button" class="linkbtn" id="photoRemove" hidden data-i18n="photoRemove">Убрать фото</button>
             </div>
-            <p class="fine" data-i18n="photoNote">Фото не уходит на сервер и нигде не сохраняется: оно есть только на этой странице и исчезает при обновлении.</p>
+            <label class="bgrow" id="photoBgRow" hidden><input type="checkbox" id="photoBgToggle" checked /> <span data-i18n="photoBg">Космический фон и эмблема</span> <em id="photoBgState"></em></label>
+            <p class="fine" data-i18n="photoNote">Фото не уходит на сервер и нигде не сохраняется: фон убирается прямо в твоём браузере, а фото исчезает при обновлении страницы.</p>
           </div>
         </div>
 
@@ -571,12 +576,11 @@ footer a{color:var(--haze)}
   </section>
 
   <footer>
-    <p data-i18n="footer1">Земля и Луна — текстуры на основе NASA Blue Marble и Earth at Night (через three.js). Фотокарта неба — панорама Акселя Меллингера и DSS2 через сервис CDS hips2fits (Страсбург). Обзоры в окуляре — <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a>: DSS2 (STScI), Pan‑STARRS1, 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Снимок дня — <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Экзопланеты — <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Архив — <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Города — Open‑Meteo.</p>
+    <p data-i18n="footer1">Земля и Луна — текстуры на основе NASA Blue Marble и Earth at Night (через three.js). Карта неба — 112 тысяч звёзд каталога Hipparcos (ESA, данные d3-celestial) и модель Млечного Пути. Фон на фото убирается в браузере моделью MediaPipe (Google). Обзоры в окуляре — <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a>: DSS2 (STScI), Pan‑STARRS1, 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Снимок дня — <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Экзопланеты — <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Архив — <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Города — Open‑Meteo.</p>
     <p data-i18n="footer2">Расчёты: звёздное время IAU 1982, прецессия IAU 1976 к J2000, Солнце и Луна по упрощённым формулам Меёса (0,1–0,5°). Положения «Вояджеров» приблизительные. NASA не связано с проектом и не одобряет его.</p>
   </footer>
 </main>
 
-<script src="https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.js" charset="utf-8"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
 <script type="module">
 import * as THREE from 'three';
@@ -597,7 +601,7 @@ const CONFIG = {
   SUPABASE_ANON_KEY: window.STARBEAM_CONFIG?.SUPABASE_ANON_KEY || '',
   SITE_URL: 'https://peaceindex.online',
 };
-const TEX = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r160/examples/textures/planets/';
+const TEX = '/tex/'; // текстуры NASA Blue Marble / Earth at Night (из примеров three.js), пережаты в WebP
 const HIPS2FITS = 'https://alasky.cds.unistra.fr/hips-image-services/hips2fits';
 
 /* =====================================================================
@@ -682,9 +686,10 @@ const LOC = { ru: 'ru-RU', en: 'en-US', es: 'es-AR' };
 const L = {
   ru: {
     title: 'STARBEAM — куда долетел свет твоего рождения',
+    photoBgWork: 'убираем фон…', photoBgFail: 'фон убрать не удалось, оставили исходное фото',
     photoAdd: 'Добавить фото', photoChange: 'Заменить фото', photoAdded: 'Фото добавлено на документ', photoFail: 'Не удалось открыть фото. Попробуй JPG или PNG.',
     km: 'км', lyS: 'св. л.', lyLong: 'световых лет', sec: 'с', min: 'мин', h: 'ч',
-    zen: 'твой луч', copyFail: 'Не удалось скопировать', pngFail: 'Не удалось собрать PNG',
+    zen: 'твой луч', front: 'фронт твоего света', copyFail: 'Не удалось скопировать', pngFail: 'Не удалось собрать PNG',
     mNew: 'Новолуние', mFull: 'Полнолуние', mWaxC: 'Растущий серп', mFirst: 'Первая четверть', mWaxG: 'Растущая Луна', mWanC: 'Убывающий серп', mLast: 'Последняя четверть', mWanG: 'Убывающая Луна',
     ladderNext: 'до звезды {name} осталось {d} св. лет', beyond: 'луч за пределами каталога',
     voyPassed: 'Твой свет обогнал его {date} и ушёл в <b class="num">{x}</b> раз дальше. Зонду понадобится <b class="num">{y}</b> лет, чтобы догнать.',
@@ -717,10 +722,11 @@ const L = {
   },
   en: {
     title: 'STARBEAM — where the light of your birth is now',
+    photoBgWork: 'removing background…', photoBgFail: 'could not remove the background, kept the original', photoBg: 'Space background and emblem',
     photoAdd: 'Add a photo', photoChange: 'Change photo', photoAdded: 'Photo added to your ID', photoFail: 'Could not open the photo. Try a JPG or PNG.',
-    photoLabel: 'Pilot photo, optional', photoRemove: 'Remove photo', photoNote: 'Your photo never leaves this device and is not saved anywhere: it lives only on this page and disappears when you reload it.',
+    photoLabel: 'Pilot photo, optional', photoRemove: 'Remove photo', photoNote: 'Your photo never leaves this device and is not saved anywhere: the background is removed right in your browser, and the photo disappears when you reload the page.',
     km: 'km', lyS: 'ly', lyLong: 'light years', sec: 's', min: 'min', h: 'h',
-    zen: 'your beam', copyFail: 'Could not copy', pngFail: 'Could not build the PNG',
+    zen: 'your beam', front: 'front of your light', copyFail: 'Could not copy', pngFail: 'Could not build the PNG',
     mNew: 'New Moon', mFull: 'Full Moon', mWaxC: 'Waxing crescent', mFirst: 'First quarter', mWaxG: 'Waxing gibbous', mWanC: 'Waning crescent', mLast: 'Last quarter', mWanG: 'Waning gibbous',
     ladderNext: '{d} ly to go to {name}', beyond: 'the beam has left the catalogue',
     voyPassed: 'Your light passed it on {date} and is now <b class="num">{x}</b> times farther. The probe would need <b class="num">{y}</b> years to catch up.',
@@ -771,15 +777,16 @@ const L = {
     lWallet: 'Solana wallet <span>optional</span>', phWallet: 'Wallet address',
     noSign: 'No.', regDoneP: 'You are in the logbook. Send this link to friends — it shows who you brought in.', copy: 'Copy',
     dlId: 'Download Galactic ID', copyPost2: 'Copy a post with your link', certFine: 'PNG 1200×1500. On a phone it opens the share menu: choose “Save image” to keep it in Photos. The QR code opens the site with your link.',
-    footer1: 'Earth and Moon: textures based on NASA Blue Marble and Earth at Night (via three.js). Sky map: Axel Mellinger’s Milky Way panorama and DSS2 via the CDS hips2fits service (Strasbourg). Eyepiece surveys: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), Pan‑STARRS1, 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Picture of the day: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanets: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archive: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Cities: Open‑Meteo.',
+    footer1: 'Earth and Moon: textures based on NASA Blue Marble and Earth at Night (via three.js). Sky map: 112,000 stars from the Hipparcos catalogue (ESA, d3-celestial data) and a Milky Way model. Photo backgrounds are removed in your browser by Google’s MediaPipe. Eyepiece surveys: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), Pan‑STARRS1, 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Picture of the day: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanets: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archive: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Cities: Open‑Meteo.',
     footer2: 'Calculations: sidereal time IAU 1982, IAU 1976 precession to J2000, Sun and Moon by simplified Meeus formulas (0.1–0.5°). Voyager positions are approximate. NASA is not affiliated with this project and does not endorse it.',
   },
   es: {
     title: 'STARBEAM — hasta dónde llegó la luz de tu nacimiento',
+    photoBgWork: 'quitando el fondo…', photoBgFail: 'no se pudo quitar el fondo, dejamos la foto original', photoBg: 'Fondo espacial y emblema',
     photoAdd: 'Agregar foto', photoChange: 'Cambiar foto', photoAdded: 'Foto agregada al documento', photoFail: 'No se pudo abrir la foto. Probá con JPG o PNG.',
-    photoLabel: 'Foto del piloto, opcional', photoRemove: 'Quitar foto', photoNote: 'Tu foto no sale de este dispositivo ni se guarda en ningún lado: existe solo en esta página y desaparece al recargarla.',
+    photoLabel: 'Foto del piloto, opcional', photoRemove: 'Quitar foto', photoNote: 'Tu foto no sale de este dispositivo ni se guarda en ningún lado: el fondo se quita en tu propio navegador y la foto desaparece al recargar la página.',
     km: 'km', lyS: 'a. l.', lyLong: 'años luz', sec: 's', min: 'min', h: 'h',
-    zen: 'tu rayo', copyFail: 'No se pudo copiar', pngFail: 'No se pudo generar el PNG',
+    zen: 'tu rayo', front: 'frente de tu luz', copyFail: 'No se pudo copiar', pngFail: 'No se pudo generar el PNG',
     mNew: 'Luna nueva', mFull: 'Luna llena', mWaxC: 'Luna creciente', mFirst: 'Cuarto creciente', mWaxG: 'Gibosa creciente', mWanC: 'Luna menguante', mLast: 'Cuarto menguante', mWanG: 'Gibosa menguante',
     ladderNext: 'faltan {d} a. l. hasta {name}', beyond: 'el rayo ya salió del catálogo',
     voyPassed: 'Tu luz la superó el {date} y ya está <b class="num">{x}</b> veces más lejos. A la sonda le llevaría <b class="num">{y}</b> años alcanzarla.',
@@ -829,7 +836,7 @@ const L = {
     lWallet: 'Billetera Solana <span>opcional</span>', phWallet: 'Dirección de la billetera',
     noSign: 'N.º', regDoneP: 'Estás en la bitácora. Mandá este enlace a tus amigos: muestra a quién trajiste vos.', copy: 'Copiar',
     dlId: 'Descargar Galactic ID', copyPost2: 'Copiar publicación con tu enlace', certFine: 'PNG 1200×1500. En el celular se abre el menú para compartir: elegí «Guardar imagen» para tenerlo en Fotos. El código QR abre el sitio con tu enlace.',
-    footer1: 'Tierra y Luna: texturas basadas en NASA Blue Marble y Earth at Night (vía three.js). Mapa del cielo: panorama de la Vía Láctea de Axel Mellinger y DSS2 vía el servicio CDS hips2fits (Estrasburgo). Relevamientos del ocular: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), Pan‑STARRS1, 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Foto del día: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanetas: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archivo: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Ciudades: Open‑Meteo.',
+    footer1: 'Tierra y Luna: texturas basadas en NASA Blue Marble y Earth at Night (vía three.js). Mapa del cielo: 112.000 estrellas del catálogo Hipparcos (ESA, datos de d3-celestial) y un modelo de la Vía Láctea. El fondo de la foto se quita en tu navegador con MediaPipe de Google. Relevamientos del ocular: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), Pan‑STARRS1, 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Foto del día: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanetas: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archivo: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Ciudades: Open‑Meteo.',
     footer2: 'Cálculos: hora sidérea IAU 1982, precesión IAU 1976 a J2000, Sol y Luna con fórmulas simplificadas de Meeus (0,1–0,5°). Las posiciones de las Voyager son aproximadas. La NASA no está vinculada a este proyecto ni lo respalda.',
   },
 };
@@ -1030,7 +1037,7 @@ composer.addPass(bloom); composer.addPass(new OutputPass());
 const envTex = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
 const controls = new OrbitControls(camera, canvas3d);
 controls.enableDamping = true; controls.dampingFactor = 0.06; controls.enablePan = false;
-controls.minDistance = 1.15; controls.maxDistance = 420; controls.rotateSpeed = 0.5;
+controls.minDistance = 1.15; controls.maxDistance = 420; controls.target.set(0, 0, 0); controls.rotateSpeed = 0.5;
 
 const loadMgr = new THREE.LoadingManager();
 // экран загрузки: прогресс по текстурам Земли/Луны и карте неба; закрывается по готовности или через 12 с
@@ -1042,7 +1049,8 @@ loadMgr.onLoad = finishBoot;
 setTimeout(finishBoot, 12000);
 const texLoader = new THREE.TextureLoader(loadMgr);
 texLoader.setCrossOrigin('anonymous');
-function tex(url, srgb = true) { const t = texLoader.load(url); if (srgb) t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; }
+function tex(url, srgb = true, essential = true) { const t = (essential ? texLoader : lazyLoader).load(url); if (srgb) t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; }
+const lazyLoader = new THREE.TextureLoader(); // второстепенное не держит экран загрузки
 
 // RA/Dec → направление в сцене (Y = северный полюс мира)
 function skyDir(ra, dec) { const a = ra * DEG, d = dec * DEG; return new THREE.Vector3(-Math.cos(d) * Math.cos(a), Math.sin(d), Math.cos(d) * Math.sin(a)); }
@@ -1053,7 +1061,7 @@ const skyMesh = new THREE.Mesh(new THREE.SphereGeometry(R_SKY, 96, 48), skyMat);
 scene.add(skyMesh);
 function applySkyTexture(t) {
   t.colorSpace = THREE.SRGBColorSpace; t.wrapS = THREE.RepeatWrapping; t.repeat.x = -1; t.offset.x = 1; t.needsUpdate = true; // RA растёт влево на снимке неба
-  skyMat.map = t; skyMat.color.setScalar(0.9); skyMat.needsUpdate = true;
+  skyMat.map = t; skyMat.color.setScalar(1); skyMat.needsUpdate = true;
 }
 function proceduralSky() {
   const c = document.createElement('canvas'); c.width = 2048; c.height = 1024; const g = c.getContext('2d');
@@ -1061,17 +1069,23 @@ function proceduralSky() {
   for (let i = 0; i < 9000; i++) { const b = Math.random() ** 3; g.fillStyle = `rgba(255,${240 + 15 * Math.random()},${220 + 35 * Math.random()},${0.25 + b * 0.75})`; g.fillRect(Math.random() * 2048, Math.random() * 1024, b > 0.9 ? 2 : 1, b > 0.9 ? 2 : 1); }
   applySkyTexture(new THREE.CanvasTexture(c));
 }
-const skyUrl = (hips, w = 4096) => `${HIPS2FITS}?hips=${encodeURIComponent(hips)}&width=${w}&height=${w / 2}&projection=CAR&coordsys=icrs&fov=360&ra=180&dec=0&format=jpg`;
+// Карта неба — свой файл в репозитории (каталог Hipparcos, 112 тыс. звёзд, + модель Млечного Пути), без внешних сервисов.
+// 8K — для больших экранов и GPU, которые это тянут; иначе 4K.
+const bigSky = renderer.capabilities.maxTextureSize >= 8192 && Math.max(screen.width, screen.height) * (devicePixelRatio || 1) >= 1800;
 loadMgr.itemStart('sky');
-new THREE.TextureLoader().setCrossOrigin('anonymous').load(skyUrl('CDS/P/Mellinger/color'), (t) => { applySkyTexture(t); loadMgr.itemEnd('sky'); }, undefined, () => {
-  new THREE.TextureLoader().setCrossOrigin('anonymous').load(skyUrl('CDS/P/DSS2/color', 2048), (t) => { applySkyTexture(t); loadMgr.itemEnd('sky'); }, undefined, () => { proceduralSky(); loadMgr.itemEnd('sky'); });
+const skyLoader = new THREE.TextureLoader();
+skyLoader.load('/sky-4k.webp', (tx) => {
+  applySkyTexture(tx); loadMgr.itemEnd('sky');
+  if (bigSky) setTimeout(() => skyLoader.load('/sky-8k.webp', (hi) => { const old = skyMat.map; applySkyTexture(hi); old?.dispose(); if (pilotPhoto && photoMask) buildPhoto(); }), 1500);
+}, undefined, () => {
+  skyLoader.load('/sky-4k.jpg', (tx) => { applySkyTexture(tx); loadMgr.itemEnd('sky'); }, undefined, () => { proceduralSky(); loadMgr.itemEnd('sky'); });
 });
 
 // --- Земля: шейдер день/ночь по реальному направлению на Солнце
 const sunDir = new THREE.Vector3(1, 0, 0);
 const earthUniforms = {
-  dayMap: { value: tex(TEX + 'earth_atmos_2048.jpg') }, nightMap: { value: tex(TEX + 'earth_lights_2048.png') },
-  specMap: { value: tex(TEX + 'earth_specular_2048.jpg', false) }, cloudMap: { value: tex(TEX + 'earth_clouds_1024.png') },
+  dayMap: { value: tex(TEX + 'earth_atmos_2048.webp') }, nightMap: { value: tex(TEX + 'earth_lights_2048.webp', true, false) },
+  specMap: { value: tex(TEX + 'earth_specular_2048.webp', false, false) }, cloudMap: { value: tex(TEX + 'earth_clouds_1024.webp', true, false) },
   sunDir: { value: sunDir }, cloudShift: { value: 0 },
 };
 const earthMat = new THREE.ShaderMaterial({
@@ -1125,7 +1139,7 @@ sunSprite.scale.setScalar(520); scene.add(sunSprite);
 
 // --- Луна на реальной дистанции (радиусы Земли)
 const moonGeo = new THREE.SphereGeometry(0.2727, 64, 32); moonGeo.rotateY(-Math.PI / 2); // лунный нулевой меридиан → +Z (к Земле после lookAt)
-const moon = new THREE.Mesh(moonGeo, new THREE.MeshStandardMaterial({ map: tex(TEX + 'moon_1024.jpg'), roughness: 1, metalness: 0 }));
+const moon = new THREE.Mesh(moonGeo, new THREE.MeshStandardMaterial({ map: tex(TEX + 'moon_1024.webp', true, false), roughness: 1, metalness: 0 }));
 scene.add(moon);
 
 // --- Город, луч, импульсы
@@ -1134,13 +1148,17 @@ scene.add(cityMarker);
 const cityGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,220,200,1)', 'rgba(255,106,61,.5)'), blending: THREE.AdditiveBlending, depthWrite: false }));
 cityGlow.scale.setScalar(0.12); scene.add(cityGlow);
 const beamGroup = new THREE.Group(); scene.add(beamGroup);
-const BEAM_LEN = R_SKY * 0.97;
+const FRONT_D = 6; // где рисуем «фронт света» (в радиусах Земли): условно, настоящий фронт — в десятках световых лет
+const BEAM_LEN = FRONT_D;
 const beamCore = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 1, 8, 1, true), new THREE.MeshBasicMaterial({ color: 0xFFE2D4, transparent: true, opacity: 0.95, blending: THREE.AdditiveBlending, depthWrite: false }));
 const beamHalo = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 1, 12, 1, true), new THREE.MeshBasicMaterial({ color: 0xFF6A3D, transparent: true, opacity: 0.22, blending: THREE.AdditiveBlending, depthWrite: false }));
 [beamCore, beamHalo].forEach((m) => { m.geometry.translate(0, 0.5, 0); m.scale.y = BEAM_LEN; beamGroup.add(m); });
 const pulses = Array.from({ length: 4 }, () => { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,255,255,1)', 'rgba(255,106,61,.6)'), blending: THREE.AdditiveBlending, depthWrite: false })); scene.add(s); return s; });
 const targetGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,230,215,.9)', 'rgba(255,106,61,.35)'), blending: THREE.AdditiveBlending, depthWrite: false }));
 targetGlow.scale.setScalar(160); scene.add(targetGlow);
+// фронт света — светящаяся «голова» луча, рядом с ней летит корабль
+const frontGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,255,255,1)', 'rgba(255,120,70,.7)'), blending: THREE.AdditiveBlending, depthWrite: false }));
+frontGlow.scale.setScalar(0.7); scene.add(frontGlow);
 
 // --- звёзды каталога и экзопланеты на небе
 const starPts = new THREE.Points(new THREE.BufferGeometry(), new THREE.PointsMaterial({ size: 9, sizeAttenuation: false, vertexColors: true, transparent: true, opacity: 0.95, depthWrite: false, map: glowTexture('rgba(255,255,255,1)', 'rgba(255,255,255,.4)'), blending: THREE.AdditiveBlending }));
@@ -1232,6 +1250,7 @@ function placeScene() {
   beamGroup.position.copy(cityPos);
   beamGroup.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), beamDir);
   targetGlow.position.copy(beamDir).multiplyScalar(R_SKY * 0.96);
+  frontGlow.position.copy(cityPos).add(beamDir.clone().multiplyScalar(FRONT_D));
   sunDir.copy(skyDir(sky.sun.ra, sky.sun.dec)).normalize();
   sunLight.position.copy(sunDir).multiplyScalar(50);
   sunSprite.position.copy(sunDir).multiplyScalar(R_SKY * 0.9);
@@ -1243,10 +1262,28 @@ function placeScene() {
 let camMode = 'earth', tween = null;
 function camShot(mode) {
   const s = shipWorldPos(performance.now() / 1000);
-  if (mode === 'earth') return { pos: cityPos.clone().multiplyScalar(5.4).add(perp.clone().multiplyScalar(2.6)).add(new THREE.Vector3(0, 0.7, 0)), tgt: new THREE.Vector3(0, 0, 0) };
-  if (mode === 'beam') return { pos: beamDir.clone().multiplyScalar(1.12).add(perp.clone().multiplyScalar(0.06)), tgt: beamDir.clone().multiplyScalar(2) };
+  const mid = cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D * 0.45));
+  if (mode === 'earth') return earthShot(mid);
+  if (mode === 'beam') return { pos: cityPos.clone().multiplyScalar(1.08).add(perp.clone().multiplyScalar(0.12)), tgt: cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D)) };
   if (mode === 'moon') { const mid = moon.position.clone().multiplyScalar(0.5); const off = new THREE.Vector3().crossVectors(moon.position, new THREE.Vector3(0, 1, 0)).normalize().multiplyScalar(48); return { pos: mid.clone().add(off).add(new THREE.Vector3(0, 14, 0)), tgt: mid }; }
-  return { pos: s.clone().add(beamDir.clone().multiplyScalar(-0.42)).add(perp.clone().multiplyScalar(0.16)).add(new THREE.Vector3(0, 0.05, 0)), tgt: s.clone().add(beamDir.clone().multiplyScalar(0.4)) };
+  // вид с фронта назад: корабль крупно, за ним луч и Земля
+  return { pos: s.clone().add(beamDir.clone().multiplyScalar(0.75)).add(perp.clone().multiplyScalar(0.38)), tgt: s.clone().add(beamDir.clone().multiplyScalar(-0.8)) };
+}
+// Ракурс «Земля»: облетаем луч по кругу и берём точку, откуда фронт света с кораблём виден над Землёй
+// и в свободной части экрана (не под текстом слева и панелью справа)
+function earthShot(mid) {
+  const perp2 = new THREE.Vector3().crossVectors(beamDir, perp).normalize();
+  const front = cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D));
+  const tmp = camera.clone(); let best = null;
+  for (let i = 0; i < 24; i++) {
+    const a = (i / 24) * Math.PI * 2, pos = mid.clone().add(perp.clone().multiplyScalar(Math.cos(a) * 12)).add(perp2.clone().multiplyScalar(Math.sin(a) * 12));
+    tmp.position.copy(pos); tmp.lookAt(mid); tmp.updateMatrixWorld(); tmp.updateProjectionMatrix();
+    const f = front.clone().project(tmp), e = new THREE.Vector3().project(tmp);
+    const cx = canvas3d.clientWidth > 900 ? 0.22 : 0; // свободная колонка между текстом и панелью
+    const score = -Math.abs(f.x - cx) - 0.5 * Math.abs(e.x - cx) - 0.8 * Math.max(0, Math.abs(f.y) - 0.62) - 0.8 * Math.max(0, Math.abs(e.y) - 0.62) + (f.y > e.y ? 0.3 : 0);
+    if (!best || score > best.score) best = { score, pos };
+  }
+  return { pos: best.pos, tgt: mid.clone() };
 }
 function setCam(mode) {
   camMode = mode;
@@ -1256,13 +1293,15 @@ function setCam(mode) {
   controls.enabled = mode !== 'ship';
 }
 document.querySelectorAll('#cams button').forEach((b) => b.addEventListener('click', () => setCam(b.dataset.cam)));
-function shipWorldPos(t) { const rt = new THREE.Vector3().crossVectors(perp, beamDir).normalize(); return cityPos.clone().add(beamDir.clone().multiplyScalar(0.55 + 0.04 * Math.sin(t * 0.8))).add(rt.multiplyScalar(0.07)); }
+// корабль идёт рядом с фронтом света, чуть сбоку от луча
+function shipWorldPos(t) { const rt = new THREE.Vector3().crossVectors(perp, beamDir).normalize(); return cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D - 0.35 + 0.05 * Math.sin(t * 0.8))).add(rt.multiplyScalar(0.12)); }
 
 /* --- подписи (HTML поверх WebGL) */
 const labelEls = [];
 function buildLabels() {
   const host = $('labels'); host.innerHTML = ''; labelEls.length = 0;
   const add = (cls, html, vec) => { const el = document.createElement('div'); el.className = 'lbl ' + cls; el.innerHTML = html; host.appendChild(el); labelEls.push({ el, vec }); };
+  add('voy front', t('front'), cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D + 0.25)));
   add('zen', t('zen'), beamDir.clone().multiplyScalar(R_SKY * 0.95));
   const ly = telemetry(Date.now()).ly;
   STARS.filter((s) => s.label || s.ly < 6 || s.id === 'trappist').forEach((s) => add(ly >= s.ly ? 'reached' : '', esc(s.name) + '<em>' + numFmt(s.ly) + ' ' + t('lyS') + '</em>', skyDir(s.ra, s.dec).multiplyScalar(R_SKY * 0.94)));
@@ -1299,12 +1338,12 @@ window.addEventListener('resize', resize);
 
 /* --- снимок 3D для сертификата/карточки (WebGL‑холст не «грязный»: все текстуры с CORS) */
 function snapshot3D(w, h) {
-  const t = performance.now() / 1000, rt = new THREE.Vector3().crossVectors(perp, beamDir).normalize(), S = cityPos.clone().add(beamDir.clone().multiplyScalar(0.62)).add(rt.clone().multiplyScalar(0.08));
+  const t = performance.now() / 1000, rt = new THREE.Vector3().crossVectors(perp, beamDir).normalize(), S = cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D - 0.35)).add(rt.clone().multiplyScalar(0.12));
   const prev = shipRoot.position.clone(), prevQ = shipRoot.quaternion.clone();
   shipRoot.position.copy(S); orientShip(t);
   const cam = new THREE.PerspectiveCamera(36, w / h, 0.01, 20000);
-  cam.position.copy(S).add(perp.clone().multiplyScalar(0.68)).add(beamDir.clone().multiplyScalar(0.36)).add(rt.clone().multiplyScalar(0.3));
-  cam.up.copy(rt); cam.lookAt(S.clone().add(beamDir.clone().multiplyScalar(-0.3)).add(rt.clone().multiplyScalar(-0.1)));
+  cam.position.copy(S).add(beamDir.clone().multiplyScalar(0.8)).add(perp.clone().multiplyScalar(0.55)).add(rt.clone().multiplyScalar(0.2));
+  cam.up.copy(rt); cam.lookAt(S.clone().add(beamDir.clone().multiplyScalar(-0.2)));
   const size = renderer.getSize(new THREE.Vector2()), pr = renderer.getPixelRatio();
   labelsHidden = true;
   renderer.setPixelRatio(1); renderer.setSize(w, h, false); renderer.render(scene, cam);
@@ -1322,17 +1361,18 @@ function orientShip(t) { _right.crossVectors(perp, beamDir).normalize(); _m4.mak
 /* =====================================================================
    7. ANIMATION LOOP
    ===================================================================== */
-let lastSlow = 0;
+let lastSlow = 0, lastFrame = 0;
 function frame(now) {
+  const dt = Math.min(0.1, lastFrame ? (now - lastFrame) / 1000 : 0.016); lastFrame = now;
   const tt = now / 1000;
   earthUniforms.cloudShift.value = (tt * 0.0008) % 1;
   // корабль держится на луче
   shipRoot.position.copy(shipWorldPos(tt)); orientShip(tt);
   // импульсы света уходят по лучу
-  pulses.forEach((p, i) => { const k = ((tt * 0.18 + i / pulses.length) % 1); const d = 0.05 + Math.pow(k, 3) * 40; p.position.copy(cityPos).add(beamDir.clone().multiplyScalar(d)); p.scale.setScalar(0.05 + d * 0.03); p.material.opacity = 1 - k; });
+  pulses.forEach((p, i) => { const k = ((tt * 0.18 + i / pulses.length) % 1); const d = 0.05 + Math.pow(k, 2) * FRONT_D; p.position.copy(cityPos).add(beamDir.clone().multiplyScalar(d)); p.scale.setScalar(0.05 + d * 0.03); p.material.opacity = 1 - k; });
   // камера
   if (tween) {
-    tween.t = Math.min(1, tween.t + 0.012); const e = 1 - Math.pow(1 - tween.t, 3);
+    tween.t = Math.min(1, tween.t + dt / 1.6); /* по времени, а не по кадрам */ const e = 1 - Math.pow(1 - tween.t, 3);
     camera.position.lerpVectors(tween.p0, tween.p1, e); controls.target.lerpVectors(tween.t0, tween.t1, e);
     if (tween.t >= 1) tween = null;
   } else if (camMode === 'ship') { const s = camShot('ship'); camera.position.lerp(s.pos, 0.08); controls.target.lerp(s.tgt, 0.08); }
@@ -1552,15 +1592,16 @@ document.querySelectorAll('#exoFilter button').forEach((b) => b.addEventListener
 /* =====================================================================
    11. TELESCOPE — Aladin Lite v3 + hips2fits + NASA APOD
    ===================================================================== */
-let aladinOk = false, aladin = null, fov = 1.5, survey = { aladin: 'P/DSS2/color', hips: 'CDS/P/DSS2/color', label: 'DSS2' }, zenithImg = null, cutKey = '';
+let aladinCat = null, zenithFromAladin = false, aladinOk = false, aladin = null, fov = 1.5, survey = { aladin: 'P/DSS2/color', hips: 'CDS/P/DSS2/color', label: 'DSS2' }, zenithImg = null, cutKey = '';
 function initAladin() {
   if (!window.A?.init) { $('aladinStatus').textContent = t('aladinFail'); return; }
   A.init.then(() => {
     aladin = A.aladin('#aladin-lite-div', { survey: survey.aladin, fov, target: `${sky.ra} ${sky.dec}`, showReticle: false, showLayersControl: false, showGotoControl: false, showZoomControl: false, showFullscreenControl: true, showFrame: false, showCooGridControl: true });
     const cat = A.catalog({ name: t('landmarks'), sourceSize: 14, color: '#CDA349', labelColumn: 'name', displayLabel: true, labelColor: '#CDA349', labelFont: '12px Geologica' });
-    aladin.addCatalog(cat);
+    aladin.addCatalog(cat); aladinCat = cat;
     cat.addSources(STARS.map((s) => A.source(s.ra, s.dec, { name: s.name })));
     $('aladinStatus').textContent = t('aladinOk'); aladinOk = true;
+    if (!zenithImg) scheduleZenithCapture();
   }).catch(() => { $('aladinStatus').textContent = t('aladinFail'); });
 }
 function updateTelescope() {
@@ -1568,7 +1609,26 @@ function updateTelescope() {
   const key = `${survey.hips}_${sky.ra.toFixed(3)}_${sky.dec.toFixed(3)}`; if (key === cutKey) return; cutKey = key;
   const url = hipsCut(survey.hips, sky.ra, sky.dec, 0.45, 512);
   $('cutImg').src = url; $('cutSurvey').textContent = survey.label;
-  loadImg(hipsCut('CDS/P/DSS2/color', sky.ra, sky.dec, 0.45, 512)).then((i) => { zenithImg = i; scheduleCert(); }).catch(() => { zenithImg = null; });
+  loadImg(hipsCut('CDS/P/DSS2/color', sky.ra, sky.dec, 0.45, 512)).then((i) => { zenithImg = i; zenithFromAladin = false; scheduleCert(); })
+    .catch(() => { zenithImg = null; scheduleZenithCapture(); });
+}
+// Запасной путь для круга «зенит» в документе: снимок окуляра Aladin (его тайлы разрешены для canvas)
+let zenTimer;
+function scheduleZenithCapture() { clearTimeout(zenTimer); zenTimer = setTimeout(captureZenith, 4500); }
+async function captureZenith() {
+  if (!aladin?.getViewDataURL || !sky) return;
+  try {
+    const [ra, dec] = aladin.getRaDec(); // снимаем только если окуляр смотрит в зенит
+    if (Math.abs(((ra - sky.ra + 540) % 360) - 180) * Math.cos(sky.dec * DEG) > 0.3 || Math.abs(dec - sky.dec) > 0.3) return;
+    aladinCat?.hide?.();
+    const url = await Promise.resolve(aladin.getViewDataURL({ format: 'image/jpeg', logo: false }));
+    aladinCat?.show?.();
+    const img = await loadImg(url);
+    const s = Math.min(img.width, img.height), crop = s * Math.min(1, 0.45 / fov);
+    const c = document.createElement('canvas'); c.width = c.height = 512;
+    c.getContext('2d').drawImage(img, (img.width - crop) / 2, (img.height - crop) / 2, crop, crop, 0, 0, 512, 512);
+    zenithImg = c; zenithFromAladin = true; scheduleCert();
+  } catch { aladinCat?.show?.(); }
 }
 document.querySelectorAll('#surveys button').forEach((b) => b.addEventListener('click', () => {
   document.querySelectorAll('#surveys button').forEach((x) => x.classList.toggle('on', x === b));
@@ -1624,7 +1684,8 @@ function scheduleCert() { certPending = true; clearTimeout(certTimer); certTimer
    ФОТО ПИЛОТА — только в памяти страницы: не отправляется, не пишется в localStorage,
    исчезает при обновлении (и при возврате на страницу из кэша браузера)
    ===================================================================== */
-let pilotPhoto = null, ghostPhoto = null;
+let pilotPhoto = null, ghostPhoto = null, photoSrc = null, photoMask = null, cosmicBg = true;
+// исходный кадр 3:4 (в памяти)
 async function loadPhoto(file) {
   if (file.size > 40e6) throw new Error('size');
   const url = URL.createObjectURL(file);
@@ -1635,29 +1696,114 @@ async function loadPhoto(file) {
     if (!sw || !sh) throw new Error('decode');
     if (sw / sh > ar) { const nw = sh * ar; sx = (sw - nw) / 2; sw = nw; } else { const nh = sw / ar; sy = (sh - nh) * 0.3; sh = nh; }
     const c = document.createElement('canvas'); c.width = PW; c.height = PH; c.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, PW, PH);
-    // «призрачная» копия как на EU ID: золотистый монохром с мягким краем (вручную — ctx.filter нет в старом Safari)
-    const gc = document.createElement('canvas'); gc.width = 300; gc.height = 400; const gg = gc.getContext('2d'); gg.drawImage(c, 0, 0, 300, 400);
-    const d = gg.getImageData(0, 0, 300, 400), px = d.data;
-    for (let i = 0; i < px.length; i += 4) { const y = 0.3 * px[i] + 0.59 * px[i + 1] + 0.11 * px[i + 2]; px[i] = y; px[i + 1] = y * 0.8; px[i + 2] = y * 0.45; }
-    gg.putImageData(d, 0, 0);
+    photoSrc = c; photoMask = null;
+  } finally { URL.revokeObjectURL(url); }
+}
+
+/* --- вырезание фона: MediaPipe в браузере, модель лежит в /models (фото никуда не уходит) */
+const MPS = 'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation@0.1.1675465747';
+let segP = null;
+function getSegmenter() {
+  return (segP ||= (async () => {
+    if (!window.SelfieSegmentation) await new Promise((res, rej) => { const el = document.createElement('script'); el.src = `${MPS}/selfie_segmentation.js`; el.crossOrigin = 'anonymous'; el.onload = res; el.onerror = rej; document.head.appendChild(el); });
+    const ss = new window.SelfieSegmentation({ locateFile: (f) => `${MPS}/${f}` });
+    ss.setOptions({ modelSelection: 0, selfieMode: false });
+    await ss.initialize();
+    return ss;
+  })().catch((e) => { segP = null; throw e; }));
+}
+// маска человека: непрозрачно там, где человек (готовый canvas того же размера, что и фото)
+async function personMask(src) {
+  const ss = await getSegmenter();
+  return new Promise((res, rej) => {
+    const to = setTimeout(() => rej(new Error('timeout')), 20000);
+    ss.onResults((r) => {
+      clearTimeout(to);
+      const c = document.createElement('canvas'); c.width = src.width; c.height = src.height;
+      c.getContext('2d').drawImage(r.segmentationMask, 0, 0, c.width, c.height); res(c);
+    });
+    ss.send({ image: src }).catch((e) => { clearTimeout(to); rej(e); });
+  });
+}
+// эмблема‑печать: кольца, деления, орбита, звезда с лучом Hα, надпись по кругу
+function drawEmblem(g, cx, cy, r, alpha = 1, filled = false) {
+  g.save(); g.globalAlpha = alpha; g.translate(cx, cy);
+  if (filled) { g.fillStyle = '#070B24'; g.beginPath(); g.arc(0, 0, r, 0, Math.PI * 2); g.fill(); }
+  g.strokeStyle = '#CDA349'; g.lineWidth = Math.max(1, r * 0.02);
+  g.beginPath(); g.arc(0, 0, r, 0, Math.PI * 2); g.stroke();
+  g.lineWidth = Math.max(0.6, r * 0.008); g.beginPath(); g.arc(0, 0, r * 0.72, 0, Math.PI * 2); g.stroke();
+  for (let a = 0; a < 360; a += 5) { const t0 = a * DEG, L = a % 30 === 0 ? 0.07 : 0.035; g.beginPath(); g.moveTo(Math.cos(t0) * r * 0.72, Math.sin(t0) * r * 0.72); g.lineTo(Math.cos(t0) * r * (0.72 - L), Math.sin(t0) * r * (0.72 - L)); g.stroke(); }
+  g.save(); g.rotate(-0.45); g.scale(1, 0.34); g.beginPath(); g.arc(0, 0, r * 0.58, 0, Math.PI * 2); g.restore(); g.stroke();
+  g.strokeStyle = '#FF6A3D'; g.lineWidth = Math.max(1, r * 0.025); g.lineCap = 'round';
+  g.beginPath(); g.moveTo(0, 0); g.lineTo(r * 0.5, -r * 0.5); g.stroke();
+  const gl = g.createRadialGradient(0, 0, 0, 0, 0, r * 0.16); gl.addColorStop(0, 'rgba(255,220,200,1)'); gl.addColorStop(0.4, 'rgba(255,106,61,.9)'); gl.addColorStop(1, 'rgba(255,106,61,0)');
+  g.fillStyle = gl; g.beginPath(); g.arc(0, 0, r * 0.16, 0, Math.PI * 2); g.fill();
+  if (r > 40) {
+    const txt = 'STARBEAM  ·  GALACTIC PILOT CORPS  ·  ', fs = r * 0.1; g.fillStyle = '#CDA349'; g.font = fnt(600, fs, F_SANS); g.textAlign = 'center'; g.textBaseline = 'middle';
+    const n = txt.length, rr = r * 0.86;
+    for (let i = 0; i < n; i++) { g.save(); g.rotate(-Math.PI / 2 + (i / n) * Math.PI * 2); g.translate(0, -rr); g.fillText(txt[i], 0, 0); g.restore(); }
+  }
+  g.restore();
+}
+// космический фон: настоящее небо вокруг твоего зенита (из той же карты, что в 3D) + свечение
+function drawCosmicBg(g, W, H) {
+  g.fillStyle = '#04061a'; g.fillRect(0, 0, W, H);
+  const im = skyMat.map?.image;
+  if (im && im.width) {
+    const iw = im.width, ih = im.height, spanX = iw * 34 / 360, spanY = spanX * H / W;
+    const cx = (1 - (sky.ra % 360) / 360) * iw, cy = (90 - sky.dec) / 180 * ih;
+    const sy = Math.min(Math.max(0, cy - spanY / 2), ih - spanY);
+    for (const off of [-iw, 0, iw]) g.drawImage(im, cx - spanX / 2 + off, sy, spanX, spanY, 0, 0, W, H);
+  }
+  let gr = g.createRadialGradient(W * 0.5, H * 0.38, 20, W * 0.5, H * 0.38, W * 0.75);
+  gr.addColorStop(0, 'rgba(90,70,200,.28)'); gr.addColorStop(0.5, 'rgba(255,106,61,.08)'); gr.addColorStop(1, 'rgba(0,0,0,.55)');
+  g.fillStyle = gr; g.fillRect(0, 0, W, H);
+}
+function goldGhost(srcCanvas, transparentBg) {
+  const gc = document.createElement('canvas'); gc.width = 300; gc.height = 400; const gg = gc.getContext('2d'); gg.drawImage(srcCanvas, 0, 0, 300, 400);
+  const d = gg.getImageData(0, 0, 300, 400), px = d.data;
+  for (let i = 0; i < px.length; i += 4) { const y = 0.3 * px[i] + 0.59 * px[i + 1] + 0.11 * px[i + 2]; px[i] = y; px[i + 1] = y * 0.8; px[i + 2] = y * 0.45; }
+  gg.putImageData(d, 0, 0);
+  if (!transparentBg) {
     gg.globalCompositeOperation = 'destination-in';
     const gr = gg.createRadialGradient(150, 175, 50, 150, 200, 210); gr.addColorStop(0, 'rgba(0,0,0,1)'); gr.addColorStop(1, 'rgba(0,0,0,0)');
     gg.fillStyle = gr; gg.fillRect(0, 0, 300, 400);
-    pilotPhoto = c; ghostPhoto = gc;
-  } finally { URL.revokeObjectURL(url); }
+  }
+  return gc;
+}
+// собирает портрет: с космическим фоном (если удалось вырезать) или исходный
+async function buildPhoto() {
+  if (!photoSrc) return;
+  const W = photoSrc.width, H = photoSrc.height;
+  if (cosmicBg && !photoMask) {
+    $('photoBgState').textContent = t('photoBgWork');
+    try { photoMask = await personMask(photoSrc); $('photoBgState').textContent = ''; }
+    catch { cosmicBg = false; $('photoBgToggle').checked = false; $('photoBgState').textContent = t('photoBgFail'); }
+  }
+  if (cosmicBg && photoMask) {
+    const person = document.createElement('canvas'); person.width = W; person.height = H; const pg = person.getContext('2d');
+    pg.drawImage(photoSrc, 0, 0); pg.globalCompositeOperation = 'destination-in'; pg.imageSmoothingQuality = 'high'; pg.drawImage(photoMask, 0, 0, W, H);
+    const out = document.createElement('canvas'); out.width = W; out.height = H; const og = out.getContext('2d');
+    drawCosmicBg(og, W, H);
+    drawEmblem(og, W / 2, H * 0.36, W * 0.44, 0.55);          // печать за головой
+    og.save(); og.shadowColor = 'rgba(255,140,90,.55)'; og.shadowBlur = 18; og.drawImage(person, 0, 0); og.restore(); // лёгкий контровой свет
+    drawEmblem(og, W * 0.2, H * 0.86, W * 0.1, 0.95, true);  // нашивка на груди, как на форме экипажа
+    pilotPhoto = out; ghostPhoto = goldGhost(person, true);
+  } else { pilotPhoto = photoSrc; ghostPhoto = goldGhost(photoSrc, false); }
 }
 function photoUI() {
   const has = !!pilotPhoto;
-  $('photoPrev').hidden = !has; $('photoPh').hidden = has; $('photoRemove').hidden = !has;
+  $('photoPrev').hidden = !has; $('photoPh').hidden = has; $('photoRemove').hidden = !has; $('photoBgRow').hidden = !has;
   $('photoBtnTxt').textContent = t(has ? 'photoChange' : 'photoAdd');
   if (has) { const pc = $('photoPrev'); pc.getContext('2d').drawImage(pilotPhoto, 0, 0, pc.width, pc.height); }
 }
-function clearPhoto() { pilotPhoto = ghostPhoto = null; const pc = $('photoPrev'); pc.getContext('2d').clearRect(0, 0, pc.width, pc.height); photoUI(); }
+function clearPhoto() { pilotPhoto = ghostPhoto = photoSrc = photoMask = null; const pc = $('photoPrev'); pc.getContext('2d').clearRect(0, 0, pc.width, pc.height); photoUI(); }
 $('photoInput').addEventListener('change', async (e) => {
   const f = e.target.files?.[0]; e.target.value = ''; if (!f) return;
-  try { await loadPhoto(f); photoUI(); await renderCert(); toast(t('photoAdded')); }
-  catch { toast(t('photoFail')); }
+  try { await loadPhoto(f); } catch { toast(t('photoFail')); return; }
+  await buildPhoto(); photoUI(); await renderCert(); toast(t('photoAdded'));
 });
+$('photoBgToggle').addEventListener('change', async (e) => { cosmicBg = e.target.checked; await buildPhoto(); photoUI(); renderCert(); });
 $('photoRemove').onclick = () => { clearPhoto(); renderCert(); };
 window.addEventListener('pageshow', (e) => { if (e.persisted && pilotPhoto) { clearPhoto(); renderCert(); } });
 // гильош — тонкие волновые линии, защитный фон документа
@@ -1854,7 +2000,7 @@ async function renderCert() {
   g.textAlign = 'left';
 
   // 4. позывной и номер
-  g.fillStyle = '#CDA349'; g.font = fnt(500, 17, F_SANS); g.fillText('Pilot', 72, 690);
+  if ($('callsignInput').value.trim() || pilot?.callsign) { g.fillStyle = '#CDA349'; g.font = fnt(500, 17, F_SANS); g.fillText('Pilot', 72, 690); }
   if (pilotPhoto) { // основной портрет в золотой рамке + микротекст
     const px = W - 72 - 240, py = 560, pw = 240, ph = 320;
     g.fillStyle = '#000'; g.fillRect(px - 6, py - 6, pw + 12, ph + 12);
@@ -1929,7 +2075,7 @@ $('shareCardBtn').onclick = () => {
   g.fillStyle = '#CBD5E1'; g.font = '400 19px Geologica, sans-serif';
   g.fillText(t('cardZen', { city: cityName(city.name).split(',')[0], ra: sky.ra.toFixed(2), dec: fmtDec(sky.dec) }), 56, 410);
   g.fillText(t('cardSphere', { s: STARS.filter((s) => s.ly <= tm.ly).length, e: exoplanets.filter((p) => p.ly <= tm.ly).length }), 56, 444);
-  g.fillStyle = '#8A97A8'; g.font = mono(600, 14); g.fillText('NASA Blue Marble · CDS DSS2 · Mellinger', 56, 620);
+  g.fillStyle = '#8A97A8'; g.font = mono(600, 14); g.fillText('Earth: NASA Blue Marble. Stars: Hipparcos. Zenith: CDS', 56, 620);
   drawZenithDisc(g, 1030, 500, 112);
   download(c, `starbeam_x_${Date.now()}.png`).then((ok) => ok && toast(t('cardDone')));
 };
@@ -1986,7 +2132,13 @@ birthInput.max = utcToLocalStr(Date.now(), city);
 birthInput.value = birthLocal; cityInput.value = city.name;
 setLang(pickLang()); cityInput.value = cityName(city.name);
 resize(); buildLadder(); recompute(); setCam('earth');
-initAladin(); loadExoplanets(); initRegistration();
+loadExoplanets(); initRegistration();
+// телескоп (Aladin, ~1 МБ) грузим, когда до него осталось ~1 экран прокрутки
+function loadScript(src) { return new Promise((res, rej) => { const el = document.createElement('script'); el.src = src; el.onload = res; el.onerror = rej; document.head.appendChild(el); }); }
+new IntersectionObserver((entries, obs) => {
+  if (!entries.some((e) => e.isIntersecting)) return; obs.disconnect();
+  loadScript('https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.js').then(initAladin).catch(() => { $('aladinStatus').textContent = t('aladinFail'); });
+}, { rootMargin: '900px 0px' }).observe($('telescope'));
 requestAnimationFrame(frame);
 </script>
 </body>

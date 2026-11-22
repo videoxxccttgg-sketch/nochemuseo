@@ -11,6 +11,8 @@
 | `config.js` | ключи бортового журнала — **единственный файл, который нужно редактировать** |
 | `og.png`, `og-en.png`, `og-es.png` | превью ссылки на трёх языках |
 | `favicon.svg` | иконка вкладки |
+| `sky-4k.webp`, `sky-8k.webp`, `sky-4k.jpg` | карта неба: 112 тыс. звёзд каталога Hipparcos + Млечный Путь (своя, без внешних сервисов) |
+| `tex/` | текстуры Земли и Луны (NASA Blue Marble / Earth at Night) в WebP |
 | `CNAME` | привязка домена `peaceindex.online` — не удалять |
 | `.nojekyll` | GitHub Pages отдаёт файлы как есть |
 | `supabase/schema.sql` | таблица пилотов и функции регистрации |
