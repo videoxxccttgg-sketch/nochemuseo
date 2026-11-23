@@ -67,7 +67,7 @@ button{cursor:pointer;background:none;border:0}
 .lbl{position:absolute;transform:translate(12px,-50%);font-size:12.9px;white-space:nowrap;color:var(--haze);text-shadow:0 0 6px #000,0 0 2px #000;font-weight:400}
 .lbl::before{content:"";position:absolute;left:-16px;top:50%;width:7px;height:7px;margin-top:-4px;border:1px solid currentColor;border-radius:50%}
 .lbl.reached{color:#FFB79C}
-.lbl.mark{color:#E9D6A8;font-size:12.4px}.lbl.mark::before{width:5px;height:5px;margin-top:-3px;left:-12px;background:var(--gold);border-color:var(--gold)}
+.lbl.mark{color:#E9D6A8;font-size:12.4px}.lbl.left{transform:translate(calc(-100% - 12px),-50%)}.lbl.left::before{left:auto;right:-12px}.lbl.flip{transform:translate(calc(-100% - 12px),-50%)}.lbl.flip::before{left:auto;right:-12px}.lbl.left.flip{transform:translate(12px,-50%)}.lbl.left.flip::before{right:auto;left:-12px}.lbl.mark.ahead{color:#A9B2E0}.lbl.mark.ahead::before{background:#8f9ad8;border-color:#8f9ad8}.lbl.mark::before{width:5px;height:5px;margin-top:-3px;left:-12px;background:var(--gold);border-color:var(--gold)}
 .lbl.voy{color:var(--gold)}
 .lbl.zen{color:#fff;font-family:var(--serif);font-size:19px;font-style:italic}
 .lbl.zen::before{width:13px;height:13px;margin-top:-7px;left:-20px;border-color:var(--beam);box-shadow:0 0 14px var(--beam)}
@@ -733,7 +733,8 @@ const L = {
     title: 'STARBEAM — куда долетел свет твоего рождения',
     photoBgWork: 'убираем фон…', photoBgFail: 'фон убрать не удалось, оставили исходное фото',
     photoAdd: 'Добавить фото', photoChange: 'Заменить фото', photoAdded: 'Фото добавлено защитной подложкой', scaleH: 'Шкала: от световой секунды до {y} года ({n} св. лет)', photoFail: 'Не удалось открыть фото. Попробуй JPG или PNG.',
-    mMoon: 'Луна', mSun: 'Солнце, 1 а. е.', m1ly: '1 световой год', lsS: 'св. с', lmS: 'св. мин', lhS: 'св. ч',
+    mJup: 'орбита Юпитера', mSat: 'орбита Сатурна', mUra: 'орбита Урана', mNep: 'орбита Нептуна', mPluto: 'Плутон', mOort: 'облако Оорта', mPlei: 'Плеяды', mOrion: 'туманность Ориона', mGC: 'центр Галактики', mAnd: 'галактика Андромеды', mEdge: 'край наблюдаемой Вселенной', mnS: 'млн св. л.', bnS: 'млрд св. л.',
+    mMoon: 'орбита Луны', mSun: '1 а. е., как до Солнца', m1ly: '1 световой год', lsS: 'св. с', lmS: 'св. мин', lhS: 'св. ч',
     km: 'км', lyS: 'св. л.', lyLong: 'световых лет', sec: 'с', min: 'мин', h: 'ч',
     zen: 'твой луч', front: 'фронт твоего света', copyFail: 'Не удалось скопировать', pngFail: 'Не удалось собрать PNG',
     mNew: 'Новолуние', mFull: 'Полнолуние', mWaxC: 'Растущий серп', mFirst: 'Первая четверть', mWaxG: 'Растущая Луна', mWanC: 'Убывающий серп', mLast: 'Последняя четверть', mWanG: 'Убывающая Луна',
@@ -812,7 +813,7 @@ const L = {
     routeH: 'Light chronicle', routeP: 'Light spreads in every direction: every star closer than your age in light years has already received the flash of your birth. Stars are DSS2 survey frames at exact coordinates; Solar System objects come from the NASA archive.',
     ld1: 'Your light has already reached', ld2: 'of the', ld3: 'nearest stars and', ld4: 'exoplanets. Next on its way:', ld5: 'Earth’s radio bubble is now about',
     exoH: 'Worlds your light has reached', exoP: 'Confirmed exoplanets from the NASA Exoplanet Archive within 110 light years. In the 3D sky they are dots: orange ones are already inside your light sphere.',
-    tabReached: 'Reached', tabNext: 'Next', exoReachedA: 'reached', mMoon: 'Moon', mSun: 'Sun, 1 AU', m1ly: '1 light year', lsS: 'light s', lmS: 'light min', lhS: 'light h', cBeam: 'Beam', cSky: 'Sky', cRoute: 'Chronicle', cWorlds: 'Worlds', cScope: 'Eyepiece', exoAnd: 'and', exoNextA: 'next',
+    tabReached: 'Reached', tabNext: 'Next', exoReachedA: 'reached', mMoon: 'Moon orbit', mSun: '1 AU, distance to the Sun', mJup: 'Jupiter orbit', mSat: 'Saturn orbit', mUra: 'Uranus orbit', mNep: 'Neptune orbit', mPluto: 'Pluto', mOort: 'Oort cloud', mPlei: 'Pleiades', mOrion: 'Orion Nebula', mGC: 'Galactic Center', mAnd: 'Andromeda Galaxy', mEdge: 'edge of the observable Universe', mnS: 'million ly', bnS: 'billion ly', m1ly: '1 light year', lsS: 'light s', lmS: 'light min', lhS: 'light h', cBeam: 'Beam', cSky: 'Sky', cRoute: 'Chronicle', cWorlds: 'Worlds', cScope: 'Eyepiece', exoAnd: 'and', exoNextA: 'next',
     scopeH: 'An eyepiece pointed at your zenith', sc1: 'Real sky surveys at', sc2: 'Rotate and zoom, switch between optical, infrared 2MASS or NASA WISE.',
     aZin: 'Zoom in', aZout: 'Zoom out', aZhome: 'Back to zenith', copyPost: 'Copy a post for X', shareCard: 'Download 1200×675 card', apodOpen: 'Open on apod.nasa.gov',
     aCut: 'Sky frame at your zenith', cutH: 'Zenith frame', cut1: '0.45° field, survey', cut2: 'This frame goes on your Galactic ID.',
@@ -871,7 +872,7 @@ const L = {
     routeH: 'Crónica de la luz', routeP: 'La luz va en todas direcciones: cada estrella más cercana que tu edad en años luz ya recibió el destello de tu nacimiento. Las estrellas son tomas del relevamiento DSS2 en coordenadas exactas; el Sistema Solar viene del archivo de la NASA.',
     ld1: 'Tu luz ya alcanzó', ld2: 'de las', ld3: 'estrellas más cercanas y', ld4: 'exoplanetas. La próxima en el camino:', ld5: 'La burbuja de radio de la Tierra mide hoy unos',
     exoH: 'Mundos a los que llegó tu luz', exoP: 'Exoplanetas confirmados del NASA Exoplanet Archive a menos de 110 años luz. En el cielo 3D son puntos: los naranjas ya están dentro de tu esfera de luz.',
-    tabReached: 'Alcanzados', tabNext: 'Próximos', exoReachedA: 'alcanzados', mMoon: 'Luna', mSun: 'Sol, 1 UA', m1ly: '1 año luz', lsS: 's luz', lmS: 'min luz', lhS: 'h luz', cBeam: 'Haz', cSky: 'Cielo', cRoute: 'Crónica', cWorlds: 'Mundos', cScope: 'Ocular', exoAnd: 'y', exoNextA: 'próximos',
+    tabReached: 'Alcanzados', tabNext: 'Próximos', exoReachedA: 'alcanzados', mMoon: 'órbita de la Luna', mSun: '1 UA, distancia al Sol', mJup: 'órbita de Júpiter', mSat: 'órbita de Saturno', mUra: 'órbita de Urano', mNep: 'órbita de Neptuno', mPluto: 'Plutón', mOort: 'nube de Oort', mPlei: 'Pléyades', mOrion: 'nebulosa de Orión', mGC: 'centro de la Galaxia', mAnd: 'galaxia de Andrómeda', mEdge: 'borde del Universo observable', mnS: 'millones a. l.', bnS: 'mil millones a. l.', m1ly: '1 año luz', lsS: 's luz', lmS: 'min luz', lhS: 'h luz', cBeam: 'Haz', cSky: 'Cielo', cRoute: 'Crónica', cWorlds: 'Mundos', cScope: 'Ocular', exoAnd: 'y', exoNextA: 'próximos',
     scopeH: 'Un ocular apuntado a tu cenit', sc1: 'Relevamientos reales del cielo en', sc2: 'Girá y acercá, cambiá entre óptico, infrarrojo 2MASS o NASA WISE.',
     aZin: 'Acercar', aZout: 'Alejar', aZhome: 'Volver al cenit', copyPost: 'Copiar publicación para X', shareCard: 'Descargar tarjeta 1200×675', apodOpen: 'Abrir en apod.nasa.gov',
     aCut: 'Toma del cielo en tu cenit', cutH: 'Toma del cenit', cut1: 'Campo de 0,45°, relevamiento', cut2: 'Esta toma va en tu Galactic ID.',
@@ -1212,12 +1213,16 @@ scene.add(cityMarker);
 const cityGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,220,200,1)', 'rgba(255,106,61,.5)'), blending: THREE.AdditiveBlending, depthWrite: false }));
 cityGlow.scale.setScalar(0.12); scene.add(cityGlow);
 const beamGroup = new THREE.Group(); scene.add(beamGroup);
-const FRONT_D = 60; // фронт света (в радиусах Земли); путь вдоль луча — в логарифмическом масштабе, см. beamS()
-const LY0 = 1e-8;   // ~0,3 световой секунды: начало логарифмической шкалы
-// где на луче лежит расстояние ly при нынешнем пути света lyNow: Луна, Солнце, «Вояджер», звёзды — по порядку и в пропорции
-const beamS = (ly, lyNow) => FRONT_D * Math.log10(1 + ly / LY0) / Math.log10(1 + lyNow / LY0);
+// Шкала Вселенной вдоль луча: от 0,3 световой секунды до края наблюдаемой Вселенной (46 млрд св. лет), логарифм.
+// Кривая u/(1 − 0,97u) уводит дальние расстояния к точке схода: чем дальше объект, тем глубже он в перспективе.
+const LY0 = 1e-8, LY_EDGE = 4.6e10, U_LOG = Math.log10(LY_EDGE / LY0);
+const beamS = (ly) => { const u = Math.min(1, Math.max(0, Math.log10(Math.max(ly, LY0) / LY0) / U_LOG)); return 1.3 + 40 * u / (1 - 0.97 * u); };
+let FRONT_D = 40; // где сейчас фронт света на этой шкале — пересчитывается от даты рождения
 const marksGroup = new THREE.Group();
 const BEAM_LEN = FRONT_D;
+// дальше фронта — пунктир будущего пути к известным объектам Вселенной
+const beamAhead = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1, 8, 1, true), new THREE.MeshBasicMaterial({ color: 0xCDA349, transparent: true, opacity: 0.16, blending: THREE.AdditiveBlending, depthWrite: false }));
+beamAhead.geometry.translate(0, 0.5, 0); beamGroup.add(beamAhead);
 const beamCore = new THREE.Mesh(new THREE.CylinderGeometry(0.0046, 0.0046, 1, 8, 1, true), new THREE.MeshBasicMaterial({ color: 0xFFE2D4, transparent: true, opacity: 0.95, blending: THREE.AdditiveBlending, depthWrite: false }));
 const beamHalo = new THREE.Mesh(new THREE.CylinderGeometry(0.0205, 0.0205, 1, 12, 1, true), new THREE.MeshBasicMaterial({ color: 0xFF6A3D, transparent: true, opacity: 0.24, blending: THREE.AdditiveBlending, depthWrite: false }));
 const beamGlow = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 1, 16, 1, true), new THREE.MeshBasicMaterial({ color: 0xFF7A4A, transparent: true, opacity: 0.07, blending: THREE.AdditiveBlending, depthWrite: false }));
@@ -1350,6 +1355,9 @@ function placeScene() {
   beamGroup.position.copy(cityPos);
   beamGroup.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), beamDir);
   targetGlow.position.copy(beamDir).multiplyScalar(R_SKY * 0.96);
+  FRONT_D = beamS(telemetry(Date.now()).ly);
+  [beamCore, beamHalo, beamGlow].forEach((m) => { m.scale.y = FRONT_D; });
+  beamAhead.position.set(0, FRONT_D, 0); beamAhead.scale.y = beamS(LY_EDGE) - FRONT_D;
   frontGlow.position.copy(cityPos).add(beamDir.clone().multiplyScalar(FRONT_D));
   sunDir.copy(skyDir(sky.sun.ra, sky.sun.dec)).normalize();
   sunLight.position.copy(sunDir).multiplyScalar(50);
@@ -1404,21 +1412,35 @@ function buildLabels() {
   marksGroup.clear();
   const tmL = telemetry(Date.now()), rtL = new THREE.Vector3().crossVectors(perp, beamDir).normalize();
   const reachedStars = STARS.filter((st) => st.ly <= tmL.ly).sort((a, c) => a.ly - c.ly);
+  const AU = 499.005 / SEC_YR, lt = (au) => au * 499.005; // световое время в секундах для расстояния в а. е.
+  const f1 = new Intl.NumberFormat(LOC[LANG], { maximumFractionDigits: 1 });
+  const hFmt = (sec) => sec < 3600 ? Math.round(sec / 60) + ' ' + t('lmS') : f1.format(sec / 3600) + ' ' + t('lhS');
+  const big = (ly) => ly >= 1e9 ? f1.format(ly / 1e9) + ' ' + t('bnS') : ly >= 1e6 ? f1.format(ly / 1e6) + ' ' + t('mnS') : intFmt.format(ly) + ' ' + t('lyS');
+  const planet = (key, au) => ({ name: t(key), ly: au * AU, d: hFmt(lt(au)) });
+  // порядок = важность подписи (если две рядом, остаётся первая)
   const marks = [
     { name: t('mMoon'), ly: 1.282 / SEC_YR, d: f2.format(1.28) + ' ' + t('lsS') },
-    { name: t('mSun'), ly: 499 / SEC_YR, d: '8,3 ' + t('lmS') },
+    { name: t('mSun'), ly: AU, d: '8,3 ' + t('lmS') },
+    planet('mSat', 9.58), planet('mPluto', 39.5),
     { name: 'Voyager 1', ly: tmL.voyKm / KM_LY, d: Math.round(tmL.voyKm / C_KMS / 3600) + ' ' + t('lhS') },
     ...[reachedStars.at(-1), reachedStars[0], reachedStars.find((st) => st.id === 'sirius')].filter(Boolean).filter((st, i, a) => a.indexOf(st) === i)
       .map((st) => ({ name: st.name, ly: st.ly, d: numFmt(st.ly) + ' ' + t('lyS') })),
+    planet('mJup', 5.2), planet('mUra', 19.2), planet('mNep', 30.1),
+    { name: t('mOort'), ly: 0.03, d: '' },
     { name: t('m1ly'), ly: 1, d: '' },
+    // впереди: до них свет ещё не дошёл
+    ...[['mPlei', 444], ['mOrion', 1344], ['mGC', 26000], ['mAnd', 2.5e6], ['mEdge', LY_EDGE * 0.999]]
+      .filter(([, ly]) => ly > tmL.ly).map(([k, ly]) => ({ name: t(k), ly, d: big(ly), ahead: true })),
     ...reachedStars.map((st) => ({ name: st.name, ly: st.ly, quiet: true })),
   ];
+  // подписи по разные стороны луча, чередуя соседей по расстоянию
+  [...marks].filter((m) => !m.quiet).sort((a, c) => a.ly - c.ly).forEach((m, i) => { m.left = i % 2 === 1; });
   for (const m of marks) {
-    const sPos = beamS(m.ly, tmL.ly); if (sPos >= FRONT_D - 0.3) continue;
+    const sPos = beamS(m.ly); if (!m.ahead && sPos >= FRONT_D - 0.2) continue;
     const p = cityPos.clone().addScaledVector(beamDir, sPos);
-    const dot = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,236,205,1)', 'rgba(205,163,73,.5)'), blending: THREE.AdditiveBlending, depthWrite: false }));
-    dot.position.copy(p); dot.scale.setScalar(0.08 + sPos * 0.006); marksGroup.add(dot);
-    if (!m.quiet) add('mark', esc(m.name) + (m.d ? '<em>' + m.d + '</em>' : ''), p.clone().addScaledVector(rtL, 0.15));
+    const dot = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture(m.ahead ? 'rgba(170,180,230,.9)' : 'rgba(255,236,205,1)', m.ahead ? 'rgba(120,130,200,.4)' : 'rgba(205,163,73,.5)'), blending: THREE.AdditiveBlending, depthWrite: false }));
+    dot.position.copy(p); dot.scale.setScalar(0.07 + sPos * 0.008); marksGroup.add(dot);
+    if (!m.quiet) add('mark' + (m.left ? ' left' : '') + (m.ahead ? ' ahead' : ''), esc(m.name) + (m.d ? '<em>' + m.d + '</em>' : ''), p);
   }
   add('zen', t('zen'), beamDir.clone().multiplyScalar(R_SKY * 0.95));
   const ly = telemetry(Date.now()).ly;
@@ -1437,14 +1459,20 @@ function updateLabels() {
   const w = canvas3d.clientWidth, h = canvas3d.clientHeight; camera.getWorldDirection(_f);
   const placed = [];
   for (const { el, vec } of labelEls) {
+    const left = el.classList.contains('left');
     _v.copy(vec).sub(camera.position);
     if (_v.dot(_f) <= 0) { el.style.display = 'none'; continue; }
     _v.copy(vec).project(camera);
     if (Math.abs(_v.x) > 1.05 || Math.abs(_v.y) > 1.05) { el.style.display = 'none'; continue; }
     const px = (_v.x + 1) / 2 * w, py = (1 - _v.y) / 2 * h;
-    if (blocked(px, py) || placed.some((q) => Math.abs(q.y - py) < 17 && Math.abs(q.x - px) < 170)) { el.style.display = 'none'; continue; }
-    placed.push({ x: px, y: py });
+    if (blocked(px, py) || placed.some((q) => q.left === left && Math.abs(q.y - py) < 17 && Math.abs(q.x - px) < 170)) { el.style.display = 'none'; continue; }
     el.style.display = 'block'; el.style.left = px + 'px'; el.style.top = py + 'px';
+    // подпись, не влезающая в экран, переезжает на другую сторону луча; если и там не влезает — прячется
+    const lw = el.offsetWidth, fits = (l) => (l ? px - lw - 14 >= 4 : px + lw + 14 <= w - 4);
+    let side = left;
+    if (!fits(side)) { side = !side; if (!fits(side) || placed.some((q) => q.left === side && Math.abs(q.y - py) < 17 && Math.abs(q.x - px) < 170)) { el.style.display = 'none'; continue; } }
+    el.classList.toggle('flip', side !== el.classList.contains('left'));
+    placed.push({ x: px, y: py, left: side });
   }
 }
 
