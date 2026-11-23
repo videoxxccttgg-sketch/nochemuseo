@@ -500,7 +500,6 @@ html[data-page="home"]{scroll-snap-type:y proximity}
     </div>
     <div class="pass">
       <div>
-        <p class="keep" data-i18n="keepCta">Получи свою карточку пилота на память: распечатай, заламинируй и подари — или отправь друзьям.</p>
         <div class="cert"><canvas id="passportCanvas" width="2054" height="1296" aria-label="Galactic Pilot ID, front"></canvas><canvas id="passportBack" width="2054" height="1296" aria-label="Galactic Pilot ID, back"></canvas></div>
         <div class="cert-actions">
           <button class="btn btn-hot" id="printCertBtn" data-i18n="printId">Получить карточку на память, PDF</button>
@@ -510,7 +509,6 @@ html[data-page="home"]{scroll-snap-type:y proximity}
         <p class="fine" style="margin-top:10px" data-i18n="certFine">Карточка размером с права, 85,6×54 мм. PDF на A4: печатай в масштабе 100 %, вырежи по меткам, согни по пунктиру, заламинируй — и подарок готов. PNG с обеими сторонами — для мессенджеров. QR ведёт на сайт по твоей ссылке.</p>
       </div>
       <div>
-        <h3 class="setup-h" data-i18n="setupH">Настрой карточку</h3>
         <dl class="summary">
           <dt data-i18n="dtStart">Старт луча, UTC</dt><dd id="oBirth">—</dd>
           <dt data-i18n="dtCity">Город</dt><dd id="oCity">—</dd>
@@ -811,7 +809,7 @@ const L = {
     routeH: 'Light chronicle', routeP: 'Light spreads in every direction: every star closer than your age in light years has already received the flash of your birth. Stars are DSS2 survey frames at exact coordinates; Solar System objects come from the NASA archive.',
     ld1: 'Your light has already reached', ld2: 'of the', ld3: 'nearest stars and', ld4: 'exoplanets. Next on its way:', ld5: 'Earth’s radio bubble is now about',
     exoH: 'Worlds your light has reached', exoP: 'Confirmed exoplanets from the NASA Exoplanet Archive within 110 light years. In the 3D sky they are dots: orange ones are already inside your light sphere.',
-    tabReached: 'Reached', tabNext: 'Next', exoReachedA: 'reached', cBeam: 'Beam', cSky: 'Sky', cRoute: 'Chronicle', cWorlds: 'Worlds', cScope: 'Eyepiece', keepCta: 'Get your pilot card as a keepsake: print it, laminate it and give it as a gift, or send it to friends.', setupH: 'Customize your card', exoAnd: 'and', exoNextA: 'next',
+    tabReached: 'Reached', tabNext: 'Next', exoReachedA: 'reached', cBeam: 'Beam', cSky: 'Sky', cRoute: 'Chronicle', cWorlds: 'Worlds', cScope: 'Eyepiece', exoAnd: 'and', exoNextA: 'next',
     scopeH: 'An eyepiece pointed at your zenith', sc1: 'Real sky surveys at', sc2: 'Rotate and zoom, switch between optical, infrared 2MASS or NASA WISE.',
     aZin: 'Zoom in', aZout: 'Zoom out', aZhome: 'Back to zenith', copyPost: 'Copy a post for X', shareCard: 'Download 1200×675 card', apodOpen: 'Open on apod.nasa.gov',
     aCut: 'Sky frame at your zenith', cutH: 'Zenith frame', cut1: '0.45° field, survey', cut2: 'This frame goes on your Galactic ID.',
@@ -870,7 +868,7 @@ const L = {
     routeH: 'Crónica de la luz', routeP: 'La luz va en todas direcciones: cada estrella más cercana que tu edad en años luz ya recibió el destello de tu nacimiento. Las estrellas son tomas del relevamiento DSS2 en coordenadas exactas; el Sistema Solar viene del archivo de la NASA.',
     ld1: 'Tu luz ya alcanzó', ld2: 'de las', ld3: 'estrellas más cercanas y', ld4: 'exoplanetas. La próxima en el camino:', ld5: 'La burbuja de radio de la Tierra mide hoy unos',
     exoH: 'Mundos a los que llegó tu luz', exoP: 'Exoplanetas confirmados del NASA Exoplanet Archive a menos de 110 años luz. En el cielo 3D son puntos: los naranjas ya están dentro de tu esfera de luz.',
-    tabReached: 'Alcanzados', tabNext: 'Próximos', exoReachedA: 'alcanzados', cBeam: 'Haz', cSky: 'Cielo', cRoute: 'Crónica', cWorlds: 'Mundos', cScope: 'Ocular', keepCta: 'Llevate tu tarjeta de piloto de recuerdo: imprimila, plastificala y regalala, o mandala a tus amigos.', setupH: 'Personalizá tu tarjeta', exoAnd: 'y', exoNextA: 'próximos',
+    tabReached: 'Alcanzados', tabNext: 'Próximos', exoReachedA: 'alcanzados', cBeam: 'Haz', cSky: 'Cielo', cRoute: 'Crónica', cWorlds: 'Mundos', cScope: 'Ocular', exoAnd: 'y', exoNextA: 'próximos',
     scopeH: 'Un ocular apuntado a tu cenit', sc1: 'Relevamientos reales del cielo en', sc2: 'Girá y acercá, cambiá entre óptico, infrarrojo 2MASS o NASA WISE.',
     aZin: 'Acercar', aZout: 'Alejar', aZhome: 'Volver al cenit', copyPost: 'Copiar publicación para X', shareCard: 'Descargar tarjeta 1200×675', apodOpen: 'Abrir en apod.nasa.gov',
     aCut: 'Toma del cielo en tu cenit', cutH: 'Toma del cenit', cut1: 'Campo de 0,45°, relevamiento', cut2: 'Esta toma va en tu Galactic ID.',
