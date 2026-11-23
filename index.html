@@ -269,8 +269,8 @@ input[type=datetime-local]::-webkit-calendar-picker-indicator{filter:invert(.8) 
 .step b{display:block;font-weight:500}
 .step.done{color:var(--haze);border-top-color:var(--gold)}
 .step.act{color:var(--star);border-top-color:var(--beam)}
-.cert{background:#000;padding:12px;border:1px solid var(--gold-soft)}
-#passportCanvas{width:100%;height:auto;display:block}
+.cert{display:grid;gap:14px}
+.cert canvas{width:100%;height:auto;display:block;filter:drop-shadow(0 10px 24px rgba(0,0,0,.6))}
 .status{font-size:12.5px;color:var(--gold)}
 
 /* выплаты */
@@ -521,21 +521,6 @@ footer a{color:var(--haze)}
           <button class="ship" data-style="star_trek"><b>Aether</b><p data-i18n="shipA">Дальний разведчик с двумя варп‑кольцами, по мотивам концепта NASA IXS.</p><span class="sel" data-i18n="shipSel">Выбран, летит в сцене</span></button>
         </div>
 
-        <div class="photo-row">
-          <div class="photo-ph" id="photoPh" aria-hidden="true">☺</div>
-          <canvas id="photoPrev" width="144" height="192" hidden></canvas>
-          <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
-            <span style="font-size:12px;color:var(--haze)" data-i18n="photoLabel">Фото пилота, необязательно</span>
-            <div class="photo-btns">
-              <label class="btn btn-line photo-btn" for="photoInput"><span id="photoBtnTxt">Добавить фото</span></label>
-              <input class="vh" type="file" id="photoInput" accept="image/*" />
-              <button type="button" class="linkbtn" id="photoRemove" hidden data-i18n="photoRemove">Убрать фото</button>
-            </div>
-            <label class="bgrow" id="photoBgRow" hidden><input type="checkbox" id="photoBgToggle" checked /> <span data-i18n="photoBg">Космический фон и эмблема</span> <em id="photoBgState"></em></label>
-            <p class="fine" data-i18n="photoNote">Фото не уходит на сервер и нигде не сохраняется: фон убирается прямо в твоём браузере, а фото исчезает при обновлении страницы.</p>
-          </div>
-        </div>
-
         <form class="reg" id="regForm" novalidate>
           <div class="f">
             <label for="callsignInput" data-i18n="lCall">Позывной пилота <span>до 24 символов, будет на документе</span></label>
@@ -563,18 +548,19 @@ footer a{color:var(--haze)}
         </div>
       </div>
       <div>
-        <div class="cert"><canvas id="passportCanvas" width="1200" height="1500"></canvas></div>
+        <div class="cert"><canvas id="passportCanvas" width="2054" height="1296" aria-label="Galactic Pilot ID, front"></canvas><canvas id="passportBack" width="2054" height="1296" aria-label="Galactic Pilot ID, back"></canvas></div>
         <div class="cert-actions">
-          <button class="btn btn-hot" id="downloadCertBtn" data-i18n="dlId">Скачать Galactic ID</button>
+          <button class="btn btn-hot" id="printCertBtn" data-i18n="printId">Карточка для печати, PDF</button>
+          <button class="btn btn-line" id="downloadCertBtn" data-i18n="dlId">Скачать PNG</button>
           <button class="btn btn-line" id="copyPostBtn2" data-i18n="copyPost2">Скопировать пост со ссылкой</button>
         </div>
-        <p class="fine" style="margin-top:10px" data-i18n="certFine">PNG 1200×1500. На телефоне откроется меню «Поделиться»: выбери «Сохранить изображение», и документ окажется в Фото. QR‑код ведёт на сайт по твоей ссылке.</p>
+        <p class="fine" style="margin-top:10px" data-i18n="certFine">Карточка размером с водительские права, 85,6×54 мм. PDF на листе A4: печатай в масштабе 100 %, вырежи по меткам, согни по пунктиру и заламинируй — готовый подарок. PNG с обеими сторонами удобно отправить в мессенджер. QR‑код ведёт на сайт по твоей ссылке.</p>
       </div>
     </div>
   </section>
 
   <footer>
-    <p data-i18n="footer1">Земля и Луна — текстуры на основе NASA Blue Marble и Earth at Night (через three.js). Карта неба — 112 тысяч звёзд каталога Hipparcos (ESA, данные d3-celestial) и модель Млечного Пути. Фон на фото убирается в браузере моделью MediaPipe (Google). Обзоры в окуляре — <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a>: DSS2 (STScI), 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Снимок дня — <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Экзопланеты — <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Архив — <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Города — Open‑Meteo.</p>
+    <p data-i18n="footer1">Земля и Луна — текстуры на основе NASA Blue Marble и Earth at Night (через three.js). Карта неба — 112 тысяч звёзд каталога Hipparcos (ESA, данные d3-celestial) и модель Млечного Пути. Обзоры в окуляре — <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a>: DSS2 (STScI), 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Снимок дня — <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Экзопланеты — <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Архив — <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Города — Open‑Meteo.</p>
     <p data-i18n="footer2">Расчёты: звёздное время IAU 1982, прецессия IAU 1976 к J2000, Солнце и Луна по упрощённым формулам Меёса (0,1–0,5°). Положения «Вояджеров» приблизительные. NASA не связано с проектом и не одобряет его.</p>
   </footer>
 </main>
@@ -714,7 +700,7 @@ const L = {
     errCall: 'Впиши позывной — он будет на документе.', errContact: 'Нужен email (name@mail.com) или ник в Telegram (@nick, от 5 символов).',
     errWallet: 'Адрес Solana — 32–44 символа без 0, O, I и l. Или оставь поле пустым.', errContactSrv: 'Проверь email или Telegram.', errWalletSrv: 'Проверь адрес кошелька Solana.',
     errCallSrv: 'Позывной: от 1 до 24 символов.', errNet: 'Журнал сейчас не отвечает. Попробуй ещё раз через минуту — документ можно скачать и без записи.',
-    toastExisting: 'Ты уже в журнале: пилот № {n}', toastNew: 'Записан: пилот № {n}', linkCopied: 'Ссылка скопирована', idDownloaded: 'Galactic Pilot ID скачан',
+    toastExisting: 'Ты уже в журнале: пилот № {n}', toastNew: 'Записан: пилот № {n}', linkCopied: 'Ссылка скопирована', idDownloaded: 'Galactic Pilot ID скачан', dlId: 'Скачать PNG', printId: 'Карточка для печати, PDF', pdfReady: 'PDF готов: печатай в масштабе 100 %',
     post: '🚀 Свет моего рождения улетел на {km} км ({ly} св. лет).\n🛰 Это в {x} раз дальше «Вояджера‑1».\n✨ Он уже дошёл до {s} звёзд и {e} экзопланет.\n\nПроверь, где твой: {link}', postCopied: 'Пост скопирован',
     cardLead: 'Свет моего рождения улетел от Земли на', cardLy: '{ly} св. лет', cardVoy: 'в {x} раз дальше «Вояджера‑1»', cardZen: 'Зенит: {city}, RA {ra}° / Dec {dec}', cardSphere: 'Звёзд в световой сфере: {s}, экзопланет: {e}', cardDone: 'Карточка 1200×675 скачана',
   },
@@ -774,8 +760,8 @@ const L = {
     lCall: 'Pilot call sign <span>up to 24 characters, printed on your ID</span>', phCall: 'For example, Rustam or Orion‑7', lContact: 'Email or Telegram', phContact: 'you@mail.com or @nick',
     lWallet: 'Solana wallet <span>optional</span>', phWallet: 'Wallet address',
     noSign: 'No.', regDoneP: 'You are in the logbook. Send this link to friends — it shows who you brought in.', copy: 'Copy',
-    dlId: 'Download Galactic ID', copyPost2: 'Copy a post with your link', certFine: 'PNG 1200×1500. On a phone it opens the share menu: choose “Save image” to keep it in Photos. The QR code opens the site with your link.',
-    footer1: 'Earth and Moon: textures based on NASA Blue Marble and Earth at Night (via three.js). Sky map: 112,000 stars from the Hipparcos catalogue (ESA, d3-celestial data) and a Milky Way model. Photo backgrounds are removed in your browser by Google’s MediaPipe. Eyepiece surveys: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Picture of the day: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanets: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archive: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Cities: Open‑Meteo.',
+    dlId: 'Download PNG', printId: 'Printable card, PDF', pdfReady: 'PDF ready: print at 100%', copyPost2: 'Copy a post with your link', certFine: 'A card the size of a driving licence, 85.6×54 mm. The PDF is an A4 sheet: print at 100%, cut along the marks, fold on the dashed line and laminate it for a ready gift. The PNG shows both sides and is easy to send in a chat. The QR code opens the site with your link.',
+    footer1: 'Earth and Moon: textures based on NASA Blue Marble and Earth at Night (via three.js). Sky map: 112,000 stars from the Hipparcos catalogue (ESA, d3-celestial data) and a Milky Way model. Eyepiece surveys: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Picture of the day: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanets: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archive: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Cities: Open‑Meteo.',
     footer2: 'Calculations: sidereal time IAU 1982, IAU 1976 precession to J2000, Sun and Moon by simplified Meeus formulas (0.1–0.5°). Voyager positions are approximate. NASA is not affiliated with this project and does not endorse it.',
   },
   es: {
@@ -833,8 +819,8 @@ const L = {
     lCall: 'Nombre de piloto <span>hasta 24 caracteres, va en el documento</span>', phCall: 'Por ejemplo, Rustam u Orión‑7', lContact: 'Email o Telegram', phContact: 'vos@mail.com o @nick',
     lWallet: 'Billetera Solana <span>opcional</span>', phWallet: 'Dirección de la billetera',
     noSign: 'N.º', regDoneP: 'Estás en la bitácora. Mandá este enlace a tus amigos: muestra a quién trajiste vos.', copy: 'Copiar',
-    dlId: 'Descargar Galactic ID', copyPost2: 'Copiar publicación con tu enlace', certFine: 'PNG 1200×1500. En el celular se abre el menú para compartir: elegí «Guardar imagen» para tenerlo en Fotos. El código QR abre el sitio con tu enlace.',
-    footer1: 'Tierra y Luna: texturas basadas en NASA Blue Marble y Earth at Night (vía three.js). Mapa del cielo: 112.000 estrellas del catálogo Hipparcos (ESA, datos de d3-celestial) y un modelo de la Vía Láctea. El fondo de la foto se quita en tu navegador con MediaPipe de Google. Relevamientos del ocular: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Foto del día: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanetas: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archivo: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Ciudades: Open‑Meteo.',
+    dlId: 'Descargar PNG', printId: 'Tarjeta para imprimir, PDF', pdfReady: 'PDF listo: imprimí al 100 %', copyPost2: 'Copiar publicación con tu enlace', certFine: 'Una tarjeta del tamaño de un registro de conducir, 85,6×54 mm. El PDF es una hoja A4: imprimí al 100 %, recortá por las marcas, doblá por la línea punteada y plastificala para regalar. El PNG muestra los dos lados y es fácil de mandar por chat. El código QR abre el sitio con tu enlace.',
+    footer1: 'Tierra y Luna: texturas basadas en NASA Blue Marble y Earth at Night (vía three.js). Mapa del cielo: 112.000 estrellas del catálogo Hipparcos (ESA, datos de d3-celestial) y un modelo de la Vía Láctea. Relevamientos del ocular: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Foto del día: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanetas: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archivo: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Ciudades: Open‑Meteo.',
     footer2: 'Cálculos: hora sidérea IAU 1982, precesión IAU 1976 a J2000, Sol y Luna con fórmulas simplificadas de Meeus (0,1–0,5°). Las posiciones de las Voyager son aproximadas. La NASA no está vinculada a este proyecto ni lo respalda.',
   },
 };
@@ -908,7 +894,10 @@ async function copyText(text, msg) {
 async function download(canvas, name) {
   const blob = await new Promise((res) => canvas.toBlob(res, 'image/png'));
   if (!blob) { toast(t('pngFail')); return false; }
-  const file = new File([blob], name, { type: 'image/png' });
+  return saveBlob(blob, name);
+}
+async function saveBlob(blob, name) {
+  const file = new File([blob], name, { type: blob.type });
   if (matchMedia('(pointer: coarse)').matches && navigator.canShare?.({ files: [file] })) {
     try { await navigator.share({ files: [file] }); return true; }
     catch (e) { if (e.name === 'AbortError') return false; } // иначе — обычная загрузка ниже
@@ -916,6 +905,7 @@ async function download(canvas, name) {
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 4000); return true;
 }
+const dssCut = (ra, dec, fovDeg) => `https://archive.stsci.edu/cgi-bin/dss_search?r=${ra.toFixed(5)}&d=${dec.toFixed(5)}&e=J2000&h=${Math.min(60, fovDeg * 60).toFixed(1)}&w=${Math.min(60, fovDeg * 60).toFixed(1)}&f=gif&v=poss2ukstu_red`;
 const hipsCut = (hips, ra, dec, fov, w) => `${HIPS2FITS}?hips=${encodeURIComponent(hips)}&ra=${ra.toFixed(5)}&dec=${dec.toFixed(5)}&fov=${fov}&width=${w}&height=${w}&projection=TAN&format=jpg`;
 function loadImg(url) { return new Promise((res, rej) => { const i = new Image(); i.crossOrigin = 'anonymous'; i.onload = () => res(i); i.onerror = rej; i.src = url; }); }
 
@@ -1085,7 +1075,7 @@ loadMgr.itemStart('sky');
 const skyLoader = new THREE.TextureLoader();
 skyLoader.load(LITE ? '/sky-2k.webp' : '/sky-4k.webp', (tx) => {
   applySkyTexture(tx); loadMgr.itemEnd('sky');
-  if (bigSky) setTimeout(() => skyLoader.load('/sky-8k.webp', (hi) => { const old = skyMat.map; applySkyTexture(hi); old?.dispose(); if (pilotPhoto && photoMask) buildPhoto(); }), 1500);
+  if (bigSky) setTimeout(() => skyLoader.load('/sky-8k.webp', (hi) => { const old = skyMat.map; applySkyTexture(hi); old?.dispose(); scheduleCert(); }), 1500);
 }, undefined, () => {
   skyLoader.load('/sky-4k.jpg', (tx) => { applySkyTexture(tx); loadMgr.itemEnd('sky'); }, undefined, () => { proceduralSky(); loadMgr.itemEnd('sky'); });
 });
@@ -1543,7 +1533,7 @@ function renderRoute(tm) {
     rail.innerHTML = items.map((o) => `
       <article class="stop" data-id="${o.id}">
         <div class="yr num"></div><div class="line"></div>
-        <div class="disc"><img alt="${esc(o.name)}" loading="lazy" ${o.solar ? '' : `src="${hipsCut('CDS/P/DSS2/color', o.ra, o.dec, o.ly > 100 ? 4 : 0.35, 360)}"`} onload="this.classList.add('ok')" /><span class="src">${o.solar ? 'NASA' : 'DSS2'}</span></div>
+        <div class="disc"><img alt="${esc(o.name)}" loading="lazy" ${o.solar ? '' : `src="${dssCut(o.ra, o.dec, o.ly > 100 ? 1 : 0.35)}"`} onload="this.classList.add('ok')" /><span class="src">${o.solar ? 'NASA' : 'DSS2'}</span></div>
         <h3>${esc(o.name)}</h3>
         <p class="rnote">${o.solar ? esc(o.note) : numFmt(o.ly) + ' ' + t('lyLong')}</p>
         <p class="when"></p>
@@ -1606,20 +1596,21 @@ let A = null;
 function initAladin(mod) {
   A = mod?.default; if (!A?.init) { $('aladinStatus').textContent = t('aladinFail'); return; }
   Promise.resolve(A.init).then(() => {
-    aladin = A.aladin('#aladin-lite-div', { survey: survey.aladin, fov, target: `${sky.ra} ${sky.dec}`, showReticle: false, showLayersControl: false, showGotoControl: false, showZoomControl: false, showFullscreenControl: true, showFrame: false, showCooGridControl: true });
+    aladin = A.aladin('#aladin-lite-div', { survey: survey.aladin, fov, target: `${sky.ra} ${sky.dec}`, showReticle: false, showLayersControl: false, showGotoControl: false, showZoomControl: false, showFullscreenControl: false, showFrame: false, showCooGridControl: false, showCooLocation: false, showFov: false, showProjectionControl: false, showSettingsControl: false, showShareControl: false, showSimbadPointerControl: false, showStatusBar: false, showContextMenu: false });
     const cat = A.catalog({ name: t('landmarks'), sourceSize: 14, color: '#CDA349', labelColumn: 'name', displayLabel: true, labelColor: '#CDA349', labelFont: '12px Geologica' });
     aladin.addCatalog(cat); aladinCat = cat;
     cat.addSources(STARS.map((s) => A.source(s.ra, s.dec, { name: s.name })));
     $('aladinStatus').textContent = t('aladinOk'); aladinOk = true;
-    if (!zenithImg) scheduleZenithCapture();
+    scheduleZenithCapture();
   }).catch(() => { $('aladinStatus').textContent = t('aladinFail'); });
 }
 function updateTelescope() {
   if (aladin) aladin.gotoRaDec(sky.ra, sky.dec);
   const key = `${survey.hips}_${sky.ra.toFixed(3)}_${sky.dec.toFixed(3)}`; if (key === cutKey) return; cutKey = key;
-  const url = hipsCut(survey.hips, sky.ra, sky.dec, 0.45, 512);
-  $('cutImg').src = url; $('cutSurvey').textContent = survey.label;
-  loadImg(hipsCut('CDS/P/DSS2/color', sky.ra, sky.dec, 0.45, 512)).then((i) => { zenithImg = i; zenithFromAladin = false; scheduleCert(); })
+  zenithFromAladin = false; scheduleZenithCapture();
+  const url = dssCut(sky.ra, sky.dec, 0.45);
+  $('cutImg').src = url; $('cutSurvey').textContent = 'DSS2';
+  loadImg(url).then((i) => { if (!zenithFromAladin) { zenithImg = i; scheduleCert(); } })
     .catch(() => { zenithImg = null; scheduleZenithCapture(); });
 }
 // Запасной путь для круга «зенит» в документе: снимок окуляра Aladin (его тайлы разрешены для canvas)
@@ -1638,7 +1629,7 @@ async function captureZenith() {
     const c = document.createElement('canvas'); c.width = c.height = 512;
     c.getContext('2d').drawImage(img, (img.width - crop) / 2, (img.height - crop) / 2, crop, crop, 0, 0, 512, 512);
     zenithImg = c; zenithFromAladin = true; scheduleCert();
-    if (!($('cutImg').complete && $('cutImg').naturalWidth)) { $('cutImg').src = c.toDataURL('image/jpeg', 0.9); $('cutSurvey').textContent = 'DSS2 · ESA'; }
+    { $('cutImg').src = c.toDataURL('image/jpeg', 0.9); $('cutSurvey').textContent = 'DSS2 · ESA'; }
   } catch { aladinCat?.show?.(); }
 }
 document.querySelectorAll('#surveys button').forEach((b) => b.addEventListener('click', () => {
@@ -1691,52 +1682,6 @@ let certTimer;
 let certPending = false;
 function scheduleCert() { certPending = true; clearTimeout(certTimer); certTimer = setTimeout(renderCert, 600); }
 
-/* =====================================================================
-   ФОТО ПИЛОТА — только в памяти страницы: не отправляется, не пишется в localStorage,
-   исчезает при обновлении (и при возврате на страницу из кэша браузера)
-   ===================================================================== */
-let pilotPhoto = null, ghostPhoto = null, photoSrc = null, photoMask = null, cosmicBg = true;
-// исходный кадр 3:4 (в памяти)
-async function loadPhoto(file) {
-  if (file.size > 40e6) throw new Error('size');
-  const url = URL.createObjectURL(file);
-  try {
-    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
-    // кадр 3:4 по центру, чуть выше середины — там обычно лицо; ориентацию EXIF браузер применяет сам
-    const PW = 600, PH = 800, ar = PW / PH; let sw = img.naturalWidth, sh = img.naturalHeight, sx = 0, sy = 0;
-    if (!sw || !sh) throw new Error('decode');
-    if (sw / sh > ar) { const nw = sh * ar; sx = (sw - nw) / 2; sw = nw; } else { const nh = sw / ar; sy = (sh - nh) * 0.3; sh = nh; }
-    const c = document.createElement('canvas'); c.width = PW; c.height = PH; c.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, PW, PH);
-    photoSrc = c; photoMask = null;
-  } finally { URL.revokeObjectURL(url); }
-}
-
-/* --- вырезание фона: MediaPipe в браузере, модель лежит в /models (фото никуда не уходит) */
-const MPS = 'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation@0.1.1675465747';
-let segP = null;
-function getSegmenter() {
-  return (segP ||= (async () => {
-    if (!window.SelfieSegmentation) await new Promise((res, rej) => { const el = document.createElement('script'); el.src = `${MPS}/selfie_segmentation.js`; el.crossOrigin = 'anonymous'; el.onload = res; el.onerror = rej; document.head.appendChild(el); });
-    const ss = new window.SelfieSegmentation({ locateFile: (f) => `${MPS}/${f}` });
-    ss.setOptions({ modelSelection: 0, selfieMode: false });
-    await ss.initialize();
-    return ss;
-  })().catch((e) => { segP = null; throw e; }));
-}
-// маска человека: непрозрачно там, где человек (готовый canvas того же размера, что и фото)
-async function personMask(src) {
-  const ss = await getSegmenter();
-  return new Promise((res, rej) => {
-    const to = setTimeout(() => rej(new Error('timeout')), 20000);
-    ss.onResults((r) => {
-      clearTimeout(to);
-      const c = document.createElement('canvas'); c.width = src.width; c.height = src.height;
-      c.getContext('2d').drawImage(r.segmentationMask, 0, 0, c.width, c.height); res(c);
-    });
-    ss.send({ image: src }).catch((e) => { clearTimeout(to); rej(e); });
-  });
-}
-// эмблема‑печать: кольца, деления, орбита, звезда с лучом Hα, надпись по кругу
 function drawEmblem(g, cx, cy, r, alpha = 1, filled = false) {
   g.save(); g.globalAlpha = alpha; g.translate(cx, cy);
   if (filled) { g.fillStyle = '#070B24'; g.beginPath(); g.arc(0, 0, r, 0, Math.PI * 2); g.fill(); }
@@ -1770,53 +1715,6 @@ function drawCosmicBg(g, W, H) {
   gr.addColorStop(0, 'rgba(90,70,200,.28)'); gr.addColorStop(0.5, 'rgba(255,106,61,.08)'); gr.addColorStop(1, 'rgba(0,0,0,.55)');
   g.fillStyle = gr; g.fillRect(0, 0, W, H);
 }
-function goldGhost(srcCanvas, transparentBg) {
-  const gc = document.createElement('canvas'); gc.width = 300; gc.height = 400; const gg = gc.getContext('2d'); gg.drawImage(srcCanvas, 0, 0, 300, 400);
-  const d = gg.getImageData(0, 0, 300, 400), px = d.data;
-  for (let i = 0; i < px.length; i += 4) { const y = 0.3 * px[i] + 0.59 * px[i + 1] + 0.11 * px[i + 2]; px[i] = y; px[i + 1] = y * 0.8; px[i + 2] = y * 0.45; }
-  gg.putImageData(d, 0, 0);
-  if (!transparentBg) {
-    gg.globalCompositeOperation = 'destination-in';
-    const gr = gg.createRadialGradient(150, 175, 50, 150, 200, 210); gr.addColorStop(0, 'rgba(0,0,0,1)'); gr.addColorStop(1, 'rgba(0,0,0,0)');
-    gg.fillStyle = gr; gg.fillRect(0, 0, 300, 400);
-  }
-  return gc;
-}
-// собирает портрет: с космическим фоном (если удалось вырезать) или исходный
-async function buildPhoto() {
-  if (!photoSrc) return;
-  const W = photoSrc.width, H = photoSrc.height;
-  if (cosmicBg && !photoMask) {
-    $('photoBgState').textContent = t('photoBgWork');
-    try { photoMask = await personMask(photoSrc); $('photoBgState').textContent = ''; }
-    catch { cosmicBg = false; $('photoBgToggle').checked = false; $('photoBgState').textContent = t('photoBgFail'); }
-  }
-  if (cosmicBg && photoMask) {
-    const person = document.createElement('canvas'); person.width = W; person.height = H; const pg = person.getContext('2d');
-    pg.drawImage(photoSrc, 0, 0); pg.globalCompositeOperation = 'destination-in'; pg.imageSmoothingQuality = 'high'; pg.drawImage(photoMask, 0, 0, W, H);
-    const out = document.createElement('canvas'); out.width = W; out.height = H; const og = out.getContext('2d');
-    drawCosmicBg(og, W, H);
-    drawEmblem(og, W / 2, H * 0.36, W * 0.44, 0.55);          // печать за головой
-    og.save(); og.shadowColor = 'rgba(255,140,90,.55)'; og.shadowBlur = 18; og.drawImage(person, 0, 0); og.restore(); // лёгкий контровой свет
-    drawEmblem(og, W * 0.2, H * 0.86, W * 0.1, 0.95, true);  // нашивка на груди, как на форме экипажа
-    pilotPhoto = out; ghostPhoto = goldGhost(person, true);
-  } else { pilotPhoto = photoSrc; ghostPhoto = goldGhost(photoSrc, false); }
-}
-function photoUI() {
-  const has = !!pilotPhoto;
-  $('photoPrev').hidden = !has; $('photoPh').hidden = has; $('photoRemove').hidden = !has; $('photoBgRow').hidden = !has;
-  $('photoBtnTxt').textContent = t(has ? 'photoChange' : 'photoAdd');
-  if (has) { const pc = $('photoPrev'); pc.getContext('2d').drawImage(pilotPhoto, 0, 0, pc.width, pc.height); }
-}
-function clearPhoto() { pilotPhoto = ghostPhoto = photoSrc = photoMask = null; const pc = $('photoPrev'); pc.getContext('2d').clearRect(0, 0, pc.width, pc.height); photoUI(); }
-$('photoInput').addEventListener('change', async (e) => {
-  const f = e.target.files?.[0]; e.target.value = ''; if (!f) return;
-  try { await loadPhoto(f); } catch { toast(t('photoFail')); return; }
-  await buildPhoto(); photoUI(); await renderCert(); toast(t('photoAdded'));
-});
-$('photoBgToggle').addEventListener('change', async (e) => { cosmicBg = e.target.checked; await buildPhoto(); photoUI(); renderCert(); });
-$('photoRemove').onclick = () => { clearPhoto(); renderCert(); };
-window.addEventListener('pageshow', (e) => { if (e.persisted && pilotPhoto) { clearPhoto(); renderCert(); } });
 // гильош — тонкие волновые линии, защитный фон документа
 function drawGuilloche(g, x0, y0, w, h) {
   g.save(); g.beginPath(); g.rect(x0, y0, w, h); g.clip();
@@ -1983,92 +1881,140 @@ function drawLightMap(g, x, y, r0, r1, tm) {
   }
 }
 
+/* =====================================================================
+   GALACTIC PILOT ID — пластиковая карточка формата ID‑1 (85,6×54 мм, как права).
+   Рисуем в единицах 0,1 мм: 856×540, холст 2054×1296 px (~610 dpi) — хватает для печати.
+   ===================================================================== */
+const CARD_W = 856, CARD_H = 540, CARD_K = 2.4;
+function cardCanvas(id) { const c = $(id); c.width = Math.round(CARD_W * CARD_K); c.height = Math.round(CARD_H * CARD_K); const g = c.getContext('2d'); g.setTransform(CARD_K, 0, 0, CARD_K, 0, 0); return g; }
+function cardShape(g) { g.beginPath(); g.roundRect(0, 0, CARD_W, CARD_H, 31.8); }
+function cardEdge(g) { g.strokeStyle = 'rgba(205,163,73,.6)'; g.lineWidth = 1.2; g.beginPath(); g.roundRect(14, 14, CARD_W - 28, CARD_H - 28, 20); g.stroke(); }
+function microLine(g, x, y, w, fs = 7) {
+  g.save(); g.fillStyle = 'rgba(205,163,73,.6)'; g.font = fnt(500, fs, F_SANS); let mt = '';
+  while (g.measureText(mt).width < w) mt += 'STARBEAM GALACTIC PILOT ' + (pilot ? pilot.serial : pilotHash()) + '  ';
+  g.beginPath(); g.rect(x, y - fs, w, fs * 1.5); g.clip(); g.fillText(mt, x, y); g.restore();
+}
+function drawCardFront(g, tm) {
+  g.save(); cardShape(g); g.clip(); g.textAlign = 'left'; g.letterSpacing = '0px';
+  g.drawImage(snapshot3D(Math.round(CARD_W * CARD_K), Math.round(CARD_H * CARD_K)), 0, 0, CARD_W, CARD_H);
+  const gr = g.createLinearGradient(0, 0, CARD_W, 0); gr.addColorStop(0, 'rgba(2,3,12,.95)'); gr.addColorStop(0.55, 'rgba(2,3,12,.8)'); gr.addColorStop(1, 'rgba(2,3,12,.2)');
+  g.fillStyle = gr; g.fillRect(0, 0, CARD_W, CARD_H);
+  drawGuilloche(g, 0, 0, CARD_W, CARD_H); cardEdge(g);
+  // шапка
+  g.fillStyle = '#CDA349'; g.font = fnt(600, 30, F_SERIF); g.letterSpacing = '4px'; g.fillText('STARBEAM', 40, 66); g.letterSpacing = '0px';
+  g.fillStyle = 'rgba(238,240,255,.65)'; g.font = fnt(400, 13, F_SANS); g.fillText('Galactic Pilot Corps, planet Earth', 40, 88);
+  g.textAlign = 'right'; g.fillStyle = '#EEF0FF'; g.font = fnt('italic 500', 30, F_SERIF); g.fillText('Galactic Pilot ID', CARD_W - 40, 66);
+  g.fillStyle = '#FF8A5C'; g.font = fnt(500, 15, F_SANS); g.fillText(pilot ? `No. ${String(pilot.serial).padStart(4, '0')}` : `S‑${pilotHash()}`, CARD_W - 40, 88);
+  g.textAlign = 'left';
+  // окно, где в правах фото: небо твоего зенита и эмблема корпуса
+  const px = 40, py = 112, pw = 210, ph = 280;
+  g.save(); g.beginPath(); g.rect(px, py, pw, ph); g.clip(); g.translate(px, py); drawCosmicBg(g, pw, ph); drawEmblem(g, pw / 2, ph * 0.45, pw * 0.4); g.restore();
+  g.strokeStyle = '#CDA349'; g.lineWidth = 1.4; g.strokeRect(px - 4, py - 4, pw + 8, ph + 8);
+  g.strokeStyle = 'rgba(205,163,73,.45)'; g.lineWidth = 0.8; g.strokeRect(px + 0.5, py + 0.5, pw - 1, ph - 1);
+  microLine(g, px - 4, py + ph + 20, pw + 8);
+  // поля с номерами, как в правах
+  const X = 285, W2 = CARD_W - 40 - X;
+  const field = (n, label, value, x, y, w, size = 22, fam = F_SANS, weight = 500, color = '#EEF0FF') => {
+    g.fillStyle = '#CDA349'; g.font = fnt(600, 12, F_SANS); g.fillText(n, x, y);
+    g.fillStyle = '#9AA3C7'; g.font = fnt(400, 12, F_SANS); g.fillText(label, x + 14, y);
+    g.fillStyle = color; fitFont(g, value, weight, size, w - 10, fam, 11); g.fillText(value, x, y + size + 4);
+  };
+  const [yy, mo, dd] = birthLocal.slice(0, 10).split('-');
+  field('1', 'Callsign', callsign(), X, 128, W2, 46, F_SERIF, 600, '#FFFFFF');
+  field('2', 'Born', `${dd}.${mo}.${yy}, ${birthLocal.slice(11, 16)}`, X, 212, W2 / 2);
+  field('3', 'Launch site', cityName(city.name).split(',')[0], X + W2 / 2, 212, W2 / 2);
+  field('4', 'Zenith, J2000', `α ${sky.ra.toFixed(2)}°  δ ${fmtDec(sky.dec, 2)}`, X, 272, W2 / 2);
+  field('5', 'Ship', selectedStyle === 'star_trek' ? 'Aether' : 'Vanguard', X + W2 / 2, 272, W2 / 2);
+  field('6', 'Light travelled', `${tm.ly.toFixed(4).replace('.', ',')} light years`, X, 332, W2, 32, F_SERIF, 600, '#FF8A5C');
+  if (pilot && pilot.serial <= 1000) {
+    g.font = fnt(500, 14, F_SANS); const bt = 'First 1000 pilots', bw = g.measureText(bt).width + 26;
+    g.strokeStyle = '#FF6A3D'; g.lineWidth = 1.2; g.beginPath(); g.roundRect(X, 400, bw, 28, 14); g.stroke(); g.fillStyle = '#FF8A5C'; g.fillText(bt, X + 13, 419);
+  }
+  drawEmblem(g, CARD_W - 104, CARD_H - 112, 66, 0.25); // «призрачная» эмблема, защитный элемент
+  g.fillStyle = 'rgba(238,240,255,.55)'; g.font = fnt(400, 11, F_SANS); g.fillText(`Issued ${new Date().toISOString().slice(0, 10)}   peaceindex.online`, 40, CARD_H - 36);
+  g.restore();
+}
+function drawCardBack(g, tm) {
+  g.save(); cardShape(g); g.clip(); g.textAlign = 'left'; g.letterSpacing = '0px';
+  drawCosmicBg(g, CARD_W, CARD_H); g.fillStyle = 'rgba(2,3,12,.6)'; g.fillRect(0, 0, CARD_W, CARD_H);
+  drawGuilloche(g, 0, 0, CARD_W, CARD_H); cardEdge(g);
+  // зенит и карта света
+  const zx = 172, zy = 210, zr = 72;
+  drawLightMap(g, zx, zy, zr + 20, 148, tm); drawZenithDisc(g, zx, zy, zr);
+  g.textAlign = 'center'; g.fillStyle = '#9AA3C7'; g.font = fnt(400, 12, F_SANS); g.fillText('Zenith at birth and the stars your light has reached', zx, 386); g.textAlign = 'left';
+  // телеметрия
+  const X = 360, CW = CARD_W - 40 - X;
+  g.fillStyle = '#9AA3C7'; g.font = fnt(400, 13, F_SANS); g.fillText('Light travelled since birth', X, 60);
+  const km = intFmt.format(Math.floor(tm.km)) + ' km'; g.fillStyle = '#FFFFFF'; fitFont(g, km, 600, 40, CW, F_SERIF, 20); g.fillText(km, X, 100);
+  const starsN = STARS.filter((s) => s.ly <= tm.ly).length, exoN = exoplanets.filter((p) => p.ly <= tm.ly).length;
+  [[tm.ly.toFixed(4).replace('.', ','), 'light years', '#FF6A3D'], [String(starsN), 'stars reached', '#FFFFFF'], [String(exoN), 'exoplanets', '#FFFFFF']].forEach(([v, l, c], i) => {
+    const xx = X + i * (CW / 3); g.fillStyle = c; g.font = fnt(600, 28, F_SERIF); g.fillText(v, xx, 146); g.fillStyle = '#9AA3C7'; g.font = fnt(400, 12, F_SANS); g.fillText(l, xx, 164);
+  });
+  g.strokeStyle = 'rgba(205,163,73,.35)'; g.lineWidth = 1; g.beginPath(); g.moveTo(X, 184); g.lineTo(CARD_W - 40, 184); g.stroke();
+  const row = (y, label, value, x, w) => { g.fillStyle = '#9AA3C7'; g.font = fnt(400, 12, F_SANS); g.fillText(label, x, y); g.fillStyle = '#EEF0FF'; fitFont(g, value, 500, 16, w - 10, F_SANS, 10); g.fillText(value, x, y + 21); };
+  row(210, 'Passed Voyager 1', tm.ratio >= 1 ? dateFmt(tm.overtake) : 'in a few hours', X, CW / 2);
+  row(210, 'Constellation', '≈ ' + constName(constellationOf(sky.ra, sky.dec)), X + CW / 2, CW / 2);
+  row(262, 'Birth sky', `Moon ${Math.round(sky.moon.illum * 100)}%, Sun ${sky.sun.alt >= 0 ? '+' : '−'}${Math.abs(sky.sun.alt).toFixed(0)}°`, X, CW / 2);
+  row(262, 'Logbook', pilot ? `pilot No. ${pilot.serial}` : 'not yet registered', X + CW / 2, CW / 2);
+  const q = 96; drawQr(g, shareLink(), CARD_W - 40 - q, 300, q);
+  g.fillStyle = '#9AA3C7'; g.font = fnt(400, 12, F_SANS); g.fillText('Scan to see where', X, 330); g.fillText('your light is right now', X, 348);
+  // машиночитаемая зона
+  microLine(g, 40, 412, CARD_W - 80);
+  const [m1, m2] = mrzLines(); g.fillStyle = 'rgba(205,163,73,.9)'; fitFont(g, m1, 500, 22, CARD_W - 80, F_MONO, 12); g.fillText(m1, 40, 452); g.fillText(m2, 40, 484);
+  g.restore();
+}
 async function renderCert() {
   await ensureFonts();
-  const cv = $('passportCanvas'), g = cv.getContext('2d'), W = 1200, H = 1500, M = 28;
-  const tm = telemetry(Date.now()), style = selectedStyle;
-  setShip(style);
-  g.save(); g.textAlign = 'left'; g.letterSpacing = '0px';
-  g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
-
-  // 1. Земля в минуту рождения (реальный 3D‑кадр)
-  const PH = 880;
-  g.drawImage(snapshot3D(W, PH), 0, 0);
-  let gr = g.createLinearGradient(0, 0, 0, 170); gr.addColorStop(0, 'rgba(0,0,0,.8)'); gr.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = gr; g.fillRect(0, 0, W, 170);
-  gr = g.createLinearGradient(0, PH - 380, 0, PH); gr.addColorStop(0, 'rgba(0,0,0,0)'); gr.addColorStop(0.75, 'rgba(0,0,0,.88)'); gr.addColorStop(1, '#000'); g.fillStyle = gr; g.fillRect(0, PH - 380, W, 380);
-
-  // 2. рамка пластинки со шкалой прямого восхождения
-  g.strokeStyle = 'rgba(205,163,73,.55)'; g.lineWidth = 1; g.strokeRect(M + .5, M + .5, W - 2 * M - 1, H - 2 * M - 1);
-  for (let i = 0; i <= 96; i++) { const xx = M + (W - 2 * M) * i / 96, L = i % 4 === 0 ? 11 : 5; g.strokeStyle = `rgba(205,163,73,${i % 4 === 0 ? .7 : .35})`; g.beginPath(); g.moveTo(xx, M); g.lineTo(xx, M + L); g.stroke(); }
-  const raX = M + (W - 2 * M) * (24 - sky.ra / 15) / 24;
-  g.fillStyle = '#CDA349'; g.beginPath(); g.moveTo(raX - 6, M); g.lineTo(raX + 6, M); g.lineTo(raX, M + 12); g.closePath(); g.fill();
-
-  // 3. шапка
-  g.fillStyle = '#CDA349'; g.font = fnt(600, 30, F_SERIF); g.letterSpacing = '6px'; g.fillText('STARBEAM', 72, 92); g.letterSpacing = '0px';
-  g.textAlign = 'right'; g.fillStyle = '#EEF0FF'; g.font = fnt('italic 500', 30, F_SERIF); g.fillText('Galactic Pilot ID', W - 72, 92);
-  g.font = fnt(400, 14, F_SANS); g.fillStyle = 'rgba(238,240,255,.6)';
-  g.fillText(`Earth at ${new Date(birthMs).toISOString().slice(0, 16).replace('T', ' ')} UTC, NASA Blue Marble`, W - 72, 120);
-  g.textAlign = 'left';
-
-  // 4. позывной и номер
-  if ($('callsignInput').value.trim() || pilot?.callsign) { g.fillStyle = '#CDA349'; g.font = fnt(500, 17, F_SANS); g.fillText('Pilot', 72, 690); }
-  if (pilotPhoto) { // основной портрет в золотой рамке + микротекст
-    const px = W - 72 - 240, py = 560, pw = 240, ph = 320;
-    g.fillStyle = '#000'; g.fillRect(px - 6, py - 6, pw + 12, ph + 12);
-    g.drawImage(pilotPhoto, px, py, pw, ph);
-    g.strokeStyle = '#CDA349'; g.lineWidth = 1.5; g.strokeRect(px - 6.5, py - 6.5, pw + 13, ph + 13);
-    g.strokeStyle = 'rgba(205,163,73,.5)'; g.lineWidth = 1; g.strokeRect(px + .5, py + .5, pw - 1, ph - 1);
-    g.save(); g.fillStyle = 'rgba(205,163,73,.6)'; g.font = fnt(500, 8, F_SANS); g.letterSpacing = '1px';
-    let mt = ''; while (mt.length < 90) mt += 'STARBEAM PILOT ' + (pilot ? pilot.serial : pilotHash()) + ' '; g.beginPath(); g.rect(px - 6, py + ph + 10, pw + 12, 12); g.clip(); g.fillText(mt, px - 6, py + ph + 18); g.restore();
-  }
-  const cs = callsign(); g.fillStyle = '#FFFFFF'; fitFont(g, cs, 600, 132, pilotPhoto ? W - 144 - 290 : W - 144, F_SERIF, 48); g.fillText(cs, 68, 800);
-  g.font = fnt(600, 36, F_SERIF);
-  if (pilot) {
-    const noTxt = `No. ${String(pilot.serial).padStart(4, '0')}`; g.fillStyle = '#CDA349'; g.fillText(noTxt, 72, 852);
-    if (pilot.serial <= 1000) {
-      const bx = 72 + g.measureText(noTxt).width + 22; g.font = fnt(500, 15, F_SANS); const bt = 'First 1000', bw = g.measureText(bt).width + 28;
-      g.strokeStyle = '#FF6A3D'; g.lineWidth = 1.2; g.beginPath(); g.roundRect(bx, 828, bw, 30, 15); g.stroke(); g.fillStyle = '#FF8A5C'; g.fillText(bt, bx + 14, 849);
-    }
-  } else { g.fillStyle = 'rgba(205,163,73,.75)'; g.fillText(`S‑${pilotHash()}`, 72, 852); g.font = fnt('italic 500', 24, F_SERIF); g.fillStyle = '#9AA3C7'; g.fillText('not yet in the logbook', 72 + 230, 850); }
-
-  // 5. зенит + карта света
-  const zx = 250, zy = 1078, zr = 118;
-  drawLightMap(g, zx, zy, zr + 26, 205, tm);
-  drawZenithDisc(g, zx, zy, zr);
-  g.textAlign = 'center'; g.fillStyle = '#9AA3C7'; g.font = fnt(400, 15, F_SANS); g.fillText('Zenith at birth', zx, 1314);
-  g.fillStyle = '#EEF0FF'; g.font = fnt(500, 17, F_SANS); g.fillText(`α ${sky.ra.toFixed(2)}°   δ ${fmtDec(sky.dec, 2)}`, zx, 1338);
-  g.textAlign = 'left';
-
-  // защитный фон: гильош и «призрачное» фото‑подложка под телеметрией
-  drawGuilloche(g, M + 1, 900, W - 2 * M - 2, 450);
-  if (ghostPhoto) { g.save(); g.globalAlpha = 0.2; g.drawImage(ghostPhoto, W - 72 - 330, 930, 330, 440); g.restore(); }
-  // 6. телеметрия
-  const X = 520, CW = W - 72 - X;
-  g.fillStyle = '#9AA3C7'; g.font = fnt(400, 16, F_SANS); g.fillText('Light travelled since birth', X, 924);
-  const km = intFmt.format(Math.floor(tm.km)) + ' km'; g.fillStyle = '#FFFFFF'; fitFont(g, km, 600, 70, CW, F_SERIF, 40); g.fillText(km, X - 2, 990);
-  const starsN = STARS.filter((s) => s.ly <= tm.ly).length, exoN = exoplanets.filter((p) => p.ly <= tm.ly).length;
-  [[tm.ly.toFixed(4).replace('.', ','), 'light years', '#FF6A3D'], [String(starsN), 'stars reached', '#FFFFFF'], [String(exoN), 'exoplanets reached', '#FFFFFF']].forEach(([v, l, c], i) => {
-    const xx = X + i * (CW / 3); g.fillStyle = c; g.font = fnt(600, 46, F_SERIF); g.fillText(v, xx, 1066); g.fillStyle = '#9AA3C7'; g.font = fnt(400, 15, F_SANS); g.fillText(l, xx, 1092);
-  });
-  g.strokeStyle = 'rgba(205,163,73,.35)'; g.beginPath(); g.moveTo(X, 1124); g.lineTo(W - 72, 1124); g.stroke();
-  const row = (y, label, value, x = X, w = CW) => { g.fillStyle = '#9AA3C7'; g.font = fnt(400, 15, F_SANS); g.fillText(label, x, y); g.fillStyle = '#EEF0FF'; fitFont(g, value, 500, 21, w - 10, F_SANS, 13); g.fillText(value, x, y + 28); };
-  const [yy, mo, dd] = birthLocal.slice(0, 10).split('-');
-  row(1162, 'Born', `${dd}.${mo}.${yy}, ${birthLocal.slice(11, 16)}, ${cityName(city.name).split(',')[0]}`);
-  row(1232, 'Passed Voyager 1', tm.ratio >= 1 ? dateFmt(tm.overtake) : 'in a few hours', X, CW / 2);
-  row(1232, 'Ship', style === 'star_trek' ? 'Aether ring explorer' : 'Vanguard interceptor', X + CW / 2, CW / 2);
-  row(1302, 'Birth sky', `Moon ${Math.round(sky.moon.illum * 100)}%, Sun ${sky.sun.alt >= 0 ? '+' : '−'}${Math.abs(sky.sun.alt).toFixed(0)}°`, X, CW / 2);
-  row(1302, 'Constellation', '≈ ' + constName(constellationOf(sky.ra, sky.dec)), X + CW / 2, CW / 2);
-
-  // 7. машиночитаемая зона + QR
-  g.strokeStyle = 'rgba(205,163,73,.35)'; g.beginPath(); g.moveTo(72, 1360); g.lineTo(W - 72, 1360); g.stroke();
-  const [m1, m2] = mrzLines(); g.fillStyle = 'rgba(205,163,73,.85)'; fitFont(g, m1, 500, 27, 880, F_MONO, 16); g.fillText(m1, 72, 1404); g.fillText(m2, 72, 1440);
-  drawQr(g, shareLink(), W - 72 - 96, 1372, 96);
-  g.restore();
+  const tm = telemetry(Date.now()); setShip(selectedStyle);
+  drawCardFront(cardCanvas('passportCanvas'), tm);
+  drawCardBack(cardCanvas('passportBack'), tm);
   certPending = false;
 }
+// PNG для соцсетей: обе стороны одной картинкой
+function cardSheet() {
+  const f = $('passportCanvas'), b = $('passportBack'), pad = 60, c = document.createElement('canvas');
+  c.width = f.width + pad * 2; c.height = f.height * 2 + pad * 3; const g = c.getContext('2d');
+  g.fillStyle = '#05060f'; g.fillRect(0, 0, c.width, c.height); g.drawImage(f, pad, pad); g.drawImage(b, pad, pad * 2 + f.height); return c;
+}
+// PDF A4 в реальном размере: лицевая сторона, под ней оборот вверх ногами — вырезать по меткам, согнуть по пунктиру
+async function cardPdf() {
+  const jpeg = (src, flip) => new Promise((res) => {
+    const c = document.createElement('canvas'); c.width = src.width; c.height = src.height; const g = c.getContext('2d');
+    g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); if (flip) { g.translate(c.width, c.height); g.rotate(Math.PI); } g.drawImage(src, 0, 0);
+    c.toBlob((bl) => bl.arrayBuffer().then((a) => res({ w: c.width, h: c.height, d: new Uint8Array(a) })), 'image/jpeg', 0.93);
+  });
+  const [F, B] = await Promise.all([jpeg($('passportCanvas'), false), jpeg($('passportBack'), true)]);
+  const mm = (v) => v * 72 / 25.4, PW = 595.28, PH = 841.89, cw = mm(85.6), ch = mm(54), x = (PW - cw) / 2, yF = PH - mm(40) - ch, yB = yF - ch, n2 = (v) => v.toFixed(2);
+  let s = `q ${n2(cw)} 0 0 ${n2(ch)} ${n2(x)} ${n2(yF)} cm /F Do Q\nq ${n2(cw)} 0 0 ${n2(ch)} ${n2(x)} ${n2(yB)} cm /B Do Q\n0.5 G 0.5 w\n`;
+  const L = mm(6), o = mm(2), x2 = x + cw, yT = yF + ch;
+  for (const [cx, cy] of [[x, yT], [x2, yT], [x, yB], [x2, yB]]) {
+    const sx = cx === x ? -1 : 1, sy = cy === yT ? 1 : -1;
+    s += `${n2(cx + sx * o)} ${n2(cy)} m ${n2(cx + sx * (o + L))} ${n2(cy)} l S ${n2(cx)} ${n2(cy + sy * o)} m ${n2(cx)} ${n2(cy + sy * (o + L))} l S\n`;
+  }
+  s += `[3 2] 0 d ${n2(x - o - L)} ${n2(yF)} m ${n2(x - o)} ${n2(yF)} l S ${n2(x2 + o)} ${n2(yF)} m ${n2(x2 + o + L)} ${n2(yF)} l S [] 0 d\n`;
+  const txt = (y, size, str) => `BT /H ${size} Tf ${n2(x)} ${n2(y)} Td (${str}) Tj ET\n`;
+  s += txt(yT + mm(10), 11, 'STARBEAM  Galactic Pilot ID');
+  s += txt(yB - mm(13), 8, 'Print at 100% \\(actual size\\). Cut along the corner marks, fold on the dashed line, glue or laminate.');
+  s += txt(yB - mm(18), 8, 'Card size 85.6 x 54 mm, the same as a driving licence. peaceindex.online');
+  const enc = new TextEncoder(), parts = [], offs = []; let len = 0;
+  const put = (p) => { const u = typeof p === 'string' ? enc.encode(p) : p; parts.push(u); len += u.length; };
+  const obj = (i, body, stream) => { offs[i] = len; put(`${i} 0 obj\n${body}\n`); if (stream) { put('stream\n'); put(stream); put('\nendstream\n'); } put('endobj\n'); };
+  const img = (I) => `<< /Type /XObject /Subtype /Image /Width ${I.w} /Height ${I.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${I.d.length} >>`;
+  const cs = enc.encode(s);
+  put('%PDF-1.4\n');
+  obj(1, '<< /Type /Catalog /Pages 2 0 R >>');
+  obj(2, '<< /Type /Pages /Kids [3 0 R] /Count 1 >>');
+  obj(3, `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PW} ${PH}] /Resources << /XObject << /F 5 0 R /B 6 0 R >> /Font << /H 7 0 R >> >> /Contents 4 0 R >>`);
+  obj(4, `<< /Length ${cs.length} >>`, cs);
+  obj(5, img(F), F.d); obj(6, img(B), B.d);
+  obj(7, '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
+  const xref = len; put(`xref\n0 8\n0000000000 65535 f \n${offs.slice(1).map((v) => String(v).padStart(10, '0') + ' 00000 n \n').join('')}trailer\n<< /Size 8 /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
+  return new Blob(parts, { type: 'application/pdf' });
+}
 $('callsignInput').addEventListener('input', scheduleCert);
-// холст уже отрисован заранее — сохраняем сразу, чтобы iPhone не потерял «жест пользователя» для меню «Поделиться»
-$('downloadCertBtn').onclick = async () => { if (certPending) await renderCert(); if (await download($('passportCanvas'), `starbeam_pilot_${pilot ? pilot.serial : pilotHash()}.png`)) toast(t('idDownloaded')); };
+// холсты уже отрисованы заранее — сохраняем сразу, чтобы iPhone не потерял «жест пользователя» для меню «Поделиться»
+$('downloadCertBtn').onclick = async () => { if (certPending) await renderCert(); if (await download(cardSheet(), `starbeam_pilot_${pilot ? pilot.serial : pilotHash()}.png`)) toast(t('idDownloaded')); };
+$('printCertBtn').onclick = async () => { if (certPending) await renderCert(); if (await saveBlob(await cardPdf(), `starbeam_pilot_${pilot ? pilot.serial : pilotHash()}_print.pdf`)) toast(t('pdfReady')); };
 
 $('copyPostBtn').onclick = $('copyPostBtn2').onclick = () => {
   const tm = telemetry(Date.now()), sr = STARS.filter((s) => s.ly <= tm.ly).length, er = exoplanets.filter((p) => p.ly <= tm.ly).length;
@@ -2122,7 +2068,7 @@ function setLang(l) {
   apply('data-i18n-aria', 'Aria', (e) => e.getAttribute('aria-label'), (e, v) => e.setAttribute('aria-label', v));
   apply('data-i18n-alt', 'Alt', (e) => e.alt, (e, v) => { e.alt = v; });
   document.querySelectorAll('#langs button').forEach((b) => b.classList.toggle('on', b.dataset.lang === l));
-  localizeData(); renderCityPresets(); regTexts(); photoUI();
+  localizeData(); renderCityPresets(); regTexts(); 
   if (document.activeElement !== cityInput) cityInput.value = cityName(city.name);
   $('aladinStatus').textContent = t(aladinOk ? 'aladinOk' : 'aladinConn'); setFov(fov);
   if (!$('apodImg').innerHTML) { $('apodTitle').textContent = t('apodTitle0'); $('apodText').textContent = t('apodLoading'); }
