@@ -67,6 +67,7 @@ button{cursor:pointer;background:none;border:0}
 .lbl{position:absolute;transform:translate(12px,-50%);font-size:12.9px;white-space:nowrap;color:var(--haze);text-shadow:0 0 6px #000,0 0 2px #000;font-weight:400}
 .lbl::before{content:"";position:absolute;left:-16px;top:50%;width:7px;height:7px;margin-top:-4px;border:1px solid currentColor;border-radius:50%}
 .lbl.reached{color:#FFB79C}
+.lbl.mark{color:#E9D6A8;font-size:12.4px}.lbl.mark::before{width:5px;height:5px;margin-top:-3px;left:-12px;background:var(--gold);border-color:var(--gold)}
 .lbl.voy{color:var(--gold)}
 .lbl.zen{color:#fff;font-family:var(--serif);font-size:19px;font-style:italic}
 .lbl.zen::before{width:13px;height:13px;margin-top:-7px;left:-20px;border-color:var(--beam);box-shadow:0 0 14px var(--beam)}
@@ -732,6 +733,7 @@ const L = {
     title: 'STARBEAM — куда долетел свет твоего рождения',
     photoBgWork: 'убираем фон…', photoBgFail: 'фон убрать не удалось, оставили исходное фото',
     photoAdd: 'Добавить фото', photoChange: 'Заменить фото', photoAdded: 'Фото добавлено защитной подложкой', scaleH: 'Шкала: от световой секунды до {y} года ({n} св. лет)', photoFail: 'Не удалось открыть фото. Попробуй JPG или PNG.',
+    mMoon: 'Луна', mSun: 'Солнце, 1 а. е.', m1ly: '1 световой год', lsS: 'св. с', lmS: 'св. мин', lhS: 'св. ч',
     km: 'км', lyS: 'св. л.', lyLong: 'световых лет', sec: 'с', min: 'мин', h: 'ч',
     zen: 'твой луч', front: 'фронт твоего света', copyFail: 'Не удалось скопировать', pngFail: 'Не удалось собрать PNG',
     mNew: 'Новолуние', mFull: 'Полнолуние', mWaxC: 'Растущий серп', mFirst: 'Первая четверть', mWaxG: 'Растущая Луна', mWanC: 'Убывающий серп', mLast: 'Последняя четверть', mWanG: 'Убывающая Луна',
@@ -810,7 +812,7 @@ const L = {
     routeH: 'Light chronicle', routeP: 'Light spreads in every direction: every star closer than your age in light years has already received the flash of your birth. Stars are DSS2 survey frames at exact coordinates; Solar System objects come from the NASA archive.',
     ld1: 'Your light has already reached', ld2: 'of the', ld3: 'nearest stars and', ld4: 'exoplanets. Next on its way:', ld5: 'Earth’s radio bubble is now about',
     exoH: 'Worlds your light has reached', exoP: 'Confirmed exoplanets from the NASA Exoplanet Archive within 110 light years. In the 3D sky they are dots: orange ones are already inside your light sphere.',
-    tabReached: 'Reached', tabNext: 'Next', exoReachedA: 'reached', cBeam: 'Beam', cSky: 'Sky', cRoute: 'Chronicle', cWorlds: 'Worlds', cScope: 'Eyepiece', exoAnd: 'and', exoNextA: 'next',
+    tabReached: 'Reached', tabNext: 'Next', exoReachedA: 'reached', mMoon: 'Moon', mSun: 'Sun, 1 AU', m1ly: '1 light year', lsS: 'light s', lmS: 'light min', lhS: 'light h', cBeam: 'Beam', cSky: 'Sky', cRoute: 'Chronicle', cWorlds: 'Worlds', cScope: 'Eyepiece', exoAnd: 'and', exoNextA: 'next',
     scopeH: 'An eyepiece pointed at your zenith', sc1: 'Real sky surveys at', sc2: 'Rotate and zoom, switch between optical, infrared 2MASS or NASA WISE.',
     aZin: 'Zoom in', aZout: 'Zoom out', aZhome: 'Back to zenith', copyPost: 'Copy a post for X', shareCard: 'Download 1200×675 card', apodOpen: 'Open on apod.nasa.gov',
     aCut: 'Sky frame at your zenith', cutH: 'Zenith frame', cut1: '0.45° field, survey', cut2: 'This frame goes on your Galactic ID.',
@@ -869,7 +871,7 @@ const L = {
     routeH: 'Crónica de la luz', routeP: 'La luz va en todas direcciones: cada estrella más cercana que tu edad en años luz ya recibió el destello de tu nacimiento. Las estrellas son tomas del relevamiento DSS2 en coordenadas exactas; el Sistema Solar viene del archivo de la NASA.',
     ld1: 'Tu luz ya alcanzó', ld2: 'de las', ld3: 'estrellas más cercanas y', ld4: 'exoplanetas. La próxima en el camino:', ld5: 'La burbuja de radio de la Tierra mide hoy unos',
     exoH: 'Mundos a los que llegó tu luz', exoP: 'Exoplanetas confirmados del NASA Exoplanet Archive a menos de 110 años luz. En el cielo 3D son puntos: los naranjas ya están dentro de tu esfera de luz.',
-    tabReached: 'Alcanzados', tabNext: 'Próximos', exoReachedA: 'alcanzados', cBeam: 'Haz', cSky: 'Cielo', cRoute: 'Crónica', cWorlds: 'Mundos', cScope: 'Ocular', exoAnd: 'y', exoNextA: 'próximos',
+    tabReached: 'Alcanzados', tabNext: 'Próximos', exoReachedA: 'alcanzados', mMoon: 'Luna', mSun: 'Sol, 1 UA', m1ly: '1 año luz', lsS: 's luz', lmS: 'min luz', lhS: 'h luz', cBeam: 'Haz', cSky: 'Cielo', cRoute: 'Crónica', cWorlds: 'Mundos', cScope: 'Ocular', exoAnd: 'y', exoNextA: 'próximos',
     scopeH: 'Un ocular apuntado a tu cenit', sc1: 'Relevamientos reales del cielo en', sc2: 'Girá y acercá, cambiá entre óptico, infrarrojo 2MASS o NASA WISE.',
     aZin: 'Acercar', aZout: 'Alejar', aZhome: 'Volver al cenit', copyPost: 'Copiar publicación para X', shareCard: 'Descargar tarjeta 1200×675', apodOpen: 'Abrir en apod.nasa.gov',
     aCut: 'Toma del cielo en tu cenit', cutH: 'Toma del cenit', cut1: 'Campo de 0,45°, relevamiento', cut2: 'Esta toma va en tu Galactic ID.',
@@ -1210,7 +1212,11 @@ scene.add(cityMarker);
 const cityGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,220,200,1)', 'rgba(255,106,61,.5)'), blending: THREE.AdditiveBlending, depthWrite: false }));
 cityGlow.scale.setScalar(0.12); scene.add(cityGlow);
 const beamGroup = new THREE.Group(); scene.add(beamGroup);
-const FRONT_D = 6; // где рисуем «фронт света» (в радиусах Земли): условно, настоящий фронт — в десятках световых лет
+const FRONT_D = 60; // фронт света (в радиусах Земли); путь вдоль луча — в логарифмическом масштабе, см. beamS()
+const LY0 = 1e-8;   // ~0,3 световой секунды: начало логарифмической шкалы
+// где на луче лежит расстояние ly при нынешнем пути света lyNow: Луна, Солнце, «Вояджер», звёзды — по порядку и в пропорции
+const beamS = (ly, lyNow) => FRONT_D * Math.log10(1 + ly / LY0) / Math.log10(1 + lyNow / LY0);
+const marksGroup = new THREE.Group();
 const BEAM_LEN = FRONT_D;
 const beamCore = new THREE.Mesh(new THREE.CylinderGeometry(0.0046, 0.0046, 1, 8, 1, true), new THREE.MeshBasicMaterial({ color: 0xFFE2D4, transparent: true, opacity: 0.95, blending: THREE.AdditiveBlending, depthWrite: false }));
 const beamHalo = new THREE.Mesh(new THREE.CylinderGeometry(0.0205, 0.0205, 1, 12, 1, true), new THREE.MeshBasicMaterial({ color: 0xFF6A3D, transparent: true, opacity: 0.24, blending: THREE.AdditiveBlending, depthWrite: false }));
@@ -1221,6 +1227,7 @@ const pulses = Array.from({ length: 4 }, () => { const s = new THREE.Sprite(new 
 const targetGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,230,215,.9)', 'rgba(255,106,61,.35)'), blending: THREE.AdditiveBlending, depthWrite: false }));
 targetGlow.scale.setScalar(160); scene.add(targetGlow);
 // фронт света — светящаяся «голова» луча, рядом с ней летит корабль
+scene.add(marksGroup);
 const frontGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,255,255,1)', 'rgba(255,120,70,.7)'), blending: THREE.AdditiveBlending, depthWrite: false }));
 frontGlow.scale.setScalar(0.7); scene.add(frontGlow);
 
@@ -1353,7 +1360,9 @@ function placeScene() {
   viewN.copy(sunDir).addScaledVector(beamDir, -sunDir.dot(beamDir));
   if (viewN.lengthSq() < 1e-3) viewN.crossVectors(beamDir, perp);
   viewN.normalize().applyAxisAngle(beamDir, 0.6);
-  camUp.copy(beamDir).applyAxisAngle(viewN, canvas3d.clientWidth > 900 ? 0.4 : -0.38).normalize();
+  // «верх» кадра — сторона камеры: Земля внизу, луч уходит вверх к точке схода; лёгкий наклон по диагонали
+  const shot = earthShot(), fwd = shot.tgt.clone().sub(shot.pos).normalize();
+  camUp.copy(viewN).addScaledVector(fwd, -viewN.dot(fwd)).normalize().applyAxisAngle(fwd, canvas3d.clientWidth > 900 ? -0.32 : -0.18);
 }
 
 /* --- камера */
@@ -1361,20 +1370,18 @@ let camMode = 'earth', tween = null;
 function camShot(mode) {
   const s = shipWorldPos(performance.now() / 1000);
   const mid = cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D * 0.45));
-  if (mode === 'earth') return earthShot(mid);
+  if (mode === 'earth') return earthShot();
   if (mode === 'beam') return { pos: cityPos.clone().multiplyScalar(1.08).add(perp.clone().multiplyScalar(0.12)), tgt: cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D)) };
   if (mode === 'moon') { const mid = moon.position.clone().multiplyScalar(0.5); const off = new THREE.Vector3().crossVectors(moon.position, new THREE.Vector3(0, 1, 0)).normalize().multiplyScalar(48); return { pos: mid.clone().add(off).add(new THREE.Vector3(0, 14, 0)), tgt: mid }; }
   // вид с фронта назад: корабль крупно, за ним луч и Земля
   return { pos: s.clone().add(beamDir.clone().multiplyScalar(0.75)).add(perp.clone().multiplyScalar(0.38)), tgt: s.clone().add(beamDir.clone().multiplyScalar(-0.8)) };
 }
-// Ракурс «Земля»: Земля внизу, луч уходит вверх, фронт с кораблём сверху; на широком экране сюжет
-// сдвинут в свободную колонку между текстом слева и панелью справа, на телефоне поднят над заголовком
-function earthShot(mid) {
-  const w = canvas3d.clientWidth, h = canvas3d.clientHeight, narrow = w <= 900;
-  const D = narrow ? 15.5 : 13.5, halfH = D * Math.tan(camera.fov * DEG / 2), halfW = halfH * (w / h);
-  const right = new THREE.Vector3().crossVectors(viewN.clone().negate(), camUp).normalize();
-  const tgt = mid.clone().addScaledVector(right, -(narrow ? 0 : 0.2) * halfW).addScaledVector(camUp, narrow ? -0.2 * halfH : -0.06 * halfH);
-  return { pos: tgt.clone().addScaledVector(viewN, D), tgt };
+// Ракурс «Земля»: камера у Земли, сбоку и чуть позади, смотрит вдоль луча — луч уходит вдаль, метки сжимаются в перспективе
+function earthShot() {
+  const narrow = canvas3d.clientWidth <= 900;
+  // Земля на переднем плане, фронт у точки схода; на телефоне сцена поднята над заголовком
+  const pos = cityPos.clone().addScaledVector(beamDir, narrow ? -16 : -9).addScaledVector(viewN, narrow ? 6 : 4.5);
+  return { pos, tgt: cityPos.clone().addScaledVector(beamDir, narrow ? -1.2 : 8) };
 }
 function setCam(mode) {
   camMode = mode;
@@ -1393,6 +1400,26 @@ function buildLabels() {
   const host = $('labels'); host.innerHTML = ''; labelEls.length = 0;
   const add = (cls, html, vec) => { const el = document.createElement('div'); el.className = 'lbl ' + cls; el.innerHTML = html; host.appendChild(el); labelEls.push({ el, vec }); };
   add('voy front', t('front'), cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D + 0.25)));
+  // вехи на луче: что свет уже прошёл, в логарифмическом масштабе
+  marksGroup.clear();
+  const tmL = telemetry(Date.now()), rtL = new THREE.Vector3().crossVectors(perp, beamDir).normalize();
+  const reachedStars = STARS.filter((st) => st.ly <= tmL.ly).sort((a, c) => a.ly - c.ly);
+  const marks = [
+    { name: t('mMoon'), ly: 1.282 / SEC_YR, d: f2.format(1.28) + ' ' + t('lsS') },
+    { name: t('mSun'), ly: 499 / SEC_YR, d: '8,3 ' + t('lmS') },
+    { name: 'Voyager 1', ly: tmL.voyKm / KM_LY, d: Math.round(tmL.voyKm / C_KMS / 3600) + ' ' + t('lhS') },
+    ...[reachedStars.at(-1), reachedStars[0], reachedStars.find((st) => st.id === 'sirius')].filter(Boolean).filter((st, i, a) => a.indexOf(st) === i)
+      .map((st) => ({ name: st.name, ly: st.ly, d: numFmt(st.ly) + ' ' + t('lyS') })),
+    { name: t('m1ly'), ly: 1, d: '' },
+    ...reachedStars.map((st) => ({ name: st.name, ly: st.ly, quiet: true })),
+  ];
+  for (const m of marks) {
+    const sPos = beamS(m.ly, tmL.ly); if (sPos >= FRONT_D - 0.3) continue;
+    const p = cityPos.clone().addScaledVector(beamDir, sPos);
+    const dot = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,236,205,1)', 'rgba(205,163,73,.5)'), blending: THREE.AdditiveBlending, depthWrite: false }));
+    dot.position.copy(p); dot.scale.setScalar(0.08 + sPos * 0.006); marksGroup.add(dot);
+    if (!m.quiet) add('mark', esc(m.name) + (m.d ? '<em>' + m.d + '</em>' : ''), p.clone().addScaledVector(rtL, 0.15));
+  }
   add('zen', t('zen'), beamDir.clone().multiplyScalar(R_SKY * 0.95));
   const ly = telemetry(Date.now()).ly;
   STARS.filter((s) => s.label || s.ly < 6 || s.id === 'trappist').forEach((s) => add(ly >= s.ly ? 'reached' : '', esc(s.name) + '<em>' + numFmt(s.ly) + ' ' + t('lyS') + '</em>', skyDir(s.ra, s.dec).multiplyScalar(R_SKY * 0.94)));
@@ -1408,13 +1435,15 @@ function measureBlockers() {
 const blocked = (x, y) => blockers.some((k) => x > k.l && x < k.r && y > k.t && y < k.b);
 function updateLabels() {
   const w = canvas3d.clientWidth, h = canvas3d.clientHeight; camera.getWorldDirection(_f);
+  const placed = [];
   for (const { el, vec } of labelEls) {
     _v.copy(vec).sub(camera.position);
     if (_v.dot(_f) <= 0) { el.style.display = 'none'; continue; }
     _v.copy(vec).project(camera);
     if (Math.abs(_v.x) > 1.05 || Math.abs(_v.y) > 1.05) { el.style.display = 'none'; continue; }
     const px = (_v.x + 1) / 2 * w, py = (1 - _v.y) / 2 * h;
-    if (blocked(px, py)) { el.style.display = 'none'; continue; }
+    if (blocked(px, py) || placed.some((q) => Math.abs(q.y - py) < 17 && Math.abs(q.x - px) < 170)) { el.style.display = 'none'; continue; }
+    placed.push({ x: px, y: py });
     el.style.display = 'block'; el.style.left = px + 'px'; el.style.top = py + 'px';
   }
 }
@@ -1422,6 +1451,7 @@ function updateLabels() {
 function resize() {
   const w = canvas3d.clientWidth, h = canvas3d.clientHeight; if (!w || !h) return;
   renderer.setSize(w, h, false); if (!LITE) { composer.setSize(w, h); bloom.resolution.set(w, h); } camera.aspect = w / h;
+  camera.fov = w > 900 ? 45 : 55;
   if (w > 900) camera.setViewOffset(w, h, -w * 0.09, 0, w, h); else camera.clearViewOffset();
   camera.updateProjectionMatrix(); measureBlockers();
 }
@@ -1470,7 +1500,8 @@ function frame(now) {
     if (tween.t >= 1) { tween = null; makeControls(); }
   } else if (camMode === 'ship') { const s = camShot('ship'); camera.position.lerp(s.pos, 0.08); controls.target.lerp(s.tgt, 0.08); }
   if (camMode === 'ship' || tween) camera.lookAt(controls.target); else controls.update();
-  setBeamWidth(Math.max(1, camera.position.distanceTo(controls.target) / (LITE ? 3.2 : 6.5)));
+  setBeamWidth(camMode === 'earth' ? (LITE ? 2.4 : 1.7) : 1);
+  frontGlow.scale.setScalar(Math.max(0.7, camera.position.distanceTo(frontGlow.position) * 0.03));
   if (LITE) renderer.render(scene, camera); else composer.render();
   if (!labelsHidden) updateLabels();
 
