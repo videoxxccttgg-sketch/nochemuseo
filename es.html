@@ -1422,7 +1422,7 @@ function frame(now) {
     if (tween.t >= 1) { tween = null; makeControls(); }
   } else if (camMode === 'ship') { const s = camShot('ship'); camera.position.lerp(s.pos, 0.08); controls.target.lerp(s.tgt, 0.08); }
   if (camMode === 'ship' || tween) camera.lookAt(controls.target); else controls.update();
-  setBeamWidth(Math.max(1, camera.position.distanceTo(controls.target) / 3.2));
+  setBeamWidth(Math.max(1, camera.position.distanceTo(controls.target) / (LITE ? 3.2 : 6.5)));
   if (LITE) renderer.render(scene, camera); else composer.render();
   if (!labelsHidden) updateLabels();
 
