@@ -205,8 +205,11 @@ input[type=datetime-local]::-webkit-calendar-picker-indicator{filter:invert(.8) 
 .atlas-table th{font-weight:400;color:var(--dim);font-size:13.4px;text-align:left;padding:10px 12px;border-bottom:1px solid var(--gold-soft)}
 .atlas-table td{padding:11px 12px;border-bottom:1px solid rgba(154,163,199,.1);font-variant-numeric:tabular-nums}
 .atlas-table tr:hover td{background:rgba(205,163,73,.04)}
-.exo{display:grid;grid-template-columns:340px 1fr;gap:40px;margin-top:70px;padding-top:30px;border-top:1px solid var(--gold-soft)}
-.exo h3{font-family:var(--serif);font-size:33.6px;font-weight:500;line-height:1.1;margin-bottom:12px}
+.exo{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 28px;margin-top:70px;padding-top:30px;border-top:1px solid var(--gold-soft)}
+.exo-nav{font-family:var(--serif);font-size:30px;color:var(--haze)}
+.exo-nav a{color:var(--beam);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:6px}
+.exo-nav a:hover{color:#fff}
+.exo h3{font-family:var(--serif);font-size:33.6px;font-weight:500;line-height:1.1}
 .exo-scroll{max-height:380px;overflow:auto}
 .tabs{display:flex;gap:18px;margin-top:20px;font-size:15.1px}
 .tabs button{color:var(--haze);padding-bottom:4px;border-bottom:1px solid transparent}
@@ -248,7 +251,9 @@ input[type=datetime-local]::-webkit-calendar-picker-indicator{filter:invert(.8) 
 .btn.wide{width:100%}
 
 /* паспорт */
-.pass{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:start}
+.pass{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;align-items:start}
+.keep{font-family:var(--serif);font-size:27px;line-height:1.2;color:#fff;margin-bottom:18px}
+.setup-h{font-family:var(--serif);font-size:27px;font-weight:500;margin-bottom:14px}
 .split{display:grid;grid-template-columns:2fr 1fr 2fr;gap:2px;margin:6px 0 18px}
 .split div{padding:12px 0 0;border-top:3px solid}
 .split b{font-family:var(--serif);font-size:24.6px;font-weight:600;display:block}
@@ -393,7 +398,7 @@ footer a{color:var(--haze)}
   <div class="topline">
     <a class="wordmark" href="#top">STARBEAM</a>
     <nav class="menu" aria-label="Разделы" data-i18n-aria="aNav">
-      <a href="#route" data-i18n="navRoute">Хроника света</a><a href="#telescope" data-i18n="navScope">Телескоп</a><a href="#passport">Galactic ID</a>
+      <a href="#passport">Galactic ID</a><a href="#route" data-i18n="navRoute">Хроника света</a><a href="#telescope" data-i18n="navScope">Телескоп</a>
     </nav>
     <div class="tools">
       <div class="toggle" role="group" aria-label="Language" id="langs"><button data-lang="ru">RU</button><button data-lang="en">EN</button><button data-lang="es">ES</button></div>
@@ -459,73 +464,24 @@ footer a{color:var(--haze)}
 </section>
 
 <main class="page">
-  <section class="chapter" id="route">
-    <div class="chapter-head">
-      <h2 data-i18n="routeH">Хроника света</h2>
-      <p data-i18n="routeP">Свет идёт во все стороны: каждая звезда ближе твоего возраста в световых годах уже получила вспышку твоего рождения. Звёзды — снимки обзора DSS2 по точным координатам, Солнечная система — из архива NASA.</p>
-    </div>
-    <p class="lead"><span data-i18n="ld1">Твой свет уже коснулся</span> <b id="sStars">—</b> <span data-i18n="ld2">из</span> <span id="sStarsTot">—</span> <span data-i18n="ld3">ближайших звёзд и</span> <b class="hot" id="sExo">—</b> <span data-i18n="ld4">экзопланет. Следующая на пути —</span> <b id="sNext">—</b>, <span id="sNextEta">—</span>. <span data-i18n="ld5">Радиопузырь Земли сейчас около</span> <span id="sRadio">—</span>.</p>
-    <div class="rail" id="routeGrid"></div>
-
-    <div class="exo">
-      <div>
-        <h3 data-i18n="exoH">Миры, до которых дошёл твой свет</h3>
-        <p class="muted" style="font-size:15.7px" data-i18n="exoP">Подтверждённые экзопланеты NASA Exoplanet Archive в пределах 110 световых лет. В 3D это точки на небе: оранжевые уже внутри твоей световой сферы.</p>
-        <p class="muted" style="font-size:13.4px;margin-top:10px" id="sExoSrc"></p>
-        <div class="tabs" id="exoFilter"><button data-f="reached" class="on" data-i18n="tabReached">Достигнутые</button><button data-f="next" data-i18n="tabNext">Следующие</button></div>
-      </div>
-      <div class="exo-scroll" id="exoList"><p class="muted">Загружаем архив…</p></div>
-    </div>
-  </section>
-
-  <section class="chapter" id="telescope">
-    <div class="chapter-head">
-      <h2 data-i18n="scopeH">Окуляр, наведённый на твой зенит</h2>
-      <div>
-        <p><span data-i18n="sc1">Настоящие обзоры неба в точке</span> <span id="teleCoords" class="num">—</span>. <span data-i18n="sc2">Поверни и приблизь, переключи оптику, инфракрасный 2MASS или NASA WISE.</span></p>
-        <div class="surveys" id="surveys" style="margin-top:14px">
-          <button class="on" data-survey="https://skies.esac.esa.int/DSSColor/" data-hips="CDS/P/DSS2/color">DSS2</button>
-          <button data-survey="https://skies.esac.esa.int/2MASSColor/" data-hips="CDS/P/2MASS/color">2MASS</button>
-          <button data-survey="https://skies.esac.esa.int/AllWISEColor/" data-hips="CDS/P/allWISE/color">NASA WISE</button>
-        </div>
-      </div>
-    </div>
-    <div class="scope">
-      <div>
-        <div class="eyepiece">
-          <div class="eyepiece-inner"><div id="aladin-lite-div"></div></div>
-          <svg class="ring" viewBox="0 0 400 400" aria-hidden="true" id="eyeRing"></svg>
-          <div class="scope-ctl"><button id="zIn" aria-label="Приблизить" data-i18n-aria="aZin">+</button><button id="zOut" aria-label="Отдалить" data-i18n-aria="aZout">−</button><button id="zHome" aria-label="Вернуть на зенит" data-i18n-aria="aZhome">⊙</button></div>
-        </div>
-        <div class="scope-status"><span id="aladinStatus">Подключаемся к обзорам неба…</span><span id="fovLabel" class="num">поле 1,50°</span></div>
-        <div class="share">
-          <button class="btn btn-line" id="copyPostBtn" data-i18n="copyPost">Скопировать пост для X</button>
-          <button class="btn btn-line" id="shareCardBtn" data-i18n="shareCard">Скачать карточку 1200×675</button>
-        </div>
-      </div>
-      <div class="side">
-        <div id="apodBox">
-          <div class="apod-img" id="apodImg"></div>
-          <div class="apod-meta" id="apodDate">NASA APOD</div>
-          <h3 id="apodTitle">Снимок дня NASA в твой день рождения</h3>
-          <p id="apodText">Загружаем…</p>
-          <a id="apodLink" href="https://apod.nasa.gov/" target="_blank" rel="noopener" data-i18n="apodOpen">Открыть на apod.nasa.gov</a>
-        </div>
-        <div class="cut">
-          <div class="cut-img"><img id="cutImg" alt="Снимок неба в точке зенита" data-i18n-alt="aCut" /></div>
-          <div><h3 style="font-size:22.4px" data-i18n="cutH">Кадр зенита</h3><p><span data-i18n="cut1">Поле 0,45°, обзор</span> <span id="cutSurvey">DSS2</span>. <span data-i18n="cut2">Этот кадр попадёт в твой Galactic ID.</span></p></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section class="chapter" id="passport">
     <div class="chapter-head">
       <h2>Galactic Pilot ID</h2>
-      <p data-i18n="passP">Именной документ пилота: Земля в минуту рождения, небо в зените и звёзды, до которых долетел твой свет. Запишись в бортовой журнал — получишь номер по порядку и ссылку для друзей.</p>
+      <p data-i18n="passP">Именной документ пилота. Запишись в бортовой журнал — получишь номер по порядку и ссылку для друзей.</p>
     </div>
     <div class="pass">
       <div>
+        <p class="keep" data-i18n="keepCta">Получи свою карточку пилота на память: распечатай, заламинируй и подари — или отправь друзьям.</p>
+        <div class="cert"><canvas id="passportCanvas" width="2054" height="1296" aria-label="Galactic Pilot ID, front"></canvas><canvas id="passportBack" width="2054" height="1296" aria-label="Galactic Pilot ID, back"></canvas></div>
+        <div class="cert-actions">
+          <button class="btn btn-hot" id="printCertBtn" data-i18n="printId">Получить карточку на память, PDF</button>
+          <button class="btn btn-line" id="downloadCertBtn" data-i18n="dlId">Скачать PNG</button>
+          <button class="btn btn-line" id="copyPostBtn2" data-i18n="copyPost2">Скопировать пост со ссылкой</button>
+        </div>
+        <p class="fine" style="margin-top:10px" data-i18n="certFine">Карточка размером с права, 85,6×54 мм. PDF на A4: печатай в масштабе 100 %, вырежи по меткам, согни по пунктиру, заламинируй — и подарок готов. PNG с обеими сторонами — для мессенджеров. QR ведёт на сайт по твоей ссылке.</p>
+      </div>
+      <div>
+        <h3 class="setup-h" data-i18n="setupH">Настрой карточку</h3>
         <dl class="summary">
           <dt data-i18n="dtStart">Старт луча, UTC</dt><dd id="oBirth">—</dd>
           <dt data-i18n="dtCity">Город</dt><dd id="oCity">—</dd>
@@ -577,17 +533,63 @@ footer a{color:var(--haze)}
           <div class="reflink"><input class="in num" id="refLink" readonly /><button class="btn btn-line" type="button" id="copyRefBtn" style="padding:9px 16px;font-size:14.6px" data-i18n="copy">Скопировать</button></div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="route">
+    <div class="chapter-head">
+      <h2 data-i18n="routeH">Хроника света</h2>
+    </div>
+    <p class="lead"><span data-i18n="ld1">Твой свет уже коснулся</span> <b id="sStars">—</b> <span data-i18n="ld2">из</span> <span id="sStarsTot">—</span> <span data-i18n="ld3">ближайших звёзд и</span> <b class="hot" id="sExo">—</b> <span data-i18n="ld4">экзопланет. Следующая на пути —</span> <b id="sNext">—</b>, <span id="sNextEta">—</span>. <span data-i18n="ld5">Радиопузырь Земли сейчас около</span> <span id="sRadio">—</span>.</p>
+    <div class="rail" id="routeGrid"></div>
+
+    <div class="exo">
+      <h3 data-i18n="exoH">Миры, до которых дошёл твой свет</h3>
+      <p class="exo-nav"><a id="exoReachedLink" href="/worlds-reached.html" data-i18n="exoReachedA">достигнутые</a> <span data-i18n="exoAnd">и</span> <a id="exoNextLink" href="/worlds-next.html" data-i18n="exoNextA">следующие</a></p>
+    </div>
+  </section>
+
+  <section class="chapter" id="telescope">
+    <div class="chapter-head">
+      <h2 data-i18n="scopeH">Окуляр, наведённый на твой зенит</h2>
       <div>
-        <div class="cert"><canvas id="passportCanvas" width="2054" height="1296" aria-label="Galactic Pilot ID, front"></canvas><canvas id="passportBack" width="2054" height="1296" aria-label="Galactic Pilot ID, back"></canvas></div>
-        <div class="cert-actions">
-          <button class="btn btn-hot" id="printCertBtn" data-i18n="printId">Карточка для печати, PDF</button>
-          <button class="btn btn-line" id="downloadCertBtn" data-i18n="dlId">Скачать PNG</button>
-          <button class="btn btn-line" id="copyPostBtn2" data-i18n="copyPost2">Скопировать пост со ссылкой</button>
+        <p><span data-i18n="sc1">Настоящие обзоры неба в точке</span> <span id="teleCoords" class="num">—</span>. <span data-i18n="sc2">Поверни и приблизь, переключи оптику, инфракрасный 2MASS или NASA WISE.</span></p>
+        <div class="surveys" id="surveys" style="margin-top:14px">
+          <button class="on" data-survey="https://skies.esac.esa.int/DSSColor/" data-hips="CDS/P/DSS2/color">DSS2</button>
+          <button data-survey="https://skies.esac.esa.int/2MASSColor/" data-hips="CDS/P/2MASS/color">2MASS</button>
+          <button data-survey="https://skies.esac.esa.int/AllWISEColor/" data-hips="CDS/P/allWISE/color">NASA WISE</button>
         </div>
-        <p class="fine" style="margin-top:10px" data-i18n="certFine">Карточка размером с права, 85,6×54 мм. PDF на A4: печатай в масштабе 100 %, вырежи по меткам, согни по пунктиру, заламинируй — и подарок готов. PNG с обеими сторонами — для мессенджеров. QR ведёт на сайт по твоей ссылке.</p>
+      </div>
+    </div>
+    <div class="scope">
+      <div>
+        <div class="eyepiece">
+          <div class="eyepiece-inner"><div id="aladin-lite-div"></div></div>
+          <svg class="ring" viewBox="0 0 400 400" aria-hidden="true" id="eyeRing"></svg>
+          <div class="scope-ctl"><button id="zIn" aria-label="Приблизить" data-i18n-aria="aZin">+</button><button id="zOut" aria-label="Отдалить" data-i18n-aria="aZout">−</button><button id="zHome" aria-label="Вернуть на зенит" data-i18n-aria="aZhome">⊙</button></div>
+        </div>
+        <div class="scope-status"><span id="aladinStatus">Подключаемся к обзорам неба…</span><span id="fovLabel" class="num">поле 1,50°</span></div>
+        <div class="share">
+          <button class="btn btn-line" id="copyPostBtn" data-i18n="copyPost">Скопировать пост для X</button>
+          <button class="btn btn-line" id="shareCardBtn" data-i18n="shareCard">Скачать карточку 1200×675</button>
+        </div>
+      </div>
+      <div class="side">
+        <div id="apodBox">
+          <div class="apod-img" id="apodImg"></div>
+          <div class="apod-meta" id="apodDate">NASA APOD</div>
+          <h3 id="apodTitle">Снимок дня NASA в твой день рождения</h3>
+          <p id="apodText">Загружаем…</p>
+          <a id="apodLink" href="https://apod.nasa.gov/" target="_blank" rel="noopener" data-i18n="apodOpen">Открыть на apod.nasa.gov</a>
+        </div>
+        <div class="cut">
+          <div class="cut-img"><img id="cutImg" alt="Снимок неба в точке зенита" data-i18n-alt="aCut" /></div>
+          <div><h3 style="font-size:22.4px" data-i18n="cutH">Кадр зенита</h3><p><span data-i18n="cut1">Поле 0,45°, обзор</span> <span id="cutSurvey">DSS2</span>. <span data-i18n="cut2">Этот кадр попадёт в твой Galactic ID.</span></p></div>
+        </div>
       </div>
     </div>
   </section>
+
 
   <footer>
     <p data-i18n="footer1">Земля и Луна — текстуры на основе NASA Blue Marble и Earth at Night (через three.js). Карта неба — 112 тысяч звёзд каталога Hipparcos (ESA, данные d3-celestial) и модель Млечного Пути. Обзоры в окуляре — <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a>: DSS2 (STScI), 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Снимок дня — <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Экзопланеты — <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Архив — <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Города — Open‑Meteo.</p>
@@ -730,7 +732,7 @@ const L = {
     errCall: 'Впиши позывной — он будет на документе.', errContact: 'Нужен email (name@mail.com) или ник в Telegram (@nick, от 5 символов).',
     errWallet: 'Адрес Solana — 32–44 символа без 0, O, I и l. Или оставь поле пустым.', errContactSrv: 'Проверь email или Telegram.', errWalletSrv: 'Проверь адрес кошелька Solana.',
     errCallSrv: 'Позывной: от 1 до 24 символов.', errNet: 'Журнал сейчас не отвечает. Попробуй ещё раз через минуту — документ можно скачать и без записи.',
-    toastExisting: 'Ты уже в журнале: пилот № {n}', toastNew: 'Записан: пилот № {n}', linkCopied: 'Ссылка скопирована', idDownloaded: 'Galactic Pilot ID скачан', dlId: 'Скачать PNG', printId: 'Карточка для печати, PDF', pdfReady: 'PDF готов: печатай в масштабе 100 %',
+    toastExisting: 'Ты уже в журнале: пилот № {n}', toastNew: 'Записан: пилот № {n}', linkCopied: 'Ссылка скопирована', idDownloaded: 'Galactic Pilot ID скачан', dlId: 'Скачать PNG', printId: 'Получить карточку на память, PDF', pdfReady: 'PDF готов: печатай в масштабе 100 %',
     post: '🚀 Свет моего рождения улетел на {km} км ({ly} св. лет).\n🛰 Это в {x} раз дальше «Вояджера‑1».\n✨ Он уже дошёл до {s} звёзд и {e} экзопланет.\n\nПроверь, где твой: {link}', postCopied: 'Пост скопирован',
     cardLead: 'Свет моего рождения улетел от Земли на', cardLy: '{ly} св. лет', cardVoy: 'в {x} раз дальше «Вояджера‑1»', cardZen: 'Зенит: {city}, RA {ra}° / Dec {dec}', cardSphere: 'Звёзд в световой сфере: {s}, экзопланет: {e}', cardDone: 'Карточка 1200×675 скачана',
   },
@@ -780,17 +782,17 @@ const L = {
     routeH: 'Light chronicle', routeP: 'Light spreads in every direction: every star closer than your age in light years has already received the flash of your birth. Stars are DSS2 survey frames at exact coordinates; Solar System objects come from the NASA archive.',
     ld1: 'Your light has already reached', ld2: 'of the', ld3: 'nearest stars and', ld4: 'exoplanets. Next on its way:', ld5: 'Earth’s radio bubble is now about',
     exoH: 'Worlds your light has reached', exoP: 'Confirmed exoplanets from the NASA Exoplanet Archive within 110 light years. In the 3D sky they are dots: orange ones are already inside your light sphere.',
-    tabReached: 'Reached', tabNext: 'Next',
+    tabReached: 'Reached', tabNext: 'Next', exoReachedA: 'reached', keepCta: 'Get your pilot card as a keepsake: print it, laminate it and give it as a gift, or send it to friends.', setupH: 'Customize your card', exoAnd: 'and', exoNextA: 'next',
     scopeH: 'An eyepiece pointed at your zenith', sc1: 'Real sky surveys at', sc2: 'Rotate and zoom, switch between optical, infrared 2MASS or NASA WISE.',
     aZin: 'Zoom in', aZout: 'Zoom out', aZhome: 'Back to zenith', copyPost: 'Copy a post for X', shareCard: 'Download 1200×675 card', apodOpen: 'Open on apod.nasa.gov',
     aCut: 'Sky frame at your zenith', cutH: 'Zenith frame', cut1: '0.45° field, survey', cut2: 'This frame goes on your Galactic ID.',
-    passP: 'Your pilot document: Earth at the minute you were born, the sky at your zenith and the stars your light has reached. Join the logbook to get a number in order and a link for friends.',
+    passP: 'Your pilot document. Join the logbook to get a number in order and a link for friends.',
     dtStart: 'Beam start, UTC', dtCity: 'City', dtVoy: 'Versus Voyager 1',
     shipV: 'Crewed ship: an Orion‑style capsule and a service module with an X of solar wings.', shipA: 'Robotic scout: a Voyager dish, a JIMO‑style truss with radiators and nuclear‑electric drive.', shipSel: 'Selected, flying in the scene',
     lCall: 'Pilot call sign <span>up to 24 characters, printed on your ID</span>', phCall: 'Your name, brand, social media handle, etc.', lContact: 'Email or Telegram', phContact: 'you@mail.com or @nick',
     lWallet: 'Solana wallet <span>optional</span>', phWallet: 'Wallet address',
     noSign: 'No.', regDoneP: 'You are in the logbook. Send this link to friends — it shows who you brought in.', copy: 'Copy',
-    dlId: 'Download PNG', printId: 'Printable card, PDF', pdfReady: 'PDF ready: print at 100%', copyPost2: 'Copy a post with your link', certFine: 'A card the size of a driving licence, 85.6×54 mm. The PDF is an A4 sheet: print at 100%, cut along the marks, fold on the dashed line and laminate for a ready gift. The PNG with both sides is for chats. The QR opens the site with your link.',
+    dlId: 'Download PNG', printId: 'Get your keepsake card, PDF', pdfReady: 'PDF ready: print at 100%', copyPost2: 'Copy a post with your link', certFine: 'A card the size of a driving licence, 85.6×54 mm. The PDF is an A4 sheet: print at 100%, cut along the marks, fold on the dashed line and laminate for a ready gift. The PNG with both sides is for chats. The QR opens the site with your link.',
     footer1: 'Earth and Moon: textures based on NASA Blue Marble and Earth at Night (via three.js). Sky map: 112,000 stars from the Hipparcos catalogue (ESA, d3-celestial data) and a Milky Way model. Eyepiece surveys: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Picture of the day: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanets: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archive: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Cities: Open‑Meteo.',
     footer2: 'Calculations: sidereal time IAU 1982, IAU 1976 precession to J2000, Sun and Moon by simplified Meeus formulas (0.1–0.5°). Voyager positions are approximate. NASA is not affiliated with this project and does not endorse it.',
   },
@@ -839,17 +841,17 @@ const L = {
     routeH: 'Crónica de la luz', routeP: 'La luz va en todas direcciones: cada estrella más cercana que tu edad en años luz ya recibió el destello de tu nacimiento. Las estrellas son tomas del relevamiento DSS2 en coordenadas exactas; el Sistema Solar viene del archivo de la NASA.',
     ld1: 'Tu luz ya alcanzó', ld2: 'de las', ld3: 'estrellas más cercanas y', ld4: 'exoplanetas. La próxima en el camino:', ld5: 'La burbuja de radio de la Tierra mide hoy unos',
     exoH: 'Mundos a los que llegó tu luz', exoP: 'Exoplanetas confirmados del NASA Exoplanet Archive a menos de 110 años luz. En el cielo 3D son puntos: los naranjas ya están dentro de tu esfera de luz.',
-    tabReached: 'Alcanzados', tabNext: 'Próximos',
+    tabReached: 'Alcanzados', tabNext: 'Próximos', exoReachedA: 'alcanzados', keepCta: 'Llevate tu tarjeta de piloto de recuerdo: imprimila, plastificala y regalala, o mandala a tus amigos.', setupH: 'Personalizá tu tarjeta', exoAnd: 'y', exoNextA: 'próximos',
     scopeH: 'Un ocular apuntado a tu cenit', sc1: 'Relevamientos reales del cielo en', sc2: 'Girá y acercá, cambiá entre óptico, infrarrojo 2MASS o NASA WISE.',
     aZin: 'Acercar', aZout: 'Alejar', aZhome: 'Volver al cenit', copyPost: 'Copiar publicación para X', shareCard: 'Descargar tarjeta 1200×675', apodOpen: 'Abrir en apod.nasa.gov',
     aCut: 'Toma del cielo en tu cenit', cutH: 'Toma del cenit', cut1: 'Campo de 0,45°, relevamiento', cut2: 'Esta toma va en tu Galactic ID.',
-    passP: 'Tu documento de piloto: la Tierra en el minuto en que naciste, el cielo en tu cenit y las estrellas a las que llegó tu luz. Anotate en la bitácora para tener un número en orden y un enlace para amigos.',
+    passP: 'Tu documento de piloto. Anotate en la bitácora para tener un número en orden y un enlace para amigos.',
     dtStart: 'Inicio del rayo, UTC', dtCity: 'Ciudad', dtVoy: 'Frente a la Voyager 1',
     shipV: 'Nave tripulada: cápsula estilo Orion y módulo de servicio con alas solares en X.', shipA: 'Sonda robótica: antena del Voyager, armazón con radiadores estilo JIMO y propulsión nuclear eléctrica.', shipSel: 'Elegida, vuela en la escena',
     lCall: 'Nombre de piloto <span>hasta 24 caracteres, va en el documento</span>', phCall: 'Tu nombre, marca, usuario en redes, etc.', lContact: 'Email o Telegram', phContact: 'vos@mail.com o @nick',
     lWallet: 'Billetera Solana <span>opcional</span>', phWallet: 'Dirección de la billetera',
     noSign: 'N.º', regDoneP: 'Estás en la bitácora. Mandá este enlace a tus amigos: muestra a quién trajiste vos.', copy: 'Copiar',
-    dlId: 'Descargar PNG', printId: 'Tarjeta para imprimir, PDF', pdfReady: 'PDF listo: imprimí al 100 %', copyPost2: 'Copiar publicación con tu enlace', certFine: 'Una tarjeta del tamaño de un registro, 85,6×54 mm. El PDF es una hoja A4: imprimí al 100 %, recortá por las marcas, doblá por la línea punteada y plastificala para regalar. El PNG con los dos lados es para chats. El QR abre el sitio con tu enlace.',
+    dlId: 'Descargar PNG', printId: 'Obtené tu tarjeta de recuerdo, PDF', pdfReady: 'PDF listo: imprimí al 100 %', copyPost2: 'Copiar publicación con tu enlace', certFine: 'Una tarjeta del tamaño de un registro, 85,6×54 mm. El PDF es una hoja A4: imprimí al 100 %, recortá por las marcas, doblá por la línea punteada y plastificala para regalar. El PNG con los dos lados es para chats. El QR abre el sitio con tu enlace.',
     footer1: 'Tierra y Luna: texturas basadas en NASA Blue Marble y Earth at Night (vía three.js). Mapa del cielo: 112.000 estrellas del catálogo Hipparcos (ESA, datos de d3-celestial) y un modelo de la Vía Láctea. Relevamientos del ocular: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Foto del día: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanetas: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archivo: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Ciudades: Open‑Meteo.',
     footer2: 'Cálculos: hora sidérea IAU 1982, precesión IAU 1976 a J2000, Sol y Luna con fórmulas simplificadas de Meeus (0,1–0,5°). Las posiciones de las Voyager son aproximadas. La NASA no está vinculada a este proyecto ni lo respalda.',
   },
@@ -1627,7 +1629,6 @@ function renderRoute(tm) {
 }
 
 /* --- экзопланеты NASA */
-let exoFilter = 'reached';
 async function loadExoplanets() {
   const q = 'select pl_name,hostname,sy_dist,ra,dec,disc_year from pscomppars where sy_dist < 34';
   try {
@@ -1640,17 +1641,12 @@ async function loadExoplanets() {
   if (sky) renderExo(telemetry(Date.now()));
 }
 function renderExo(tm) {
+  const q = `?b=${birthMs}&lang=${LANG}`;
+  $('exoReachedLink').href = '/worlds-reached.html' + q; $('exoNextLink').href = '/worlds-next.html' + q;
   if (!exoplanets.length) return;
-  const reached = exoplanets.filter((p) => p.ly <= tm.ly);
-  $('sExo').textContent = intFmt.format(reached.length);
-  $('sExoSrc').textContent = t(exoSource);
-  const list = exoFilter === 'reached' ? reached.slice(-60).reverse() : exoplanets.filter((p) => p.ly > tm.ly).slice(0, 60);
-  $('exoList').innerHTML = list.length ? `<table class="atlas-table"><thead><tr><th>${t('thPlanet')}</th><th>${t('thFound')}</th><th style="text-align:right">${t('thDist')}</th><th style="text-align:right">${t('thLight')}</th></tr></thead><tbody>${list.map((p) => `<tr><td>${esc(p.name)}</td><td class="muted">${esc(p.year || '—')}</td><td style="text-align:right">${numFmt(p.ly, 1)} ${t('lyS')}</td>
-    <td style="text-align:right;color:${p.ly <= tm.ly ? 'var(--beam)' : 'var(--haze)'}">${new Date(birthMs + p.ly * SEC_YR * 1000).getFullYear()}</td></tr>`).join('')}</tbody></table>`
-    : `<p class="muted">${t('exoNone')}</p>`;
+  $('sExo').textContent = intFmt.format(exoplanets.filter((p) => p.ly <= tm.ly).length);
   setPoints(exoPts, exoplanets, (p) => (p.ly <= tm.ly ? '#FF8A5C' : '#4b5383'), R_SKY * 0.93);
 }
-document.querySelectorAll('#exoFilter button').forEach((b) => b.addEventListener('click', () => { exoFilter = b.dataset.f; document.querySelectorAll('#exoFilter button').forEach((x) => x.classList.toggle('on', x === b)); renderExo(telemetry(Date.now())); }));
 
 /* =====================================================================
    11. TELESCOPE — Aladin Lite v3 + hips2fits + NASA APOD
@@ -2213,7 +2209,6 @@ function setLang(l) {
   if (document.activeElement !== cityInput) cityInput.value = cityName(city.name);
   $('aladinStatus').textContent = t(aladinOk ? 'aladinOk' : 'aladinConn'); setFov(fov);
   if (!$('apodImg').innerHTML) { $('apodTitle').textContent = t('apodTitle0'); $('apodText').textContent = t('apodLoading'); }
-  if (!exoplanets.length) $('exoList').innerHTML = `<p class="muted">${t('loadingArchive')}</p>`;
   if (pilot) showRegistered();
   if (sky) {
     $('routeGrid').querySelectorAll('.stop').forEach((el) => { const o = [...SOLAR, ...STARS].find((x) => x.id === el.dataset.id); el.querySelector('h3').textContent = o.name;

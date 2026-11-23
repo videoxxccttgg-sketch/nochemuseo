@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>STARBEAM</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Geologica:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+:root{--deep:#070B24;--gold:#CDA349;--gold-soft:rgba(205,163,73,.42);--star:#EEF0FF;--haze:#9AA3C7;--dim:#5E6694;--beam:#FF6A3D;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Geologica',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;color:var(--star);font-family:var(--sans);font-size:17px;line-height:1.5;min-height:100vh}
+.wrap{max-width:900px;margin:0 auto;padding:28px 20px 80px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:56px}
+.wordmark{font-family:var(--serif);font-weight:600;letter-spacing:.22em;font-size:20px;color:var(--star);text-decoration:none}
+.top a.back{color:var(--haze);text-decoration:none;font-size:15px}.top a.back:hover{color:#fff}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(38px,6vw,60px);line-height:1.05;margin-bottom:14px}
+.sub{color:var(--haze);font-size:18px;margin-bottom:12px}
+.switch{font-size:16px;color:var(--haze);margin-bottom:34px}.switch a{color:var(--beam)}
+table{width:100%;border-collapse:collapse;font-size:16px}
+th{text-align:left;font-weight:400;color:var(--dim);font-size:14px;padding:10px 8px;border-bottom:1px solid var(--gold-soft)}
+td{padding:11px 8px;border-bottom:1px solid rgba(205,163,73,.14)}
+.r{text-align:right}.yr{color:var(--beam)}.next .yr{color:var(--haze)}.muted{color:var(--haze)}
+@media (max-width:560px){.hide-s{display:none}table{font-size:15px}}
+</style>
+</head>
+<body class="reached">
+<div class="wrap">
+  <div class="top"><a class="wordmark" id="home" href="/">STARBEAM</a><a class="back" id="back" href="/"></a></div>
+  <h1 id="h"></h1>
+  <p class="sub" id="sub"></p>
+  <p class="switch"><a id="other" href="#"></a></p>
+  <div id="list"><p class="muted">…</p></div>
+</div>
+<script>
+const MODE = 'reached', SEC_YR = 31557600;
+const EXO_FALLBACK = [
+  ['Proxima Cen b',217.429,-62.680,4.246,2016],['Proxima Cen d',217.429,-62.680,4.246,2022],['Barnard b',269.452,4.693,5.96,2024],
+  ['Lalande 21185 b',165.836,35.970,8.31,2019],['eps Eri b',53.233,-9.458,10.47,2000],['Ross 128 b',176.937,0.800,11.0,2017],
+  ['GJ 1061 d',53.999,-44.512,12.0,2019],['Teegarden\'s Star b',43.254,16.881,12.5,2019],['Teegarden\'s Star c',43.254,16.881,12.5,2019],
+  ['Wolf 1061 c',247.575,-12.663,14.0,2015],['Gliese 876 b',343.320,-14.264,15.2,1998],['GJ 682 b',260.982,-44.319,16.3,2014],
+  ['Gliese 581 c',229.862,-7.722,20.5,2007],['Gliese 667 C c',259.746,-34.997,23.6,2013],['HD 219134 b',348.321,57.168,21.3,2015],
+  ['TRAPPIST-1 e',346.622,-5.041,40.7,2017],['TRAPPIST-1 f',346.622,-5.041,40.7,2017],['55 Cnc e',133.149,28.330,41.0,2004],
+  ['LHS 1140 b',11.247,-15.272,48.8,2017],['51 Peg b',344.367,20.769,50.6,1995],['HD 189733 b',300.182,22.711,64.5,2005],
+  ['HD 209458 b',330.795,18.884,159,1999]
+].map(([n,ra,dec,ly,y]) => ({ name:n, ra, dec, ly, year:y }));
+const L = {
+  ru: { reached: 'Достигнутые миры', next: 'Следующие миры', subR: 'Экзопланеты, до которых уже дошёл свет твоего рождения: {n}.', subN: 'Экзопланеты, до которых твой свет дойдёт дальше.', otherR: 'Смотреть следующие', otherN: 'Смотреть достигнутые', back: '← На главную', planet: 'Планета', found: 'Открыта', dist: 'Расстояние', lightR: 'Свет дошёл', lightN: 'Свет дойдёт', ly: 'св. л.', none: 'Пока пусто: твой свет ещё не дошёл до ближайшего известного мира.', noDate: 'Укажи дату рождения на главной странице.' },
+  en: { reached: 'Worlds reached', next: 'Next worlds', subR: 'Exoplanets the light of your birth has already reached: {n}.', subN: 'Exoplanets your light will reach next.', otherR: 'See the next ones', otherN: 'See the reached ones', back: '← Back to STARBEAM', planet: 'Planet', found: 'Found', dist: 'Distance', lightR: 'Light arrived', lightN: 'Light arrives', ly: 'ly', none: 'Nothing yet: your light has not reached the nearest known world.', noDate: 'Set your birth date on the main page.' },
+  es: { reached: 'Mundos alcanzados', next: 'Próximos mundos', subR: 'Exoplanetas a los que ya llegó la luz de tu nacimiento: {n}.', subN: 'Exoplanetas a los que tu luz llegará después.', otherR: 'Ver los próximos', otherN: 'Ver los alcanzados', back: '← Volver a STARBEAM', planet: 'Planeta', found: 'Descubierto', dist: 'Distancia', lightR: 'Llegó la luz', lightN: 'Llegará la luz', ly: 'a. l.', none: 'Todavía nada: tu luz no llegó al mundo conocido más cercano.', noDate: 'Indicá tu fecha de nacimiento en la página principal.' },
+};
+const qs = new URLSearchParams(location.search), LANG = L[qs.get('lang')] ? qs.get('lang') : 'ru', t = L[LANG], b = Number(qs.get('b'));
+document.documentElement.lang = LANG;
+const home = LANG === 'ru' ? '/' : '/' + LANG;
+document.getElementById('home').href = home; const back = document.getElementById('back'); back.href = home; back.textContent = t.back;
+const h = MODE === 'reached' ? t.reached : t.next; document.getElementById('h').textContent = h; document.title = h + ' — STARBEAM';
+const other = document.getElementById('other'); other.textContent = MODE === 'reached' ? t.otherR : t.otherN;
+other.href = (MODE === 'reached' ? '/worlds-next.html' : '/worlds-reached.html') + location.search;
+const esc = (x) => String(x).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const loc = { ru: 'ru-RU', en: 'en-US', es: 'es-AR' }[LANG], nf = new Intl.NumberFormat(loc, { maximumFractionDigits: 1 });
+async function load() {
+  try {
+    const q = 'select pl_name,sy_dist,disc_year from pscomppars where sy_dist < 34';
+    const r = await fetch(`https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=${encodeURIComponent(q)}&format=json`, { signal: AbortSignal.timeout(9000) });
+    if (!r.ok) throw 0;
+    return (await r.json()).filter((p) => p.sy_dist).map((p) => ({ name: p.pl_name, ly: p.sy_dist * 3.26156, year: p.disc_year }));
+  } catch { return EXO_FALLBACK.slice(); }
+}
+(async () => {
+  const list = document.getElementById('list');
+  if (!b) { list.innerHTML = `<p class="muted">${t.noDate}</p>`; return; }
+  const ageLy = (Date.now() - b) / (SEC_YR * 1000);
+  const all = (await load()).sort((a, c) => a.ly - c.ly);
+  const rows = MODE === 'reached' ? all.filter((p) => p.ly <= ageLy).reverse() : all.filter((p) => p.ly > ageLy);
+  document.getElementById('sub').textContent = MODE === 'reached' ? t.subR.replace('{n}', rows.length) : t.subN;
+  list.innerHTML = rows.length ? `<table><thead><tr><th>${t.planet}</th><th class="hide-s">${t.found}</th><th class="r">${t.dist}</th><th class="r">${MODE === 'reached' ? t.lightR : t.lightN}</th></tr></thead><tbody>${rows.map((p) => `<tr><td>${esc(p.name)}</td><td class="hide-s muted">${esc(p.year || '—')}</td><td class="r">${nf.format(p.ly)} ${t.ly}</td><td class="r yr">${new Date(b + p.ly * SEC_YR * 1000).getFullYear()}</td></tr>`).join('')}</tbody></table>` : `<p class="muted">${t.none}</p>`;
+})();
+</script>
+</body>
+</html>
