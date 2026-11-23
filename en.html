@@ -67,6 +67,21 @@ button{cursor:pointer;background:none;border:0}
 .lbl{position:absolute;transform:translate(12px,-50%);font-size:12.9px;white-space:nowrap;color:var(--haze);text-shadow:0 0 6px #000,0 0 2px #000;font-weight:400}
 .lbl::before{content:"";position:absolute;left:-16px;top:50%;width:7px;height:7px;margin-top:-4px;border:1px solid currentColor;border-radius:50%}
 .lbl.reached{color:#FFB79C}
+button.lbl{pointer-events:auto;cursor:pointer;background:none;border:0;padding:4px 6px;margin:-4px -6px;font:inherit;text-align:left}button.lbl:hover{color:#fff}button.lbl:focus-visible{outline:1px solid var(--gold);outline-offset:2px;border-radius:4px}
+#info{position:fixed;right:24px;top:96px;z-index:70;width:min(380px,calc(100vw - 32px));max-height:calc(100vh - 220px);overflow:auto;background:rgba(6,9,26,.95);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid var(--gold-soft);border-radius:16px;box-shadow:0 20px 50px rgba(0,0,0,.7)}
+#info[hidden]{display:none}
+.info-img img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:15px 15px 0 0;background:#000}
+.info-body{padding:18px 20px 20px;position:relative}
+.info-src{font-size:11px;color:var(--dim);margin-bottom:10px}
+.info-type{font-size:13px;color:var(--gold)}
+#info h3{font-family:var(--serif);font-weight:500;font-size:30px;line-height:1.1;margin:4px 0 12px}
+#info dl{display:grid;grid-template-columns:auto 1fr;gap:7px 14px;font-size:14.5px;margin:0}
+#info dt{color:var(--haze)}#info dd{margin:0;text-align:right;color:#fff}
+.info-note{font-size:14px;color:var(--haze);margin-top:14px;line-height:1.5}
+.info-note:empty{display:none}
+.stop{cursor:pointer}.stop:hover h3{color:var(--gold)}
+.info-x{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:1px solid var(--gold-soft);background:rgba(6,9,26,.85);color:#fff;font-size:18px;cursor:pointer;z-index:2}
+@media (max-width:700px){#info{left:12px;right:12px;width:auto;top:auto;bottom:calc(90px + env(safe-area-inset-bottom));max-height:62vh}}
 .lbl.mark{color:#E9D6A8;font-size:12.4px}.lbl.left{transform:translate(calc(-100% - 12px),-50%)}.lbl.left::before{left:auto;right:-12px}.lbl.flip{transform:translate(calc(-100% - 12px),-50%)}.lbl.flip::before{left:auto;right:-12px}.lbl.left.flip{transform:translate(12px,-50%)}.lbl.left.flip::before{right:auto;left:-12px}.lbl.mark.ahead{color:#A9B2E0}.lbl.mark.ahead::before{background:#8f9ad8;border-color:#8f9ad8}.lbl.mark::before{width:5px;height:5px;margin-top:-3px;left:-12px;background:var(--gold);border-color:var(--gold)}
 .lbl.voy{color:var(--gold)}
 .lbl.zen{color:#fff;font-family:var(--serif);font-size:19px;font-style:italic}
@@ -396,6 +411,7 @@ html[data-page="home"]{scroll-snap-type:y proximity}
 </style>
 </head>
 <body>
+<aside id="info" hidden aria-live="polite"><button type="button" class="info-x" aria-label="×">×</button><div class="info-img"></div><div class="info-body"><div class="info-src"></div><div class="info-type"></div><h3></h3><dl></dl><p class="info-note"></p></div></aside>
 <nav class="console" aria-label="Разделы" data-i18n-aria="aNav">
   <a data-go="home"><svg viewBox="0 0 24 24"><path d="M5.5 18.5 19 5"/><circle cx="19.5" cy="4.5" r="2"/><circle cx="5" cy="19" r="3"/></svg><span data-i18n="cBeam">Луч</span></a>
   <a data-go="id"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="8.5" cy="12" r="2.2"/><path d="M13 10h5M13 14h4"/></svg><span>ID</span></a>
@@ -718,6 +734,7 @@ const CITY_PRESETS = [
 const $ = (id) => document.getElementById(id);
 let intFmt = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 });
 let f2 = new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+let f1 = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 1 });
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 const pad = (n) => String(n).padStart(2, '0');
 const norm360 = (x) => ((x % 360) + 360) % 360;
@@ -733,6 +750,10 @@ const L = {
     title: 'STARBEAM — куда долетел свет твоего рождения',
     photoBgWork: 'убираем фон…', photoBgFail: 'фон убрать не удалось, оставили исходное фото',
     photoAdd: 'Добавить фото', photoChange: 'Заменить фото', photoAdded: 'Фото добавлено защитной подложкой', scaleH: 'Шкала: от световой секунды до {y} года ({n} св. лет)', photoFail: 'Не удалось открыть фото. Попробуй JPG или PNG.',
+    iDist: 'Расстояние', iSpec: 'Спектральный класс', iMass: 'Масса', iRad: 'Радиус', iTemp: 'Температура', iMoons: 'Спутники', iLight: 'Свет идёт', iLaunch: 'Запуск', iSpeed: 'Скорость', iStart: 'Старт', iLightR: 'Твой свет дошёл', iLightN: 'Твой свет дойдёт', iInYears: 'через {n}', bnYr: 'млрд лет', mnYr: 'млн лет', iYrs: 'лет', mlnKm: 'млн км', kgS: 'кг', kms: 'км/с',
+    tStar: 'Звезда', tSat: 'Спутник Земли', tGas: 'Газовый гигант', tIce: 'Ледяной гигант', tDwarf: 'Карликовая планета', tProbe: 'Космический зонд NASA', tCloud: 'Облако ледяных тел', tCluster: 'Звёздное скопление', tNebula: 'Туманность', tGC: 'Центр Млечного Пути', tGalaxy: 'Галактика', tEdge: 'Граница видимой Вселенной', tFront: 'Где сейчас твой свет',
+    n_moon: 'Луна', n_sun: 'Солнце', n_jup: 'Юпитер', n_sat: 'Сатурн', n_ura: 'Уран', n_nep: 'Нептун', n_pluto: 'Плутон', n_voy1: 'Вояджер‑1', n_voy2: 'Вояджер‑2', n_oort: 'Облако Оорта', n_plei: 'Плеяды (M45)', n_orion: 'Туманность Ориона (M42)', n_gc: 'Центр Галактики, Стрелец A*', n_and: 'Галактика Андромеды (M31)', n_edge: 'Край наблюдаемой Вселенной',
+    d_moon: 'Твой свет пролетел её орбиту через 1,3 секунды после рождения.', d_sun: 'Свет от Солнца идёт до Земли 8 минут 20 секунд — столько же твой свет шёл до этого расстояния.', d_jup: 'Самая большая планета: в неё поместились бы 1300 Земель.', d_sat: 'Кольца шириной 280 000 км и толщиной всего около 10 метров.', d_ura: 'Вращается «лёжа на боку»: ось наклонена на 98°.', d_nep: 'Самые сильные ветры в Солнечной системе — до 2100 км/ч.', d_pluto: 'Снимок New Horizons, 2015: ледяное «сердце» из азотного льда.', d_voy1: 'Самый далёкий от Земли рукотворный объект, в межзвёздном пространстве с 2012 года.', d_voy2: 'Единственный аппарат, побывавший у Урана и Нептуна; в межзвёздном пространстве с 2018 года.', d_oort: 'Гипотетическая сфера из триллионов ледяных тел на 2 000–100 000 а. е. от Солнца — родина долгопериодических комет.', d_plei: 'Молодое скопление, около 1000 звёзд возрастом ~100 млн лет. Видно без телескопа.', d_orion: 'Ближайшая к нам большая звёздная «колыбель»: здесь прямо сейчас рождаются звёзды. Снимок «Хаббла».', d_gc: 'В центре — чёрная дыра массой 4,3 млн Солнц. Снимок «Спитцера» в инфракрасном.', d_and: 'Около триллиона звёзд. Через ~4,5 млрд лет сольётся с Млечным Путём.', d_edge: 'Дальше свет не успел бы дойти за 13,8 млрд лет жизни Вселенной. На снимке — Hubble Ultra Deep Field, около 10 000 галактик.', d_front: 'Свет, родившийся вместе с тобой, летит со скоростью света с самой первой секунды.',
     mJup: 'орбита Юпитера', mSat: 'орбита Сатурна', mUra: 'орбита Урана', mNep: 'орбита Нептуна', mPluto: 'Плутон', mOort: 'облако Оорта', mPlei: 'Плеяды', mOrion: 'туманность Ориона', mGC: 'центр Галактики', mAnd: 'галактика Андромеды', mEdge: 'край наблюдаемой Вселенной', mnS: 'млн св. л.', bnS: 'млрд св. л.',
     mMoon: 'орбита Луны', mSun: '1 а. е., как до Солнца', m1ly: '1 световой год', lsS: 'св. с', lmS: 'св. мин', lhS: 'св. ч',
     km: 'км', lyS: 'св. л.', lyLong: 'световых лет', sec: 'с', min: 'мин', h: 'ч',
@@ -813,7 +834,7 @@ const L = {
     routeH: 'Light chronicle', routeP: 'Light spreads in every direction: every star closer than your age in light years has already received the flash of your birth. Stars are DSS2 survey frames at exact coordinates; Solar System objects come from the NASA archive.',
     ld1: 'Your light has already reached', ld2: 'of the', ld3: 'nearest stars and', ld4: 'exoplanets. Next on its way:', ld5: 'Earth’s radio bubble is now about',
     exoH: 'Worlds your light has reached', exoP: 'Confirmed exoplanets from the NASA Exoplanet Archive within 110 light years. In the 3D sky they are dots: orange ones are already inside your light sphere.',
-    tabReached: 'Reached', tabNext: 'Next', exoReachedA: 'reached', mMoon: 'Moon orbit', mSun: '1 AU, distance to the Sun', mJup: 'Jupiter orbit', mSat: 'Saturn orbit', mUra: 'Uranus orbit', mNep: 'Neptune orbit', mPluto: 'Pluto', mOort: 'Oort cloud', mPlei: 'Pleiades', mOrion: 'Orion Nebula', mGC: 'Galactic Center', mAnd: 'Andromeda Galaxy', mEdge: 'edge of the observable Universe', mnS: 'million ly', bnS: 'billion ly', m1ly: '1 light year', lsS: 'light s', lmS: 'light min', lhS: 'light h', cBeam: 'Beam', cSky: 'Sky', cRoute: 'Chronicle', cWorlds: 'Worlds', cScope: 'Eyepiece', exoAnd: 'and', exoNextA: 'next',
+    tabReached: 'Reached', tabNext: 'Next', exoReachedA: 'reached', iDist: 'Distance', iSpec: 'Spectral type', iMass: 'Mass', iRad: 'Radius', iTemp: 'Temperature', iMoons: 'Moons', iLight: 'Light travel time', iLaunch: 'Launched', iSpeed: 'Speed', iStart: 'Started', iLightR: 'Your light arrived', iLightN: 'Your light arrives', iInYears: 'in {n}', bnYr: 'billion years', mnYr: 'million years', iYrs: 'years', mlnKm: 'million km', kgS: 'kg', kms: 'km/s', tStar: 'Star', tSat: 'Earth’s moon', tGas: 'Gas giant', tIce: 'Ice giant', tDwarf: 'Dwarf planet', tProbe: 'NASA space probe', tCloud: 'Cloud of icy bodies', tCluster: 'Star cluster', tNebula: 'Nebula', tGC: 'Center of the Milky Way', tGalaxy: 'Galaxy', tEdge: 'Edge of the visible Universe', tFront: 'Where your light is now', n_moon: 'Moon', n_sun: 'Sun', n_jup: 'Jupiter', n_sat: 'Saturn', n_ura: 'Uranus', n_nep: 'Neptune', n_pluto: 'Pluto', n_voy1: 'Voyager 1', n_voy2: 'Voyager 2', n_oort: 'Oort Cloud', n_plei: 'Pleiades (M45)', n_orion: 'Orion Nebula (M42)', n_gc: 'Galactic Center, Sagittarius A*', n_and: 'Andromeda Galaxy (M31)', n_edge: 'Edge of the observable Universe', d_moon: 'Your light passed its orbit 1.3 seconds after you were born.', d_sun: 'Sunlight reaches Earth in 8 minutes 20 seconds — the same time your light took to cover this distance.', d_jup: 'The largest planet: 1,300 Earths would fit inside.', d_sat: 'Rings 280,000 km wide and only about 10 meters thick.', d_ura: 'Spins on its side: its axis is tilted 98°.', d_nep: 'The fastest winds in the Solar System, up to 2,100 km/h.', d_pluto: 'New Horizons image, 2015: a heart of nitrogen ice.', d_voy1: 'The most distant human-made object, in interstellar space since 2012.', d_voy2: 'The only spacecraft to visit Uranus and Neptune; interstellar since 2018.', d_oort: 'A hypothetical shell of trillions of icy bodies 2,000–100,000 AU from the Sun, home of long-period comets.', d_plei: 'A young cluster of about 1,000 stars, ~100 million years old. Visible to the naked eye.', d_orion: 'The nearest big stellar nursery: stars are being born there right now. Hubble image.', d_gc: 'At its heart sits a black hole of 4.3 million Suns. Spitzer infrared image.', d_and: 'About a trillion stars. It will merge with the Milky Way in ~4.5 billion years.', d_edge: 'Light from beyond could not have reached us in the Universe’s 13.8 billion years. Shown: Hubble Ultra Deep Field, about 10,000 galaxies.', d_front: 'The light born with you has been flying at the speed of light since your first second.', mMoon: 'Moon orbit', mSun: '1 AU, distance to the Sun', mJup: 'Jupiter orbit', mSat: 'Saturn orbit', mUra: 'Uranus orbit', mNep: 'Neptune orbit', mPluto: 'Pluto', mOort: 'Oort cloud', mPlei: 'Pleiades', mOrion: 'Orion Nebula', mGC: 'Galactic Center', mAnd: 'Andromeda Galaxy', mEdge: 'edge of the observable Universe', mnS: 'million ly', bnS: 'billion ly', m1ly: '1 light year', lsS: 'light s', lmS: 'light min', lhS: 'light h', cBeam: 'Beam', cSky: 'Sky', cRoute: 'Chronicle', cWorlds: 'Worlds', cScope: 'Eyepiece', exoAnd: 'and', exoNextA: 'next',
     scopeH: 'An eyepiece pointed at your zenith', sc1: 'Real sky surveys at', sc2: 'Rotate and zoom, switch between optical, infrared 2MASS or NASA WISE.',
     aZin: 'Zoom in', aZout: 'Zoom out', aZhome: 'Back to zenith', copyPost: 'Copy a post for X', shareCard: 'Download 1200×675 card', apodOpen: 'Open on apod.nasa.gov',
     aCut: 'Sky frame at your zenith', cutH: 'Zenith frame', cut1: '0.45° field, survey', cut2: 'This frame goes on your Galactic ID.',
@@ -872,7 +893,7 @@ const L = {
     routeH: 'Crónica de la luz', routeP: 'La luz va en todas direcciones: cada estrella más cercana que tu edad en años luz ya recibió el destello de tu nacimiento. Las estrellas son tomas del relevamiento DSS2 en coordenadas exactas; el Sistema Solar viene del archivo de la NASA.',
     ld1: 'Tu luz ya alcanzó', ld2: 'de las', ld3: 'estrellas más cercanas y', ld4: 'exoplanetas. La próxima en el camino:', ld5: 'La burbuja de radio de la Tierra mide hoy unos',
     exoH: 'Mundos a los que llegó tu luz', exoP: 'Exoplanetas confirmados del NASA Exoplanet Archive a menos de 110 años luz. En el cielo 3D son puntos: los naranjas ya están dentro de tu esfera de luz.',
-    tabReached: 'Alcanzados', tabNext: 'Próximos', exoReachedA: 'alcanzados', mMoon: 'órbita de la Luna', mSun: '1 UA, distancia al Sol', mJup: 'órbita de Júpiter', mSat: 'órbita de Saturno', mUra: 'órbita de Urano', mNep: 'órbita de Neptuno', mPluto: 'Plutón', mOort: 'nube de Oort', mPlei: 'Pléyades', mOrion: 'nebulosa de Orión', mGC: 'centro de la Galaxia', mAnd: 'galaxia de Andrómeda', mEdge: 'borde del Universo observable', mnS: 'millones a. l.', bnS: 'mil millones a. l.', m1ly: '1 año luz', lsS: 's luz', lmS: 'min luz', lhS: 'h luz', cBeam: 'Haz', cSky: 'Cielo', cRoute: 'Crónica', cWorlds: 'Mundos', cScope: 'Ocular', exoAnd: 'y', exoNextA: 'próximos',
+    tabReached: 'Alcanzados', tabNext: 'Próximos', exoReachedA: 'alcanzados', iDist: 'Distancia', iSpec: 'Tipo espectral', iMass: 'Masa', iRad: 'Radio', iTemp: 'Temperatura', iMoons: 'Lunas', iLight: 'La luz tarda', iLaunch: 'Lanzamiento', iSpeed: 'Velocidad', iStart: 'Salida', iLightR: 'Tu luz llegó', iLightN: 'Tu luz llegará', iInYears: 'en {n}', bnYr: 'mil millones de años', mnYr: 'millones de años', iYrs: 'años', mlnKm: 'millones de km', kgS: 'kg', kms: 'km/s', tStar: 'Estrella', tSat: 'Satélite de la Tierra', tGas: 'Gigante gaseoso', tIce: 'Gigante helado', tDwarf: 'Planeta enano', tProbe: 'Sonda espacial de la NASA', tCloud: 'Nube de cuerpos helados', tCluster: 'Cúmulo estelar', tNebula: 'Nebulosa', tGC: 'Centro de la Vía Láctea', tGalaxy: 'Galaxia', tEdge: 'Borde del Universo visible', tFront: 'Dónde está tu luz ahora', n_moon: 'Luna', n_sun: 'Sol', n_jup: 'Júpiter', n_sat: 'Saturno', n_ura: 'Urano', n_nep: 'Neptuno', n_pluto: 'Plutón', n_voy1: 'Voyager 1', n_voy2: 'Voyager 2', n_oort: 'Nube de Oort', n_plei: 'Pléyades (M45)', n_orion: 'Nebulosa de Orión (M42)', n_gc: 'Centro galáctico, Sagitario A*', n_and: 'Galaxia de Andrómeda (M31)', n_edge: 'Borde del Universo observable', d_moon: 'Tu luz pasó su órbita 1,3 segundos después de que naciste.', d_sun: 'La luz del Sol llega a la Tierra en 8 minutos y 20 segundos, lo mismo que tardó tu luz en recorrer esta distancia.', d_jup: 'El planeta más grande: entrarían 1300 Tierras.', d_sat: 'Anillos de 280 000 km de ancho y apenas unos 10 metros de espesor.', d_ura: 'Gira de costado: su eje está inclinado 98°.', d_nep: 'Los vientos más rápidos del Sistema Solar, hasta 2100 km/h.', d_pluto: 'Imagen de New Horizons, 2015: un corazón de hielo de nitrógeno.', d_voy1: 'El objeto humano más lejano, en el espacio interestelar desde 2012.', d_voy2: 'La única nave que visitó Urano y Neptuno; interestelar desde 2018.', d_oort: 'Una esfera hipotética de billones de cuerpos helados a 2000–100 000 UA del Sol, cuna de los cometas de largo período.', d_plei: 'Un cúmulo joven de unas 1000 estrellas, de ~100 millones de años. Se ve a simple vista.', d_orion: 'La gran guardería estelar más cercana: ahí nacen estrellas ahora mismo. Imagen del Hubble.', d_gc: 'En su centro hay un agujero negro de 4,3 millones de soles. Imagen infrarroja del Spitzer.', d_and: 'Cerca de un billón de estrellas. Se fusionará con la Vía Láctea en ~4500 millones de años.', d_edge: 'La luz de más allá no habría llegado en los 13 800 millones de años del Universo. En la imagen: Hubble Ultra Deep Field, unas 10 000 galaxias.', d_front: 'La luz que nació con vos vuela a la velocidad de la luz desde tu primer segundo.', mMoon: 'órbita de la Luna', mSun: '1 UA, distancia al Sol', mJup: 'órbita de Júpiter', mSat: 'órbita de Saturno', mUra: 'órbita de Urano', mNep: 'órbita de Neptuno', mPluto: 'Plutón', mOort: 'nube de Oort', mPlei: 'Pléyades', mOrion: 'nebulosa de Orión', mGC: 'centro de la Galaxia', mAnd: 'galaxia de Andrómeda', mEdge: 'borde del Universo observable', mnS: 'millones a. l.', bnS: 'mil millones a. l.', m1ly: '1 año luz', lsS: 's luz', lmS: 'min luz', lhS: 'h luz', cBeam: 'Haz', cSky: 'Cielo', cRoute: 'Crónica', cWorlds: 'Mundos', cScope: 'Ocular', exoAnd: 'y', exoNextA: 'próximos',
     scopeH: 'Un ocular apuntado a tu cenit', sc1: 'Relevamientos reales del cielo en', sc2: 'Girá y acercá, cambiá entre óptico, infrarrojo 2MASS o NASA WISE.',
     aZin: 'Acercar', aZout: 'Alejar', aZhome: 'Volver al cenit', copyPost: 'Copiar publicación para X', shareCard: 'Descargar tarjeta 1200×675', apodOpen: 'Abrir en apod.nasa.gov',
     aCut: 'Toma del cielo en tu cenit', cutH: 'Toma del cenit', cut1: 'Campo de 0,45°, relevamiento', cut2: 'Esta toma va en tu Galactic ID.',
@@ -1406,31 +1427,30 @@ function shipWorldPos(t) { const rt = new THREE.Vector3().crossVectors(perp, bea
 const labelEls = [];
 function buildLabels() {
   const host = $('labels'); host.innerHTML = ''; labelEls.length = 0;
-  const add = (cls, html, vec) => { const el = document.createElement('div'); el.className = 'lbl ' + cls; el.innerHTML = html; host.appendChild(el); labelEls.push({ el, vec }); };
-  add('voy front', t('front'), cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D + 0.25)));
+  const add = (cls, html, vec, key) => { const el = document.createElement(key ? 'button' : 'div'); el.className = 'lbl ' + cls; el.innerHTML = html; if (key) { el.type = 'button'; el.dataset.key = key; } host.appendChild(el); labelEls.push({ el, vec }); };
+  add('voy front', t('front'), cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D + 0.25)), 'front');
   // вехи на луче: что свет уже прошёл, в логарифмическом масштабе
   marksGroup.clear();
   const tmL = telemetry(Date.now()), rtL = new THREE.Vector3().crossVectors(perp, beamDir).normalize();
   const reachedStars = STARS.filter((st) => st.ly <= tmL.ly).sort((a, c) => a.ly - c.ly);
   const AU = 499.005 / SEC_YR, lt = (au) => au * 499.005; // световое время в секундах для расстояния в а. е.
-  const f1 = new Intl.NumberFormat(LOC[LANG], { maximumFractionDigits: 1 });
   const hFmt = (sec) => sec < 3600 ? Math.round(sec / 60) + ' ' + t('lmS') : f1.format(sec / 3600) + ' ' + t('lhS');
   const big = (ly) => ly >= 1e9 ? f1.format(ly / 1e9) + ' ' + t('bnS') : ly >= 1e6 ? f1.format(ly / 1e6) + ' ' + t('mnS') : intFmt.format(ly) + ' ' + t('lyS');
-  const planet = (key, au) => ({ name: t(key), ly: au * AU, d: hFmt(lt(au)) });
+  const planet = (k, au, key) => ({ name: t(k), ly: au * AU, d: hFmt(lt(au)), key });
   // порядок = важность подписи (если две рядом, остаётся первая)
   const marks = [
-    { name: t('mMoon'), ly: 1.282 / SEC_YR, d: f2.format(1.28) + ' ' + t('lsS') },
-    { name: t('mSun'), ly: AU, d: '8,3 ' + t('lmS') },
-    planet('mSat', 9.58), planet('mPluto', 39.5),
-    { name: 'Voyager 1', ly: tmL.voyKm / KM_LY, d: Math.round(tmL.voyKm / C_KMS / 3600) + ' ' + t('lhS') },
+    { name: t('mMoon'), ly: 1.282 / SEC_YR, d: f2.format(1.28) + ' ' + t('lsS'), key: 'moon' },
+    { name: t('mSun'), ly: AU, d: '8,3 ' + t('lmS'), key: 'sun' },
+    planet('mSat', 9.58, 'sat'), planet('mPluto', 39.5, 'pluto'),
+    { name: 'Voyager 1', ly: tmL.voyKm / KM_LY, d: Math.round(tmL.voyKm / C_KMS / 3600) + ' ' + t('lhS'), key: 'voy1' },
     ...[reachedStars.at(-1), reachedStars[0], reachedStars.find((st) => st.id === 'sirius')].filter(Boolean).filter((st, i, a) => a.indexOf(st) === i)
-      .map((st) => ({ name: st.name, ly: st.ly, d: numFmt(st.ly) + ' ' + t('lyS') })),
-    planet('mJup', 5.2), planet('mUra', 19.2), planet('mNep', 30.1),
-    { name: t('mOort'), ly: 0.03, d: '' },
+      .map((st) => ({ name: st.name, ly: st.ly, d: numFmt(st.ly) + ' ' + t('lyS'), key: st.id })),
+    planet('mJup', 5.2, 'jup'), planet('mUra', 19.2, 'ura'), planet('mNep', 30.1, 'nep'),
+    { name: t('mOort'), ly: 0.03, d: '', key: 'oort' },
     { name: t('m1ly'), ly: 1, d: '' },
     // впереди: до них свет ещё не дошёл
-    ...[['mPlei', 444], ['mOrion', 1344], ['mGC', 26000], ['mAnd', 2.5e6], ['mEdge', LY_EDGE * 0.999]]
-      .filter(([, ly]) => ly > tmL.ly).map(([k, ly]) => ({ name: t(k), ly, d: big(ly), ahead: true })),
+    ...[['mPlei', 444, 'plei'], ['mOrion', 1344, 'orion'], ['mGC', 26000, 'gc'], ['mAnd', 2.5e6, 'and'], ['mEdge', LY_EDGE * 0.999, 'edge']]
+      .filter(([, ly]) => ly > tmL.ly).map(([k, ly, key]) => ({ name: t(k), ly, d: big(ly), ahead: true, key })),
     ...reachedStars.map((st) => ({ name: st.name, ly: st.ly, quiet: true })),
   ];
   // подписи по разные стороны луча, чередуя соседей по расстоянию
@@ -1440,12 +1460,12 @@ function buildLabels() {
     const p = cityPos.clone().addScaledVector(beamDir, sPos);
     const dot = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture(m.ahead ? 'rgba(170,180,230,.9)' : 'rgba(255,236,205,1)', m.ahead ? 'rgba(120,130,200,.4)' : 'rgba(205,163,73,.5)'), blending: THREE.AdditiveBlending, depthWrite: false }));
     dot.position.copy(p); dot.scale.setScalar(0.07 + sPos * 0.008); marksGroup.add(dot);
-    if (!m.quiet) add('mark' + (m.left ? ' left' : '') + (m.ahead ? ' ahead' : ''), esc(m.name) + (m.d ? '<em>' + m.d + '</em>' : ''), p);
+    if (!m.quiet) add('mark' + (m.left ? ' left' : '') + (m.ahead ? ' ahead' : ''), esc(m.name) + (m.d ? '<em>' + m.d + '</em>' : ''), p, m.key);
   }
   add('zen', t('zen'), beamDir.clone().multiplyScalar(R_SKY * 0.95));
   const ly = telemetry(Date.now()).ly;
-  STARS.filter((s) => s.label || s.ly < 6 || s.id === 'trappist').forEach((s) => add(ly >= s.ly ? 'reached' : '', esc(s.name) + '<em>' + numFmt(s.ly) + ' ' + t('lyS') + '</em>', skyDir(s.ra, s.dec).multiplyScalar(R_SKY * 0.94)));
-  PROBES.forEach((p) => add('voy', p.name, skyDir(p.ra, p.dec).multiplyScalar(R_SKY * 0.94)));
+  STARS.filter((s) => s.label || s.ly < 6 || s.id === 'trappist').forEach((s) => add(ly >= s.ly ? 'reached' : '', esc(s.name) + '<em>' + numFmt(s.ly) + ' ' + t('lyS') + '</em>', skyDir(s.ra, s.dec).multiplyScalar(R_SKY * 0.94), s.id));
+  PROBES.forEach((p, i) => add('voy', p.name, skyDir(p.ra, p.dec).multiplyScalar(R_SKY * 0.94), 'voy' + (i + 1)));
 }
 const _v = new THREE.Vector3(), _f = new THREE.Vector3();
 let blockers = [];
@@ -2245,6 +2265,91 @@ $('photoInput').addEventListener('change', async (e) => {
 });
 $('photoRemove').onclick = () => { ghostPhoto = null; $('photoState').textContent = ''; photoUI(); renderCert(); };
 window.addEventListener('pageshow', (e) => { if (e.persisted && ghostPhoto) { ghostPhoto = null; photoUI(); renderCert(); } });
+/* =====================================================================
+   КАРТОЧКА ОБЪЕКТА — нажми на подпись звезды, планеты или вехи на луче
+   ===================================================================== */
+const WM = (f) => 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(f) + '?width=640';
+// звёзды: спектр, масса (M☉), радиус (R☉), температура (K)
+const STAR_INFO = {
+  proxima: ['M5.5 Ve', 0.122, 0.154, 3042], acen: ['G2 V + K1 V', '1,08 + 0,91', '1,22 + 0,86', '5790 / 5260'], barnard: ['M4 V', 0.16, 0.19, 3220],
+  wolf359: ['M6 V', 0.11, 0.14, 2800], lalande: ['M2 V', 0.39, 0.39, 3550], sirius: ['A1 V + DA2', '2,06 + 1,02', '1,71', 9940],
+  epseri: ['K2 V', 0.82, 0.74, 5080], procyon: ['F5 IV–V', 1.5, 2.05, 6530], '61cyg': ['K5 V + K7 V', '0,70 + 0,63', '0,67 + 0,60', '4400 / 4040'],
+  epsind: ['K5 V', 0.76, 0.71, 4650], tauceti: ['G8 V', 0.78, 0.79, 5340], teegarden: ['M7 V', 0.097, 0.107, 2900],
+  altair: ['A7 V', 1.86, 1.8, 7550], vega: ['A0 V', 2.14, 2.36, 9600], fomalhaut: ['A3 V', 1.92, 1.84, 8590], pollux: ['K0 III', 1.9, 9.1, 4590],
+  arcturus: ['K1.5 III', 1.08, 25.4, 4290], trappist: ['M8 V', 0.09, 0.119, 2566], capella: ['G3 III + G8 III', '2,57 + 2,48', '11,9 + 8,8', '4970 / 5730'],
+  castor: ['A1 V + A2 Vm', '2,37 + 1,79', '2,4 + 1,6', 10300], aldebaran: ['K5 III', 1.16, 45.1, 3900], regulus: ['B8 IVn', 3.8, 4.35, 12460], hyades: ['—', '~400', '—', '—'],
+};
+// Солнечная система и далёкие объекты: снимок, масса (кг), радиус (км), расстояние, тип и короткая справка
+const OBJ_INFO = {
+  moon: { img: 'FullMoon2010.jpg', kg: 7.342e22, rkm: 1737, ly: 1.282 / SEC_YR, type: 'tSat' },
+  sun: { img: "The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA's_Solar_Dynamics_Observatory_-_20100819.jpg", kg: 1.989e30, rkm: 696340, ly: 499 / SEC_YR, temp: 5772, spec: 'G2 V', type: 'tStar' },
+  jup: { img: 'Jupiter_and_its_shrunken_Great_Red_Spot.jpg', kg: 1.898e27, rkm: 69911, ly: 5.2 * 499 / SEC_YR, moons: 95, type: 'tGas' },
+  sat: { img: 'Saturn_during_Equinox.jpg', kg: 5.683e26, rkm: 58232, ly: 9.58 * 499 / SEC_YR, moons: 146, type: 'tGas' },
+  ura: { img: 'Uranus2.jpg', kg: 8.681e25, rkm: 25362, ly: 19.2 * 499 / SEC_YR, moons: 28, type: 'tIce' },
+  nep: { img: 'Neptune_Full.jpg', kg: 1.024e26, rkm: 24622, ly: 30.1 * 499 / SEC_YR, moons: 16, type: 'tIce' },
+  pluto: { img: 'Pluto_in_True_Color_-_High-Res.jpg', kg: 1.303e22, rkm: 1188, ly: 39.5 * 499 / SEC_YR, moons: 5, type: 'tDwarf' },
+  voy1: { img: 'Voyager_spacecraft.jpg', kg: 825.5, type: 'tProbe', probe: 1 }, voy2: { img: 'Voyager_spacecraft.jpg', kg: 825.5, type: 'tProbe', probe: 2 },
+  oort: { img: 'Kuiper_oort.jpg', ly: 0.03, type: 'tCloud' },
+  plei: { img: 'Pleiades_large.jpg', ly: 444, type: 'tCluster' }, orion: { img: 'Orion_Nebula_-_Hubble_2006_mosaic_18000.jpg', ly: 1344, type: 'tNebula' },
+  gc: { img: 'Milky_Way_IR_Spitzer.jpg', ly: 26000, type: 'tGC' }, and: { img: 'Andromeda_Galaxy_(with_h-alpha).jpg', ly: 2.5e6, type: 'tGalaxy' },
+  edge: { img: 'Hubble_ultra_deep_field.jpg', ly: LY_EDGE, type: 'tEdge' },
+};
+const SUP = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+const sci = (x) => { const e = Math.floor(Math.log10(x)), m = x / 10 ** e; return f2.format(m) + ' × 10' + String(e).split('').map((c) => (c === '-' ? '⁻' : SUP[c])).join(''); };
+function lyText(ly) {
+  if (ly < 1 / 365.25) { const sec = ly * SEC_YR; return sec < 60 ? f2.format(sec) + ' ' + t('lsS') : sec < 3600 ? intFmt.format(Math.round(sec / 60)) + ' ' + t('lmS') : f2.format(sec / 3600) + ' ' + t('lhS'); }
+  if (ly >= 1e9) return f2.format(ly / 1e9) + ' ' + t('bnS'); if (ly >= 1e6) return f2.format(ly / 1e6) + ' ' + t('mnS');
+  return (ly < 100 ? f2.format(ly) : intFmt.format(Math.round(ly))) + ' ' + t('lyS');
+}
+function lightRow(ly) {
+  const tm = telemetry(Date.now());
+  if (ly <= tm.ly) return [t('iLightR'), dateFmt(new Date(birthMs + ly * SEC_YR * 1000))];
+  const y = new Date(birthMs + ly * SEC_YR * 1000).getFullYear();
+  return [t('iLightN'), ly < 1e5 ? String(y) : t('iInYears', { n: lyText(ly - tm.ly).replace(/ .*/, '') + ' ' + (ly >= 1e9 ? t('bnYr') : ly >= 1e6 ? t('mnYr') : t('iYrs')) })];
+}
+function openInfo(key) {
+  const st = STARS.find((s) => s.id === key), o = OBJ_INFO[key], tm = telemetry(Date.now());
+  let title, type, img, src, rows = [], note = '';
+  if (st) {
+    const [spec, m, r, temp] = STAR_INFO[key] || ['—', '—', '—', '—'];
+    title = st.name; type = key === 'hyades' ? t('tCluster') : t('tStar'); img = '/star-' + key + '.webp'; src = key === 'sirius' ? 'Hipparcos' : 'DSS2 · STScI';
+    rows = [[t('iDist'), lyText(st.ly)], [t('iSpec'), spec], [t('iMass'), (typeof m === 'number' ? f2.format(m) : m) + ' M☉'], [t('iRad'), (typeof r === 'number' ? f2.format(r) : r) + (r === '—' ? '' : ' R☉')], [t('iTemp'), (typeof temp === 'number' ? intFmt.format(temp) : temp) + (temp === '—' ? '' : ' K')], lightRow(st.ly)];
+    note = st.note || '';
+  } else if (o) {
+    title = t('n_' + key); type = t(o.type); img = o.img ? WM(o.img) : ''; src = 'NASA · ESA · Wikimedia Commons';
+    if (o.probe) {
+      const km = o.probe === 1 ? tm.voyKm : tm.voyKm * 0.83;
+      rows = [[t('iDist'), intFmt.format(Math.round(km / 1e6)) + ' ' + t('mlnKm')], [t('iLight'), f1.format(km / C_KMS / 3600) + ' ' + t('lhS')], [t('iMass'), intFmt.format(o.kg) + ' ' + t('kgS')], [t('iLaunch'), o.probe === 1 ? '05.09.1977' : '20.08.1977']];
+      if (o.probe === 1) rows.push([t('iLightR'), dateFmt(tm.overtake)]);
+    } else {
+      rows = [[t('iDist'), lyText(o.ly)]];
+      if (o.kg) rows.push([t('iMass'), sci(o.kg) + ' ' + t('kgS')]);
+      if (o.rkm) rows.push([t('iRad'), intFmt.format(o.rkm) + ' ' + t('km')]);
+      if (o.spec) rows.push([t('iSpec'), o.spec]);
+      if (o.temp) rows.push([t('iTemp'), intFmt.format(o.temp) + ' K']);
+      if (o.moons) rows.push([t('iMoons'), String(o.moons)]);
+      rows.push(lightRow(o.ly));
+    }
+    note = t('d_' + key);
+  } else if (key === 'front') {
+    title = t('front'); type = t('tFront'); img = ''; src = '';
+    rows = [[t('iDist'), intFmt.format(Math.floor(tm.km)) + ' ' + t('km')], [t('iDist'), lyText(tm.ly)], [t('iSpeed'), '299 792,458 ' + t('kms')], [t('iStart'), dateFmt(new Date(birthMs))]];
+    note = t('d_front');
+  } else return;
+  const box = $('info');
+  box.querySelector('.info-img').innerHTML = img ? `<img src="${img}" alt="${esc(title)}" />` : '';
+  box.querySelector('.info-img').hidden = !img;
+  box.querySelector('.info-src').textContent = src;
+  box.querySelector('.info-type').textContent = type;
+  box.querySelector('h3').textContent = title;
+  box.querySelector('.info-note').textContent = note;
+  box.querySelector('dl').innerHTML = rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('');
+  box.hidden = false; box.querySelector('.info-x').focus({ preventScroll: true });
+}
+$('info').querySelector('.info-x').onclick = () => { $('info').hidden = true; };
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') $('info').hidden = true; });
+$('labels').addEventListener('click', (e) => { const el = e.target.closest('[data-key]'); if (el) openInfo(el.dataset.key); });
+$('routeGrid').addEventListener('click', (e) => { const el = e.target.closest('.stop'); if (el) openInfo(el.dataset.id === 'voyager1' ? 'voy1' : el.dataset.id); });
 $('callsignInput').addEventListener('input', scheduleCert);
 // холсты уже отрисованы заранее — сохраняем сразу, чтобы iPhone не потерял «жест пользователя» для меню «Поделиться»
 $('downloadCertBtn').onclick = async () => { if (certPending) await renderCert(); if (await download(cardSheet(), `starbeam_pilot_${pilot ? pilot.serial : pilotHash()}.png`)) toast(t('idDownloaded')); };
@@ -2293,6 +2398,7 @@ function setLang(l) {
   try { localStorage.setItem('sb_lang', l); } catch {}
   intFmt = new Intl.NumberFormat(LOC[l], { maximumFractionDigits: 0 });
   f2 = new Intl.NumberFormat(LOC[l], { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  f1 = new Intl.NumberFormat(LOC[l], { maximumFractionDigits: 1 });
   const apply = (sel, attr, get, set) => document.querySelectorAll(`[${sel}]`).forEach((el) => {
     const key = el.getAttribute(sel), ruKey = 'ru' + attr; if (el.dataset[ruKey] === undefined) el.dataset[ruKey] = get(el);
     set(el, l === 'ru' ? el.dataset[ruKey] : (L[l][key] ?? el.dataset[ruKey]));
