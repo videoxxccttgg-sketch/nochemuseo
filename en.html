@@ -342,6 +342,19 @@ footer a{color:var(--haze)}
   .distance-sub{gap:18px}
   .distance-sub b{font-size:22.4px}
 }
+/* мобильный порядок: заголовок, счётчик, переключатель вида, шкала, затем форма и «Небо в минуту рождения» */
+@media (max-width:900px){
+  .reading,.legend{display:contents}
+  .reading>*,.legend>*{margin-left:18px;margin-right:18px}
+  .reading>div:first-child{order:1;margin-top:-90px;position:relative;z-index:5}
+  .reading>div:nth-child(2){order:2;margin-top:18px}
+  #cams{order:3;margin-top:20px}
+  .dist-scale{order:4;margin:22px 18px 0}
+  .log{order:5;margin-top:26px}
+  .legend>*:not(#cams){order:6;margin-top:14px}
+  .legend>h2{margin-top:32px}
+  .legend>.voy{margin-bottom:24px}
+}
 @media (max-width:560px){
   .log{grid-template-columns:1fr}
   .ships,.qr-row{grid-template-columns:1fr;flex-direction:column}
@@ -534,6 +547,7 @@ footer a{color:var(--haze)}
               <input class="vh" type="file" id="photoInput" accept="image/*" />
               <button type="button" class="linkbtn" id="photoRemove" hidden data-i18n="photoRemove">Убрать фото</button>
             </div>
+            <em id="photoState" style="font-style:normal;color:var(--dim);font-size:13px"></em>
             <p class="fine" data-i18n="photoNote">Фото станет золотой полупрозрачной подложкой, как защита на правах. Оно не уходит на сервер и исчезает при обновлении страницы.</p>
           </div>
         </div>
@@ -1982,7 +1996,7 @@ function drawCardFront(g, tm) {
     g.font = fnt(500, 14, F_SANS); const bt = 'First 1000 pilots', bw = g.measureText(bt).width + 26;
     g.strokeStyle = '#FF6A3D'; g.lineWidth = 1.2; g.beginPath(); g.roundRect(X, 400, bw, 28, 14); g.stroke(); g.fillStyle = '#FF8A5C'; g.fillText(bt, X + 13, 419);
   }
-  if (ghostPhoto) { g.save(); g.globalAlpha = 0.34; g.drawImage(ghostPhoto, CARD_W - 190, CARD_H - 250, 165, 220); g.restore(); }
+  if (ghostPhoto) { g.save(); g.globalAlpha = 0.5; g.drawImage(ghostPhoto, CARD_W - 215, CARD_H - 285, 195, 260); g.restore(); }
   else drawEmblem(g, CARD_W - 104, CARD_H - 112, 66, 0.25); // «призрачная» эмблема, защитный элемент
   g.fillStyle = 'rgba(238,240,255,.55)'; g.font = fnt(400, 11, F_SANS); g.fillText(`Issued ${new Date().toISOString().slice(0, 10)}   peaceindex.online`, 40, CARD_H - 36);
   g.restore();
@@ -1991,7 +2005,7 @@ function drawCardBack(g, tm) {
   g.save(); cardShape(g); g.clip(); g.textAlign = 'left'; g.letterSpacing = '0px';
   drawCosmicBg(g, CARD_W, CARD_H); g.fillStyle = 'rgba(2,3,12,.6)'; g.fillRect(0, 0, CARD_W, CARD_H);
   drawGuilloche(g, 0, 0, CARD_W, CARD_H); cardEdge(g);
-  if (ghostPhoto) { g.save(); g.globalAlpha = 0.26; g.drawImage(ghostPhoto, CARD_W - 300, 30, 270, 360); g.restore(); } // подложка под телеметрией
+  if (ghostPhoto) { g.save(); g.globalAlpha = 0.34; g.drawImage(ghostPhoto, CARD_W - 300, 30, 270, 360); g.restore(); } // подложка под телеметрией
   // зенит и карта света
   const zx = 172, zy = 210, zr = 72;
   drawLightMap(g, zx, zy, zr + 20, 148, tm); drawZenithDisc(g, zx, zy, zr);
@@ -2079,14 +2093,49 @@ async function loadPhoto(file) {
     const c = document.createElement('canvas'); c.width = PW; c.height = PH; c.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, PW, PH); return c;
   } finally { URL.revokeObjectURL(url); }
 }
-// золотистый монохром с мягким краем
-function goldGhost(src) {
-  const gc = document.createElement('canvas'); gc.width = 300; gc.height = 400; const gg = gc.getContext('2d'); gg.drawImage(src, 0, 0, 300, 400);
-  const d = gg.getImageData(0, 0, 300, 400), px = d.data;
-  for (let i = 0; i < px.length; i += 4) { const y = 0.3 * px[i] + 0.59 * px[i + 1] + 0.11 * px[i + 2]; px[i] = y; px[i + 1] = y * 0.8; px[i + 2] = y * 0.45; }
-  gg.putImageData(d, 0, 0); gg.globalCompositeOperation = 'destination-in';
-  const gr = gg.createRadialGradient(150, 180, 60, 150, 200, 200); gr.addColorStop(0, 'rgba(0,0,0,1)'); gr.addColorStop(1, 'rgba(0,0,0,0)');
-  gg.fillStyle = gr; gg.fillRect(0, 0, 300, 400); return gc;
+/* --- вырезание фона: MediaPipe в браузере, модель лежит в /models (фото никуда не уходит) */
+const MPS = 'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation@0.1.1675465747';
+let segP = null;
+function getSegmenter() {
+  return (segP ||= (async () => {
+    if (!window.SelfieSegmentation) await new Promise((res, rej) => { const el = document.createElement('script'); el.src = `${MPS}/selfie_segmentation.js`; el.crossOrigin = 'anonymous'; el.onload = res; el.onerror = rej; document.head.appendChild(el); });
+    const ss = new window.SelfieSegmentation({ locateFile: (f) => `${MPS}/${f}` });
+    ss.setOptions({ modelSelection: 0, selfieMode: false });
+    await ss.initialize();
+    return ss;
+  })().catch((e) => { segP = null; throw e; }));
+}
+// маска человека: непрозрачно там, где человек (готовый canvas того же размера, что и фото)
+async function personMask(src) {
+  const ss = await getSegmenter();
+  return new Promise((res, rej) => {
+    const to = setTimeout(() => rej(new Error('timeout')), 20000);
+    ss.onResults((r) => {
+      clearTimeout(to);
+      const c = document.createElement('canvas'); c.width = src.width; c.height = src.height;
+      c.getContext('2d').drawImage(r.segmentationMask, 0, 0, c.width, c.height); res(c);
+    });
+    ss.send({ image: src }).catch((e) => { clearTimeout(to); rej(e); });
+  });
+}
+// «призрачная» копия как на EU‑правах: силуэт без фона, золотой монохром, мягкий край, растр тонкими линиями
+function goldGhost(src, mask) {
+  const W = 300, H = 400, gc = document.createElement('canvas'); gc.width = W; gc.height = H; const gg = gc.getContext('2d');
+  gg.drawImage(src, 0, 0, W, H);
+  const d = gg.getImageData(0, 0, W, H), px = d.data;
+  for (let i = 0; i < px.length; i += 4) {
+    let y = (0.3 * px[i] + 0.59 * px[i + 1] + 0.11 * px[i + 2]) / 255; y = Math.min(1, Math.max(0, (y - 0.08) * 1.25)); y = Math.pow(y, 0.85) * 255;
+    px[i] = y; px[i + 1] = y * 0.8; px[i + 2] = y * 0.45;
+    if (((i / 4 / W) | 0) % 3 === 2) px[i + 3] = 150; // тонкие горизонтальные линии растра
+  }
+  gg.putImageData(d, 0, 0);
+  gg.globalCompositeOperation = 'destination-in';
+  if (mask) { gg.filter = 'blur(4px)'; gg.drawImage(mask, 0, 0, W, H); gg.filter = 'none'; }
+  // мягкий край: силуэт растворяется к низу и по бокам
+  const gr = gg.createRadialGradient(W / 2, H * 0.42, W * (mask ? 0.32 : 0.2), W / 2, H * 0.5, W * (mask ? 0.78 : 0.66));
+  gr.addColorStop(0, 'rgba(0,0,0,1)'); gr.addColorStop(1, 'rgba(0,0,0,0)'); gg.fillStyle = gr; gg.fillRect(0, 0, W, H);
+  const lg = gg.createLinearGradient(0, H * 0.62, 0, H); lg.addColorStop(0, 'rgba(0,0,0,1)'); lg.addColorStop(1, 'rgba(0,0,0,0)'); gg.fillStyle = lg; gg.fillRect(0, 0, W, H);
+  return gc;
 }
 function photoUI() {
   const has = !!ghostPhoto; $('photoPrev').hidden = !has; $('photoPh').hidden = has; $('photoRemove').hidden = !has;
@@ -2095,10 +2144,13 @@ function photoUI() {
 }
 $('photoInput').addEventListener('change', async (e) => {
   const f = e.target.files?.[0]; e.target.value = ''; if (!f) return;
-  try { ghostPhoto = goldGhost(await loadPhoto(f)); } catch { toast(t('photoFail')); return; }
+  let src; try { src = await loadPhoto(f); } catch { toast(t('photoFail')); return; }
+  $('photoState').textContent = t('photoBgWork'); let mask = null;
+  try { mask = await personMask(src); $('photoState').textContent = ''; } catch { $('photoState').textContent = t('photoBgFail'); }
+  ghostPhoto = goldGhost(src, mask);
   photoUI(); await renderCert(); toast(t('photoAdded'));
 });
-$('photoRemove').onclick = () => { ghostPhoto = null; photoUI(); renderCert(); };
+$('photoRemove').onclick = () => { ghostPhoto = null; $('photoState').textContent = ''; photoUI(); renderCert(); };
 window.addEventListener('pageshow', (e) => { if (e.persisted && ghostPhoto) { ghostPhoto = null; photoUI(); renderCert(); } });
 $('callsignInput').addEventListener('input', scheduleCert);
 // холсты уже отрисованы заранее — сохраняем сразу, чтобы iPhone не потерял «жест пользователя» для меню «Поделиться»
