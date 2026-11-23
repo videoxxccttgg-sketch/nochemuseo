@@ -1583,7 +1583,7 @@ function renderRoute(tm) {
     rail.innerHTML = items.map((o) => `
       <article class="stop" data-id="${o.id}">
         <div class="yr num"></div><div class="line"></div>
-        <div class="disc"><img alt="${esc(o.name)}" loading="lazy" ${o.solar ? '' : `src="${dssCut(o.ra, o.dec, o.ly > 100 ? 1 : 0.35)}"`} onload="this.classList.add('ok')" /><span class="src">${o.solar ? 'NASA' : 'DSS2'}</span></div>
+        <div class="disc"><img alt="${esc(o.name)}" loading="lazy" ${o.solar ? '' : `src="/star-${o.id}.webp"`} onload="this.classList.add('ok')" /><span class="src">${o.solar ? 'NASA' : o.id === 'sirius' ? 'Hipparcos' : 'DSS2'}</span></div>
         <h3>${esc(o.name)}</h3>
         <p class="rnote">${o.solar ? esc(o.note) : numFmt(o.ly) + ' ' + t('lyLong')}</p>
         <p class="when"></p>
