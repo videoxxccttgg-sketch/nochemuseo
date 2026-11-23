@@ -21,7 +21,7 @@ h1{font-family:var(--serif);font-weight:500;font-size:clamp(38px,6vw,60px);line-
 table{width:100%;border-collapse:collapse;font-size:16px}
 th{text-align:left;font-weight:400;color:var(--dim);font-size:14px;padding:10px 8px;border-bottom:1px solid var(--gold-soft)}
 td{padding:11px 8px;border-bottom:1px solid rgba(205,163,73,.14)}
-.r{text-align:right}.yr{color:var(--beam)}.next .yr{color:var(--haze)}.muted{color:var(--haze)}
+.r{text-align:right}.img a{color:var(--haze);white-space:nowrap;font-size:14px}.img a:hover{color:#fff}.img a.ph{color:var(--gold);margin-right:8px}.note{color:var(--dim);font-size:14px;margin-top:20px}.yr{color:var(--beam)}.next .yr{color:var(--haze)}.muted{color:var(--haze)}
 @media (max-width:560px){.hide-s{display:none}table{font-size:15px}}
 </style>
 </head>
@@ -32,6 +32,7 @@ td{padding:11px 8px;border-bottom:1px solid rgba(205,163,73,.14)}
   <p class="sub" id="sub"></p>
   <p class="switch"><a id="other" href="#"></a></p>
   <div id="list"><p class="muted">…</p></div>
+  <p class="note" id="note"></p>
 </div>
 <script>
 const MODE = 'reached', SEC_YR = 31557600;
@@ -46,9 +47,9 @@ const EXO_FALLBACK = [
   ['HD 209458 b',330.795,18.884,159,1999]
 ].map(([n,ra,dec,ly,y]) => ({ name:n, ra, dec, ly, year:y }));
 const L = {
-  ru: { reached: 'Достигнутые миры', next: 'Следующие миры', subR: 'Экзопланеты, до которых уже дошёл свет твоего рождения: {n}.', subN: 'Экзопланеты, до которых твой свет дойдёт дальше.', otherR: 'Смотреть следующие', otherN: 'Смотреть достигнутые', back: '← На главную', planet: 'Планета', found: 'Открыта', dist: 'Расстояние', lightR: 'Свет дошёл', lightN: 'Свет дойдёт', ly: 'св. л.', none: 'Пока пусто: твой свет ещё не дошёл до ближайшего известного мира.', noDate: 'Укажи дату рождения на главной странице.' },
-  en: { reached: 'Worlds reached', next: 'Next worlds', subR: 'Exoplanets the light of your birth has already reached: {n}.', subN: 'Exoplanets your light will reach next.', otherR: 'See the next ones', otherN: 'See the reached ones', back: '← Back to STARBEAM', planet: 'Planet', found: 'Found', dist: 'Distance', lightR: 'Light arrived', lightN: 'Light arrives', ly: 'ly', none: 'Nothing yet: your light has not reached the nearest known world.', noDate: 'Set your birth date on the main page.' },
-  es: { reached: 'Mundos alcanzados', next: 'Próximos mundos', subR: 'Exoplanetas a los que ya llegó la luz de tu nacimiento: {n}.', subN: 'Exoplanetas a los que tu luz llegará después.', otherR: 'Ver los próximos', otherN: 'Ver los alcanzados', back: '← Volver a STARBEAM', planet: 'Planeta', found: 'Descubierto', dist: 'Distancia', lightR: 'Llegó la luz', lightN: 'Llegará la luz', ly: 'a. l.', none: 'Todavía nada: tu luz no llegó al mundo conocido más cercano.', noDate: 'Indicá tu fecha de nacimiento en la página principal.' },
+  ru: { reached: 'Достигнутые миры', next: 'Следующие миры', subR: 'Экзопланеты, до которых уже дошёл свет твоего рождения: {n}.', subN: 'Экзопланеты, до которых твой свет дойдёт дальше.', otherR: 'Смотреть следующие', otherN: 'Смотреть достигнутые', back: '← На главную', planet: 'Планета', found: 'Открыта', dist: 'Расстояние', lightR: 'Свет дошёл', lightN: 'Свет дойдёт', ly: 'св. л.', none: 'Пока пусто: твой свет ещё не дошёл до ближайшего известного мира.', img: 'Изображение', photo: 'снимок', eyes: '3D NASA', imgNote: 'Настоящие снимки есть только у планет, сфотографированных напрямую. У остальных — 3D‑визуализация NASA Eyes on Exoplanets.', noDate: 'Укажи дату рождения на главной странице.' },
+  en: { reached: 'Worlds reached', next: 'Next worlds', subR: 'Exoplanets the light of your birth has already reached: {n}.', subN: 'Exoplanets your light will reach next.', otherR: 'See the next ones', otherN: 'See the reached ones', back: '← Back to STARBEAM', planet: 'Planet', found: 'Found', dist: 'Distance', lightR: 'Light arrived', lightN: 'Light arrives', ly: 'ly', none: 'Nothing yet: your light has not reached the nearest known world.', img: 'Image', photo: 'photo', eyes: 'NASA 3D', imgNote: 'Real photos exist only for directly imaged planets. The rest link to the NASA Eyes on Exoplanets 3D view.', noDate: 'Set your birth date on the main page.' },
+  es: { reached: 'Mundos alcanzados', next: 'Próximos mundos', subR: 'Exoplanetas a los que ya llegó la luz de tu nacimiento: {n}.', subN: 'Exoplanetas a los que tu luz llegará después.', otherR: 'Ver los próximos', otherN: 'Ver los alcanzados', back: '← Volver a STARBEAM', planet: 'Planeta', found: 'Descubierto', dist: 'Distancia', lightR: 'Llegó la luz', lightN: 'Llegará la luz', ly: 'a. l.', none: 'Todavía nada: tu luz no llegó al mundo conocido más cercano.', img: 'Imagen', photo: 'foto', eyes: '3D NASA', imgNote: 'Solo hay fotos reales de los planetas captados en imagen directa. El resto enlaza a la vista 3D de NASA Eyes on Exoplanets.', noDate: 'Indicá tu fecha de nacimiento en la página principal.' },
 };
 const qs = new URLSearchParams(location.search), LANG = L[qs.get('lang')] ? qs.get('lang') : 'ru', t = L[LANG], b = Number(qs.get('b'));
 document.documentElement.lang = LANG;
@@ -57,6 +58,13 @@ document.getElementById('home').href = home; const back = document.getElementByI
 const h = MODE === 'reached' ? t.reached : t.next; document.getElementById('h').textContent = h; document.title = h + ' — STARBEAM';
 const other = document.getElementById('other'); other.textContent = MODE === 'reached' ? t.otherR : t.otherN;
 other.href = (MODE === 'reached' ? '/worlds-next.html' : '/worlds-reached.html') + location.search;
+const PHOTOS = {
+  epsindab: 'https://www.esa.int/ESA_Multimedia/Images/2024/07/Exoplanet_Epsilon_Indi_Ab_MIRI_image',
+  aflepb: 'https://eso.org/public/images/potw2308a/',
+  '51erib': 'https://science.nasa.gov/asset/webb/exoplanet-51-eridani-b-gemini',
+};
+const key = (n) => n.toLowerCase().replace(/[^a-z0-9]/g, '');
+const eyes = (n) => 'https://eyes.nasa.gov/apps/exo/#/planet/' + encodeURIComponent(n.replace(/ /g, '_'));
 const esc = (x) => String(x).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const loc = { ru: 'ru-RU', en: 'en-US', es: 'es-AR' }[LANG], nf = new Intl.NumberFormat(loc, { maximumFractionDigits: 1 });
 async function load() {
@@ -74,7 +82,8 @@ async function load() {
   const all = (await load()).sort((a, c) => a.ly - c.ly);
   const rows = MODE === 'reached' ? all.filter((p) => p.ly <= ageLy).reverse() : all.filter((p) => p.ly > ageLy);
   document.getElementById('sub').textContent = MODE === 'reached' ? t.subR.replace('{n}', rows.length) : t.subN;
-  list.innerHTML = rows.length ? `<table><thead><tr><th>${t.planet}</th><th class="hide-s">${t.found}</th><th class="r">${t.dist}</th><th class="r">${MODE === 'reached' ? t.lightR : t.lightN}</th></tr></thead><tbody>${rows.map((p) => `<tr><td>${esc(p.name)}</td><td class="hide-s muted">${esc(p.year || '—')}</td><td class="r">${nf.format(p.ly)} ${t.ly}</td><td class="r yr">${new Date(b + p.ly * SEC_YR * 1000).getFullYear()}</td></tr>`).join('')}</tbody></table>` : `<p class="muted">${t.none}</p>`;
+  document.getElementById('note').textContent = t.imgNote;
+  list.innerHTML = rows.length ? `<table><thead><tr><th>${t.planet}</th><th class="hide-s">${t.found}</th><th class="r">${t.dist}</th><th class="r">${MODE === 'reached' ? t.lightR : t.lightN}</th><th class="r">${t.img}</th></tr></thead><tbody>${rows.map((p) => `<tr><td>${esc(p.name)}</td><td class="hide-s muted">${esc(p.year || '—')}</td><td class="r">${nf.format(p.ly)} ${t.ly}</td><td class="r yr">${new Date(b + p.ly * SEC_YR * 1000).getFullYear()}</td><td class="r img">${PHOTOS[key(p.name)] ? `<a class="ph" href="${PHOTOS[key(p.name)]}" target="_blank" rel="noopener">${t.photo}</a> ` : ''}<a href="${eyes(p.name)}" target="_blank" rel="noopener">${t.eyes}</a></td></tr>`).join('')}</tbody></table>` : `<p class="muted">${t.none}</p>`;
 })();
 </script>
 </body>
