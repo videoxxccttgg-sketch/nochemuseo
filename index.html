@@ -26,7 +26,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Geologica:wght@300;400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.css" />
 <script src="/config.js"></script>
 <script type="importmap">
 { "imports": {
@@ -469,10 +468,9 @@ footer a{color:var(--haze)}
       <div>
         <p><span data-i18n="sc1">Настоящие обзоры неба в точке</span> <span id="teleCoords" class="num">—</span>. <span data-i18n="sc2">Поверни и приблизь, переключи оптику, инфракрасный 2MASS или NASA WISE.</span></p>
         <div class="surveys" id="surveys" style="margin-top:14px">
-          <button class="on" data-survey="P/DSS2/color" data-hips="CDS/P/DSS2/color">DSS2</button>
-          <button data-survey="P/PanSTARRS/DR1/color-z-zg-g" data-hips="CDS/P/PanSTARRS/DR1/color-z-zg-g">Pan‑STARRS</button>
-          <button data-survey="P/2MASS/color" data-hips="CDS/P/2MASS/color">2MASS</button>
-          <button data-survey="P/allWISE/color" data-hips="CDS/P/allWISE/color">NASA WISE</button>
+          <button class="on" data-survey="https://skies.esac.esa.int/DSSColor/" data-hips="CDS/P/DSS2/color">DSS2</button>
+          <button data-survey="https://skies.esac.esa.int/2MASSColor/" data-hips="CDS/P/2MASS/color">2MASS</button>
+          <button data-survey="https://skies.esac.esa.int/AllWISEColor/" data-hips="CDS/P/allWISE/color">NASA WISE</button>
         </div>
       </div>
     </div>
@@ -483,7 +481,7 @@ footer a{color:var(--haze)}
           <svg class="ring" viewBox="0 0 400 400" aria-hidden="true" id="eyeRing"></svg>
           <div class="scope-ctl"><button id="zIn" aria-label="Приблизить" data-i18n-aria="aZin">+</button><button id="zOut" aria-label="Отдалить" data-i18n-aria="aZout">−</button><button id="zHome" aria-label="Вернуть на зенит" data-i18n-aria="aZhome">⊙</button></div>
         </div>
-        <div class="scope-status"><span id="aladinStatus">Подключаемся к CDS…</span><span id="fovLabel" class="num">поле 1,50°</span></div>
+        <div class="scope-status"><span id="aladinStatus">Подключаемся к обзорам неба…</span><span id="fovLabel" class="num">поле 1,50°</span></div>
         <div class="share">
           <button class="btn btn-line" id="copyPostBtn" data-i18n="copyPost">Скопировать пост для X</button>
           <button class="btn btn-line" id="shareCardBtn" data-i18n="shareCard">Скачать карточку 1200×675</button>
@@ -576,7 +574,7 @@ footer a{color:var(--haze)}
   </section>
 
   <footer>
-    <p data-i18n="footer1">Земля и Луна — текстуры на основе NASA Blue Marble и Earth at Night (через three.js). Карта неба — 112 тысяч звёзд каталога Hipparcos (ESA, данные d3-celestial) и модель Млечного Пути. Фон на фото убирается в браузере моделью MediaPipe (Google). Обзоры в окуляре — <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a>: DSS2 (STScI), Pan‑STARRS1, 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Снимок дня — <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Экзопланеты — <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Архив — <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Города — Open‑Meteo.</p>
+    <p data-i18n="footer1">Земля и Луна — текстуры на основе NASA Blue Marble и Earth at Night (через three.js). Карта неба — 112 тысяч звёзд каталога Hipparcos (ESA, данные d3-celestial) и модель Млечного Пути. Фон на фото убирается в браузере моделью MediaPipe (Google). Обзоры в окуляре — <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a>: DSS2 (STScI), 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Снимок дня — <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Экзопланеты — <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Архив — <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Города — Open‑Meteo.</p>
     <p data-i18n="footer2">Расчёты: звёздное время IAU 1982, прецессия IAU 1976 к J2000, Солнце и Луна по упрощённым формулам Меёса (0,1–0,5°). Положения «Вояджеров» приблизительные. NASA не связано с проектом и не одобряет его.</p>
   </footer>
 </main>
@@ -705,7 +703,7 @@ const L = {
     exoLive: 'Данные загружены из NASA Exoplanet Archive сейчас.', exoFallback: 'Архив NASA не ответил, показан встроенный список из 22 планет.',
     thPlanet: 'Планета', thFound: 'Открыта', thDist: 'Расстояние', thLight: 'Свет там', exoNone: 'Свет ещё не добрался до ближайших миров. Первый на пути — Proxima Centauri b.',
     loadingArchive: 'Загружаем архив…',
-    aladinFail: 'Aladin Lite не загрузился: проверь доступ к aladin.cds.unistra.fr.', aladinOk: 'CDS Aladin Lite: тяни, чтобы осмотреться, колесом — приблизить.', aladinConn: 'Подключаемся к CDS…', landmarks: 'Ориентиры',
+    aladinFail: 'Aladin Lite не загрузился: проверь доступ к cdn.jsdelivr.net и skies.esac.esa.int.', aladinOk: 'CDS Aladin Lite: тяни, чтобы осмотреться, колесом — приблизить.', aladinConn: 'Подключаемся к обзорам неба…', landmarks: 'Ориентиры',
     fov: 'поле {v}°', scopeHome: 'Окуляр снова смотрит в твой зенит',
     apodBirth: 'Снимок NASA в день твоего рождения', apodBday: 'Снимок NASA в твой день рождения (архив ведётся с 1995)', apodLoading: 'Загружаем…', apodTitle0: 'Снимок дня NASA в твой день рождения',
     apodFail: 'Снимок дня не загрузился', apod429: 'NASA временно ограничило запросы. Попробуй через час или открой архив по ссылке ниже.', apodDown: 'NASA API недоступен. Открой архив по ссылке ниже.',
@@ -742,7 +740,7 @@ const L = {
     exoLive: 'Loaded live from the NASA Exoplanet Archive.', exoFallback: 'The NASA archive did not respond, so a built‑in list of 22 planets is shown.',
     thPlanet: 'Planet', thFound: 'Found', thDist: 'Distance', thLight: 'Light there', exoNone: 'Your light has not reached the nearest worlds yet. First in line: Proxima Centauri b.',
     loadingArchive: 'Loading the archive…',
-    aladinFail: 'Aladin Lite did not load: check access to aladin.cds.unistra.fr.', aladinOk: 'CDS Aladin Lite: drag to look around, scroll to zoom.', aladinConn: 'Connecting to CDS…', landmarks: 'Landmarks',
+    aladinFail: 'Aladin Lite did not load: check access to cdn.jsdelivr.net and skies.esac.esa.int.', aladinOk: 'CDS Aladin Lite: drag to look around, scroll to zoom.', aladinConn: 'Connecting to sky surveys…', landmarks: 'Landmarks',
     fov: 'field {v}°', scopeHome: 'The eyepiece is back on your zenith',
     apodBirth: 'NASA picture on the day you were born', apodBday: 'NASA picture on your birthday (the archive starts in 1995)', apodLoading: 'Loading…', apodTitle0: 'NASA picture of the day on your birthday',
     apodFail: 'The picture of the day did not load', apod429: 'NASA is limiting requests right now. Try again in an hour or open the archive below.', apodDown: 'The NASA API is unavailable. Open the archive below.',
@@ -777,7 +775,7 @@ const L = {
     lWallet: 'Solana wallet <span>optional</span>', phWallet: 'Wallet address',
     noSign: 'No.', regDoneP: 'You are in the logbook. Send this link to friends — it shows who you brought in.', copy: 'Copy',
     dlId: 'Download Galactic ID', copyPost2: 'Copy a post with your link', certFine: 'PNG 1200×1500. On a phone it opens the share menu: choose “Save image” to keep it in Photos. The QR code opens the site with your link.',
-    footer1: 'Earth and Moon: textures based on NASA Blue Marble and Earth at Night (via three.js). Sky map: 112,000 stars from the Hipparcos catalogue (ESA, d3-celestial data) and a Milky Way model. Photo backgrounds are removed in your browser by Google’s MediaPipe. Eyepiece surveys: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), Pan‑STARRS1, 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Picture of the day: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanets: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archive: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Cities: Open‑Meteo.',
+    footer1: 'Earth and Moon: textures based on NASA Blue Marble and Earth at Night (via three.js). Sky map: 112,000 stars from the Hipparcos catalogue (ESA, d3-celestial data) and a Milky Way model. Photo backgrounds are removed in your browser by Google’s MediaPipe. Eyepiece surveys: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Picture of the day: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanets: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archive: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Cities: Open‑Meteo.',
     footer2: 'Calculations: sidereal time IAU 1982, IAU 1976 precession to J2000, Sun and Moon by simplified Meeus formulas (0.1–0.5°). Voyager positions are approximate. NASA is not affiliated with this project and does not endorse it.',
   },
   es: {
@@ -802,7 +800,7 @@ const L = {
     exoLive: 'Datos cargados en vivo del NASA Exoplanet Archive.', exoFallback: 'El archivo de la NASA no respondió: mostramos una lista propia de 22 planetas.',
     thPlanet: 'Planeta', thFound: 'Descubierto', thDist: 'Distancia', thLight: 'La luz llega', exoNone: 'Tu luz todavía no alcanzó los mundos más cercanos. El primero es Proxima Centauri b.',
     loadingArchive: 'Cargando el archivo…',
-    aladinFail: 'Aladin Lite no cargó: revisá el acceso a aladin.cds.unistra.fr.', aladinOk: 'CDS Aladin Lite: arrastrá para mirar alrededor, rueda para acercar.', aladinConn: 'Conectando con CDS…', landmarks: 'Referencias',
+    aladinFail: 'Aladin Lite no cargó: revisá el acceso a cdn.jsdelivr.net y skies.esac.esa.int.', aladinOk: 'CDS Aladin Lite: arrastrá para mirar alrededor, rueda para acercar.', aladinConn: 'Conectando con los relevamientos…', landmarks: 'Referencias',
     fov: 'campo {v}°', scopeHome: 'El ocular vuelve a apuntar a tu cenit',
     apodBirth: 'Foto de la NASA del día en que naciste', apodBday: 'Foto de la NASA de tu cumpleaños (el archivo empieza en 1995)', apodLoading: 'Cargando…', apodTitle0: 'Foto del día de la NASA en tu cumpleaños',
     apodFail: 'La foto del día no cargó', apod429: 'La NASA está limitando pedidos. Probá en una hora o abrí el archivo abajo.', apodDown: 'La API de la NASA no responde. Abrí el archivo abajo.',
@@ -836,7 +834,7 @@ const L = {
     lWallet: 'Billetera Solana <span>opcional</span>', phWallet: 'Dirección de la billetera',
     noSign: 'N.º', regDoneP: 'Estás en la bitácora. Mandá este enlace a tus amigos: muestra a quién trajiste vos.', copy: 'Copiar',
     dlId: 'Descargar Galactic ID', copyPost2: 'Copiar publicación con tu enlace', certFine: 'PNG 1200×1500. En el celular se abre el menú para compartir: elegí «Guardar imagen» para tenerlo en Fotos. El código QR abre el sitio con tu enlace.',
-    footer1: 'Tierra y Luna: texturas basadas en NASA Blue Marble y Earth at Night (vía three.js). Mapa del cielo: 112.000 estrellas del catálogo Hipparcos (ESA, datos de d3-celestial) y un modelo de la Vía Láctea. El fondo de la foto se quita en tu navegador con MediaPipe de Google. Relevamientos del ocular: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), Pan‑STARRS1, 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Foto del día: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanetas: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archivo: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Ciudades: Open‑Meteo.',
+    footer1: 'Tierra y Luna: texturas basadas en NASA Blue Marble y Earth at Night (vía three.js). Mapa del cielo: 112.000 estrellas del catálogo Hipparcos (ESA, datos de d3-celestial) y un modelo de la Vía Láctea. El fondo de la foto se quita en tu navegador con MediaPipe de Google. Relevamientos del ocular: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Foto del día: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanetas: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archivo: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Ciudades: Open‑Meteo.',
     footer2: 'Cálculos: hora sidérea IAU 1982, precesión IAU 1976 a J2000, Sol y Luna con fórmulas simplificadas de Meeus (0,1–0,5°). Las posiciones de las Voyager son aproximadas. La NASA no está vinculada a este proyecto ni lo respalda.',
   },
 };
@@ -1034,13 +1032,21 @@ const camera = new THREE.PerspectiveCamera(45, 1, 0.01, 20000);
 camera.position.set(0, 0.6, 3.4);
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
-const bloom = new UnrealBloomPass(new THREE.Vector2(1024, 1024), 0.6, 0.55, 0.8);
+const bloom = new UnrealBloomPass(new THREE.Vector2(1024, 1024), 0.5, 0.35, 0.92);
 composer.addPass(bloom); composer.addPass(new OutputPass());
 if (LITE) composer.passes.length = 0; // на телефоне рендерим напрямую, без постобработки
 const envTex = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
-const controls = new OrbitControls(camera, canvas3d);
-controls.enableDamping = true; controls.dampingFactor = 0.06; controls.enablePan = false;
-controls.minDistance = 1.15; controls.maxDistance = 420; controls.target.set(0, 0, 0); controls.rotateSpeed = 0.5;
+// OrbitControls запоминает camera.up при создании, поэтому после смены «верха» кадра пересоздаём их
+let controls = null;
+function makeControls() {
+  const tgt = controls ? controls.target.clone() : new THREE.Vector3(), on = controls ? controls.enabled : true;
+  controls?.dispose();
+  controls = new OrbitControls(camera, canvas3d);
+  controls.enableDamping = true; controls.dampingFactor = 0.06; controls.enablePan = false;
+  controls.minDistance = 1.15; controls.maxDistance = 420; controls.rotateSpeed = 0.5;
+  controls.target.copy(tgt); controls.enabled = on;
+}
+makeControls();
 
 const loadMgr = new THREE.LoadingManager();
 // экран загрузки: прогресс по текстурам Земли/Луны и карте неба; закрывается по готовности или через 12 с
@@ -1103,10 +1109,10 @@ const earthMat = new THREE.ShaderMaterial({
       vec3 day=texture2D(dayMap,vUv).rgb; vec3 night=texture2D(nightMap,vUv).rgb;
       vec4 cs=texture2D(cloudMap,vec2(vUv.x+cloudShift,vUv.y)); float cl=cs.a*dot(cs.rgb,vec3(.3333));
       vec3 dayCol=day*(max(ndl,0.)*1.15+0.03);
-      dayCol=mix(dayCol,vec3(1.)*(max(ndl,0.)*1.05+0.02),cl*0.9);
+      dayCol=mix(dayCol,vec3(.92)*(max(ndl,0.)*0.95+0.02),cl*0.85);
       vec3 nightCol=night*vec3(1.,.82,.55)*1.8*(1.-cl*.85)+day*0.012;
       vec3 V=normalize(cameraPosition-vP); vec3 H=normalize(sunDir+V);
-      float spec=pow(max(dot(n,H),0.),48.)*texture2D(specMap,vUv).r*0.7*smoothstep(0.,.1,ndl)*(1.-cl);
+      float spec=pow(max(dot(n,H),0.),48.)*texture2D(specMap,vUv).r*0.4*smoothstep(0.,.1,ndl)*(1.-cl);
       vec3 col=mix(nightCol,dayCol,dayMix)+spec*vec3(1.,.93,.8);
       float rim=pow(1.-max(dot(n,V),0.),3.);
       col+=vec3(.28,.55,1.)*rim*(.12+.88*smoothstep(-.25,.45,ndl));
@@ -1242,6 +1248,7 @@ function setShip(style) { ships.star_wars.visible = style === 'star_wars'; ships
 setShip(selectedStyle);
 
 /* --- размещение объектов по моменту рождения */
+const viewN = new THREE.Vector3(0, 0, 1), camUp = new THREE.Vector3(0, 1, 0);
 let beamDir = new THREE.Vector3(0, 1, 0), cityPos = new THREE.Vector3(0, 1, 0), perp = new THREE.Vector3(1, 0, 0);
 function placeScene() {
   // Земля: меридиан города смотрит в направлении LST (GMST + долгота)
@@ -1259,6 +1266,11 @@ function placeScene() {
   sunSprite.position.copy(sunDir).multiplyScalar(R_SKY * 0.9);
   moon.position.copy(skyDir(sky.moon.ra, sky.moon.dec)).multiplyScalar(sky.moon.dist / 6371);
   moon.lookAt(0, 0, 0);
+  // кадр: смотрим перпендикулярно лучу со стороны Солнца (с краем терминатора), «верх» экрана = луч с наклоном
+  viewN.copy(sunDir).addScaledVector(beamDir, -sunDir.dot(beamDir));
+  if (viewN.lengthSq() < 1e-3) viewN.crossVectors(beamDir, perp);
+  viewN.normalize().applyAxisAngle(beamDir, 0.6);
+  camUp.copy(beamDir).applyAxisAngle(viewN, canvas3d.clientWidth > 900 ? 0.4 : -0.38).normalize();
 }
 
 /* --- камера */
@@ -1272,27 +1284,20 @@ function camShot(mode) {
   // вид с фронта назад: корабль крупно, за ним луч и Земля
   return { pos: s.clone().add(beamDir.clone().multiplyScalar(0.75)).add(perp.clone().multiplyScalar(0.38)), tgt: s.clone().add(beamDir.clone().multiplyScalar(-0.8)) };
 }
-// Ракурс «Земля»: облетаем луч по кругу и берём точку, откуда фронт света с кораблём виден над Землёй
-// и в свободной части экрана (не под текстом слева и панелью справа)
+// Ракурс «Земля»: Земля внизу, луч уходит вверх, фронт с кораблём сверху; на широком экране сюжет
+// сдвинут в свободную колонку между текстом слева и панелью справа, на телефоне поднят над заголовком
 function earthShot(mid) {
-  const perp2 = new THREE.Vector3().crossVectors(beamDir, perp).normalize();
-  const front = cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D));
-  const tmp = camera.clone(); let best = null;
-  for (let i = 0; i < 24; i++) {
-    const a = (i / 24) * Math.PI * 2, pos = mid.clone().add(perp.clone().multiplyScalar(Math.cos(a) * 12)).add(perp2.clone().multiplyScalar(Math.sin(a) * 12));
-    tmp.position.copy(pos); tmp.lookAt(mid); tmp.updateMatrixWorld(); tmp.updateProjectionMatrix();
-    const f = front.clone().project(tmp), e = new THREE.Vector3().project(tmp);
-    const cx = canvas3d.clientWidth > 900 ? 0.22 : 0; // свободная колонка между текстом и панелью
-    const score = -Math.abs(f.x - cx) - 0.5 * Math.abs(e.x - cx) - 0.8 * Math.max(0, Math.abs(f.y) - 0.62) - 0.8 * Math.max(0, Math.abs(e.y) - 0.62) + (f.y > e.y ? 0.3 : 0) - (canvas3d.clientWidth <= 900 && f.y < -0.4 ? 2 : 0); // на телефоне низ сцены закрыт заголовком
-    if (!best || score > best.score) best = { score, pos };
-  }
-  return { pos: best.pos, tgt: mid.clone() };
+  const w = canvas3d.clientWidth, h = canvas3d.clientHeight, narrow = w <= 900;
+  const D = narrow ? 15.5 : 13.5, halfH = D * Math.tan(camera.fov * DEG / 2), halfW = halfH * (w / h);
+  const right = new THREE.Vector3().crossVectors(viewN.clone().negate(), camUp).normalize();
+  const tgt = mid.clone().addScaledVector(right, -(narrow ? 0 : 0.2) * halfW).addScaledVector(camUp, narrow ? -0.2 * halfH : -0.06 * halfH);
+  return { pos: tgt.clone().addScaledVector(viewN, D), tgt };
 }
 function setCam(mode) {
   camMode = mode;
   document.querySelectorAll('#cams button').forEach((b) => b.classList.toggle('on', b.dataset.cam === mode));
   const shot = camShot(mode);
-  tween = { t: 0, p0: camera.position.clone(), t0: controls.target.clone(), p1: shot.pos, t1: shot.tgt };
+  tween = { t: 0, p0: camera.position.clone(), t0: controls.target.clone(), p1: shot.pos, t1: shot.tgt, u0: camera.up.clone(), u1: camUp.clone() };
   controls.enabled = mode !== 'ship';
 }
 document.querySelectorAll('#cams button').forEach((b) => b.addEventListener('click', () => setCam(b.dataset.cam)));
@@ -1377,7 +1382,8 @@ function frame(now) {
   if (tween) {
     tween.t = Math.min(1, tween.t + dt / 1.6); /* по времени, а не по кадрам */ const e = 1 - Math.pow(1 - tween.t, 3);
     camera.position.lerpVectors(tween.p0, tween.p1, e); controls.target.lerpVectors(tween.t0, tween.t1, e);
-    if (tween.t >= 1) tween = null;
+    camera.up.lerpVectors(tween.u0, tween.u1, e).normalize();
+    if (tween.t >= 1) { tween = null; makeControls(); }
   } else if (camMode === 'ship') { const s = camShot('ship'); camera.position.lerp(s.pos, 0.08); controls.target.lerp(s.tgt, 0.08); }
   if (camMode === 'ship' || tween) camera.lookAt(controls.target); else controls.update();
   if (LITE) renderer.render(scene, camera); else composer.render();
@@ -1595,10 +1601,11 @@ document.querySelectorAll('#exoFilter button').forEach((b) => b.addEventListener
 /* =====================================================================
    11. TELESCOPE — Aladin Lite v3 + hips2fits + NASA APOD
    ===================================================================== */
-let aladinCat = null, zenithFromAladin = false, aladinOk = false, aladin = null, fov = 1.5, survey = { aladin: 'P/DSS2/color', hips: 'CDS/P/DSS2/color', label: 'DSS2' }, zenithImg = null, cutKey = '';
-function initAladin() {
-  if (!window.A?.init) { $('aladinStatus').textContent = t('aladinFail'); return; }
-  A.init.then(() => {
+let aladinCat = null, zenithFromAladin = false, aladinOk = false, aladin = null, fov = 1.5, survey = { aladin: 'https://skies.esac.esa.int/DSSColor/', hips: 'CDS/P/DSS2/color', label: 'DSS2' }, zenithImg = null, cutKey = '';
+let A = null;
+function initAladin(mod) {
+  A = mod?.default; if (!A?.init) { $('aladinStatus').textContent = t('aladinFail'); return; }
+  Promise.resolve(A.init).then(() => {
     aladin = A.aladin('#aladin-lite-div', { survey: survey.aladin, fov, target: `${sky.ra} ${sky.dec}`, showReticle: false, showLayersControl: false, showGotoControl: false, showZoomControl: false, showFullscreenControl: true, showFrame: false, showCooGridControl: true });
     const cat = A.catalog({ name: t('landmarks'), sourceSize: 14, color: '#CDA349', labelColumn: 'name', displayLabel: true, labelColor: '#CDA349', labelFont: '12px Geologica' });
     aladin.addCatalog(cat); aladinCat = cat;
@@ -1631,6 +1638,7 @@ async function captureZenith() {
     const c = document.createElement('canvas'); c.width = c.height = 512;
     c.getContext('2d').drawImage(img, (img.width - crop) / 2, (img.height - crop) / 2, crop, crop, 0, 0, 512, 512);
     zenithImg = c; zenithFromAladin = true; scheduleCert();
+    if (!($('cutImg').complete && $('cutImg').naturalWidth)) { $('cutImg').src = c.toDataURL('image/jpeg', 0.9); $('cutSurvey').textContent = 'DSS2 · ESA'; }
   } catch { aladinCat?.show?.(); }
 }
 document.querySelectorAll('#surveys button').forEach((b) => b.addEventListener('click', () => {
@@ -2140,7 +2148,7 @@ loadExoplanets(); initRegistration();
 function loadScript(src) { return new Promise((res, rej) => { const el = document.createElement('script'); el.src = src; el.onload = res; el.onerror = rej; document.head.appendChild(el); }); }
 new IntersectionObserver((entries, obs) => {
   if (!entries.some((e) => e.isIntersecting)) return; obs.disconnect();
-  loadScript('https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.js').then(initAladin).catch(() => { $('aladinStatus').textContent = t('aladinFail'); });
+  import('https://cdn.jsdelivr.net/npm/aladin-lite@3.9.4/dist/aladin.js').then(initAladin).catch(() => { $('aladinStatus').textContent = t('aladinFail'); });
 }, { rootMargin: '900px 0px' }).observe($('telescope'));
 requestAnimationFrame(frame);
 </script>
