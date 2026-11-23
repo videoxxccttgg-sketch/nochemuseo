@@ -2269,10 +2269,8 @@ if (NO3D) finishBoot();
 loadExoplanets(); initRegistration();
 // телескоп (Aladin, ~1 МБ) грузим, когда до него осталось ~1 экран прокрутки
 function loadScript(src) { return new Promise((res, rej) => { const el = document.createElement('script'); el.src = src; el.onload = res; el.onerror = rej; document.head.appendChild(el); }); }
-new IntersectionObserver((entries, obs) => {
-  if (!entries.some((e) => e.isIntersecting)) return; obs.disconnect();
-  import('https://cdn.jsdelivr.net/npm/aladin-lite@3.9.4/dist/aladin.js').then(initAladin).catch(() => { $('aladinStatus').textContent = t('aladinFail'); });
-}, { rootMargin: '900px 0px' }).observe($('telescope'));
+// телескоп (Aladin, ~2,6 МБ) нужен только на странице «Окуляр» — там грузим сразу
+if (PAGE === 'scope') import('https://cdn.jsdelivr.net/npm/aladin-lite@3.9.4/dist/aladin.js').then(initAladin).catch(() => { $('aladinStatus').textContent = t('aladinFail'); });
 if (PAGE === 'home') new IntersectionObserver((en) => en.forEach((e) => {
   if (!e.isIntersecting) return; const id = e.target.id === 'passport';
   document.querySelector('.console [data-go="home"]').classList.toggle('on', !id); document.querySelector('.console [data-go="id"]').classList.toggle('on', id);
