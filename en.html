@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru" data-page="home">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -367,9 +367,42 @@ footer a{color:var(--haze)}
   .split{grid-template-columns:1fr}
   .page{padding:0 18px}
 }
+
+/* ===== пульт навигации, как панель управления кораблём ===== */
+.console{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:60;display:flex;gap:5px;padding:6px;background:rgba(5,8,24,.86);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--gold-soft);border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.06)}
+.console a{position:relative;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:76px;padding:10px 10px 8px;border-radius:10px;color:var(--haze);text-decoration:none;font-size:13px;letter-spacing:.03em;background:linear-gradient(#0d1233,#070a1f);border:1px solid rgba(205,163,73,.16);cursor:pointer;transition:color .15s,border-color .15s,box-shadow .15s}
+.console svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round}
+.console a::before{content:'';position:absolute;top:6px;right:7px;width:5px;height:5px;border-radius:50%;background:#262b48;transition:background .15s,box-shadow .15s}
+.console a:hover{color:#fff;border-color:var(--gold-soft)}
+.console a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.console a.on{color:#fff;border-color:var(--beam);box-shadow:0 0 16px rgba(255,106,61,.32),inset 0 0 14px rgba(255,106,61,.14)}
+.console a.on::before{background:var(--beam);box-shadow:0 0 8px var(--beam)}
+body{padding-bottom:96px}
+@media (max-width:700px){
+  .console{left:0;right:0;bottom:0;transform:none;border-radius:16px 16px 0 0;border-bottom:0;gap:4px;padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+  .console a{min-width:0;flex:1;padding:9px 2px 7px;font-size:11px}
+  body{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+}
+/* ===== страницы: главная — два экрана (луч и ID), остальное отдельно ===== */
+html[data-page="home"]{scroll-snap-type:y proximity}
+[data-page="home"] .plate-hero,[data-page="home"] #passport{scroll-snap-align:start}
+[data-page="home"] #route,[data-page="home"] #telescope,[data-page="home"] .legend>*:not(#cams){display:none!important}
+[data-page="sky"] .reading,[data-page="sky"] .dist-scale,[data-page="sky"] #cams,[data-page="sky"] main>section{display:none!important}
+[data-page="chronicle"] .plate-hero>*:not(.topline),[data-page="scope"] .plate-hero>*:not(.topline){display:none!important}
+[data-page="chronicle"] .plate-hero,[data-page="scope"] .plate-hero{height:130px;min-height:0}
+[data-page="chronicle"] #passport,[data-page="chronicle"] #telescope,[data-page="scope"] #passport,[data-page="scope"] #route{display:none!important}
+[data-page="chronicle"] .top-cta,[data-page="scope"] .top-cta,[data-page="sky"] .top-cta{display:none}
 </style>
 </head>
 <body>
+<nav class="console" aria-label="Разделы" data-i18n-aria="aNav">
+  <a data-go="home"><svg viewBox="0 0 24 24"><path d="M5.5 18.5 19 5"/><circle cx="19.5" cy="4.5" r="2"/><circle cx="5" cy="19" r="3"/></svg><span data-i18n="cBeam">Луч</span></a>
+  <a data-go="id"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="8.5" cy="12" r="2.2"/><path d="M13 10h5M13 14h4"/></svg><span>ID</span></a>
+  <a data-go="sky"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="1.5"/></svg><span data-i18n="cSky">Небо</span></a>
+  <a data-go="chronicle"><svg viewBox="0 0 24 24"><path d="M2 12h20"/><circle cx="6" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2"/></svg><span data-i18n="cRoute">Хроника</span></a>
+  <a data-go="worlds"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><ellipse cx="12" cy="12" rx="10.5" ry="3.6" transform="rotate(-20 12 12)"/></svg><span data-i18n="cWorlds">Миры</span></a>
+  <a data-go="scope"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 2v6M12 16v6M2 12h6M16 12h6"/></svg><span data-i18n="cScope">Окуляр</span></a>
+</nav>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <section class="plate-hero" id="top">
@@ -397,9 +430,6 @@ footer a{color:var(--haze)}
 
   <div class="topline">
     <a class="wordmark" href="#top">STARBEAM</a>
-    <nav class="menu" aria-label="Разделы" data-i18n-aria="aNav">
-      <a href="#passport">Galactic ID</a><a href="#route" data-i18n="navRoute">Хроника света</a><a href="#telescope" data-i18n="navScope">Телескоп</a>
-    </nav>
     <div class="tools">
       <div class="toggle" role="group" aria-label="Language" id="langs"><button data-lang="ru">RU</button><button data-lang="en">EN</button><button data-lang="es">ES</button></div>
       <a class="btn btn-line top-cta" style="padding:8px 16px;font-size:14.6px" href="#passport" data-i18n="getId">Получить Galactic ID</a>
@@ -782,7 +812,7 @@ const L = {
     routeH: 'Light chronicle', routeP: 'Light spreads in every direction: every star closer than your age in light years has already received the flash of your birth. Stars are DSS2 survey frames at exact coordinates; Solar System objects come from the NASA archive.',
     ld1: 'Your light has already reached', ld2: 'of the', ld3: 'nearest stars and', ld4: 'exoplanets. Next on its way:', ld5: 'Earth’s radio bubble is now about',
     exoH: 'Worlds your light has reached', exoP: 'Confirmed exoplanets from the NASA Exoplanet Archive within 110 light years. In the 3D sky they are dots: orange ones are already inside your light sphere.',
-    tabReached: 'Reached', tabNext: 'Next', exoReachedA: 'reached', keepCta: 'Get your pilot card as a keepsake: print it, laminate it and give it as a gift, or send it to friends.', setupH: 'Customize your card', exoAnd: 'and', exoNextA: 'next',
+    tabReached: 'Reached', tabNext: 'Next', exoReachedA: 'reached', cBeam: 'Beam', cSky: 'Sky', cRoute: 'Chronicle', cWorlds: 'Worlds', cScope: 'Eyepiece', keepCta: 'Get your pilot card as a keepsake: print it, laminate it and give it as a gift, or send it to friends.', setupH: 'Customize your card', exoAnd: 'and', exoNextA: 'next',
     scopeH: 'An eyepiece pointed at your zenith', sc1: 'Real sky surveys at', sc2: 'Rotate and zoom, switch between optical, infrared 2MASS or NASA WISE.',
     aZin: 'Zoom in', aZout: 'Zoom out', aZhome: 'Back to zenith', copyPost: 'Copy a post for X', shareCard: 'Download 1200×675 card', apodOpen: 'Open on apod.nasa.gov',
     aCut: 'Sky frame at your zenith', cutH: 'Zenith frame', cut1: '0.45° field, survey', cut2: 'This frame goes on your Galactic ID.',
@@ -841,7 +871,7 @@ const L = {
     routeH: 'Crónica de la luz', routeP: 'La luz va en todas direcciones: cada estrella más cercana que tu edad en años luz ya recibió el destello de tu nacimiento. Las estrellas son tomas del relevamiento DSS2 en coordenadas exactas; el Sistema Solar viene del archivo de la NASA.',
     ld1: 'Tu luz ya alcanzó', ld2: 'de las', ld3: 'estrellas más cercanas y', ld4: 'exoplanetas. La próxima en el camino:', ld5: 'La burbuja de radio de la Tierra mide hoy unos',
     exoH: 'Mundos a los que llegó tu luz', exoP: 'Exoplanetas confirmados del NASA Exoplanet Archive a menos de 110 años luz. En el cielo 3D son puntos: los naranjas ya están dentro de tu esfera de luz.',
-    tabReached: 'Alcanzados', tabNext: 'Próximos', exoReachedA: 'alcanzados', keepCta: 'Llevate tu tarjeta de piloto de recuerdo: imprimila, plastificala y regalala, o mandala a tus amigos.', setupH: 'Personalizá tu tarjeta', exoAnd: 'y', exoNextA: 'próximos',
+    tabReached: 'Alcanzados', tabNext: 'Próximos', exoReachedA: 'alcanzados', cBeam: 'Haz', cSky: 'Cielo', cRoute: 'Crónica', cWorlds: 'Mundos', cScope: 'Ocular', keepCta: 'Llevate tu tarjeta de piloto de recuerdo: imprimila, plastificala y regalala, o mandala a tus amigos.', setupH: 'Personalizá tu tarjeta', exoAnd: 'y', exoNextA: 'próximos',
     scopeH: 'Un ocular apuntado a tu cenit', sc1: 'Relevamientos reales del cielo en', sc2: 'Girá y acercá, cambiá entre óptico, infrarrojo 2MASS o NASA WISE.',
     aZin: 'Acercar', aZout: 'Alejar', aZhome: 'Volver al cenit', copyPost: 'Copiar publicación para X', shareCard: 'Descargar tarjeta 1200×675', apodOpen: 'Abrir en apod.nasa.gov',
     aCut: 'Toma del cielo en tu cenit', cutH: 'Toma del cenit', cut1: 'Campo de 0,45°, relevamiento', cut2: 'Esta toma va en tu Galactic ID.',
@@ -907,8 +937,11 @@ function pickLang() {
   return forced || q || saved || (nav === 'ru' || nav === 'uk' || nav === 'be' ? 'ru' : nav === 'es' ? 'es' : 'en');
 }
 
+const PAGE = document.documentElement.dataset.page || 'home', NO3D = PAGE === 'chronicle' || PAGE === 'scope';
 let birthLocal = '1995-06-15T12:00';
 let city = { ...CITY_PRESETS[0] };
+// дата и город общие для всех страниц сайта
+try { const st = JSON.parse(localStorage.getItem('sb_state')); if (st?.birthLocal && st.city?.name) { birthLocal = st.birthLocal; city = st.city; } } catch {}
 let birthMs = 0;
 let sky = null;
 let selectedStyle = 'star_wars';
@@ -1423,6 +1456,7 @@ function orientShip(t) { _right.crossVectors(perp, beamDir).normalize(); _m4.mak
    ===================================================================== */
 let lastSlow = 0, lastFrame = 0;
 function frame(now) {
+  if (NO3D) return; // на страницах без 3D сцену не рисуем
   const dt = Math.min(0.1, lastFrame ? (now - lastFrame) / 1000 : 0.016); lastFrame = now;
   const tt = now / 1000;
   earthUniforms.cloudShift.value = (tt * 0.0008) % 1;
@@ -1495,8 +1529,15 @@ function drawMoonPhase(m) {
 /* =====================================================================
    9. MAIN SYNC
    ===================================================================== */
+function navLinks() {
+  const home = LANG === 'ru' ? '/' : '/' + LANG, q = '?lang=' + LANG;
+  const go = { home, id: (PAGE === 'home' ? '' : home) + '#passport', sky: '/sky.html' + q, chronicle: '/chronicle.html' + q, worlds: `/worlds-reached.html${q}&b=${birthMs}`, scope: '/scope.html' + q };
+  document.querySelectorAll('.console a').forEach((a) => { a.href = go[a.dataset.go]; a.classList.toggle('on', a.dataset.go === PAGE); });
+}
 function recompute() {
   birthMs = localToUtc(birthLocal, city);
+  try { localStorage.setItem('sb_state', JSON.stringify({ birthLocal, city, birthMs })); } catch {}
+  navLinks();
   sky = computeSky(birthMs, city);
   END_LY = Math.max(5, (Date.UTC(END_YEAR, 0, 1) - birthMs) / (SEC_YR * 1000)); LMAX = Math.log10(END_LY);
   $('scaleTxt').textContent = t('scaleH', { y: END_YEAR, n: intFmt.format(Math.round(END_LY)) }); buildLadder();
@@ -2204,7 +2245,7 @@ function setLang(l) {
   apply('data-i18n-aria', 'Aria', (e) => e.getAttribute('aria-label'), (e, v) => e.setAttribute('aria-label', v));
   apply('data-i18n-alt', 'Alt', (e) => e.alt, (e, v) => { e.alt = v; });
   document.querySelectorAll('#langs button').forEach((b) => b.classList.toggle('on', b.dataset.lang === l));
-  localizeData(); renderCityPresets(); regTexts(); photoUI(); 
+  localizeData(); renderCityPresets(); regTexts(); photoUI(); if (typeof birthMs === 'number') navLinks(); 
   if (document.activeElement !== cityInput) cityInput.value = cityName(city.name);
   $('aladinStatus').textContent = t(aladinOk ? 'aladinOk' : 'aladinConn'); setFov(fov);
   if (!$('apodImg').innerHTML) { $('apodTitle').textContent = t('apodTitle0'); $('apodText').textContent = t('apodLoading'); }
@@ -2224,6 +2265,7 @@ birthInput.max = utcToLocalStr(Date.now(), city);
 birthInput.value = birthLocal; cityInput.value = city.name;
 setLang(pickLang()); cityInput.value = cityName(city.name);
 resize(); buildLadder(); recompute(); setCam('earth');
+if (NO3D) finishBoot();
 loadExoplanets(); initRegistration();
 // телескоп (Aladin, ~1 МБ) грузим, когда до него осталось ~1 экран прокрутки
 function loadScript(src) { return new Promise((res, rej) => { const el = document.createElement('script'); el.src = src; el.onload = res; el.onerror = rej; document.head.appendChild(el); }); }
@@ -2231,6 +2273,12 @@ new IntersectionObserver((entries, obs) => {
   if (!entries.some((e) => e.isIntersecting)) return; obs.disconnect();
   import('https://cdn.jsdelivr.net/npm/aladin-lite@3.9.4/dist/aladin.js').then(initAladin).catch(() => { $('aladinStatus').textContent = t('aladinFail'); });
 }, { rootMargin: '900px 0px' }).observe($('telescope'));
+if (PAGE === 'home') new IntersectionObserver((en) => en.forEach((e) => {
+  if (!e.isIntersecting) return; const id = e.target.id === 'passport';
+  document.querySelector('.console [data-go="home"]').classList.toggle('on', !id); document.querySelector('.console [data-go="id"]').classList.toggle('on', id);
+}), { threshold: 0.45 }).observe($('passport')), new IntersectionObserver((en) => en.forEach((e) => {
+  if (e.isIntersecting) { document.querySelector('.console [data-go="home"]').classList.add('on'); document.querySelector('.console [data-go="id"]').classList.remove('on'); }
+}), { threshold: 0.45 }).observe($('top'));
 requestAnimationFrame(frame);
 </script>
 </body>

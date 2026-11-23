@@ -1,0 +1,2284 @@
+<!DOCTYPE html>
+<html lang="ru" data-page="chronicle">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Хроника света — STARBEAM</title>
+<meta name="description" content="Свет, родившийся вместе с тобой, уже обогнал «Вояджер‑1». Посмотри, до каких звёзд и экзопланет он долетел, и получи именной Galactic Pilot ID." />
+<meta name="theme-color" content="#000000" />
+<link rel="canonical" href="https://peaceindex.online/chronicle.html" />
+<link rel="alternate" hreflang="ru" href="https://peaceindex.online/" />
+<link rel="alternate" hreflang="en" href="https://peaceindex.online/en" />
+<link rel="alternate" hreflang="es" href="https://peaceindex.online/es" />
+<link rel="alternate" hreflang="x-default" href="https://peaceindex.online/" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://peaceindex.online/" />
+<meta property="og:title" content="STARBEAM — где сейчас свет твоего рождения" />
+<meta property="og:description" content="Введи дату и город рождения: 3D‑Земля NASA в ту минуту, реальное небо и звёзды, до которых уже долетел твой свет." />
+<meta property="og:image" content="https://peaceindex.online/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://peaceindex.online/og.png" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Geologica:wght@300;400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
+<script src="/config.js"></script>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<style>
+/* Пластинка звёздного атласа: чёрное небо, индиго, анодированное золото «Золотой пластинки», Hα 656 нм для света */
+:root{
+  --void:#000000; --deep:#070B24; --plate:#0C1232; --plate-2:#121A44;
+  --gold:#CDA349; --gold-soft:rgba(205,163,73,.42); --gold-faint:rgba(205,163,73,.16);
+  --star:#EEF0FF; --haze:#9AA3C7; --dim:#5E6694;
+  --beam:#FF6A3D; --beam-soft:rgba(255,106,61,.18); --blue:#A9B8FF; --rose:#FF8E8E;
+  --serif:'Cormorant Garamond',Georgia,serif; --sans:'Geologica',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--void);scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{font-family:var(--sans);font-weight:300;font-size:16.8px;line-height:1.55;color:var(--star);background:var(--void);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+:focus-visible{outline:1.5px solid var(--gold);outline-offset:3px}
+.num{font-variant-numeric:lining-nums tabular-nums}
+.serif{font-family:var(--serif)}
+.muted{color:var(--haze)}
+::selection{background:var(--beam-soft)}
+
+/* ---------------- ПЛАСТИНКА (первый экран) ---------------- */
+.plate-hero{position:relative;height:100svh;min-height:780px;background:#000;overflow:hidden}
+#scene{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.shade{position:absolute;inset:0;pointer-events:none;background:
+  linear-gradient(90deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.25) 34%,transparent 52%),
+  linear-gradient(270deg,rgba(0,0,0,.6) 0%,transparent 26%),
+  linear-gradient(0deg,rgba(0,0,0,.85) 0%,transparent 34%)}
+#labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.lbl{position:absolute;transform:translate(12px,-50%);font-size:12.9px;white-space:nowrap;color:var(--haze);text-shadow:0 0 6px #000,0 0 2px #000;font-weight:400}
+.lbl::before{content:"";position:absolute;left:-16px;top:50%;width:7px;height:7px;margin-top:-4px;border:1px solid currentColor;border-radius:50%}
+.lbl.reached{color:#FFB79C}
+.lbl.voy{color:var(--gold)}
+.lbl.zen{color:#fff;font-family:var(--serif);font-size:19px;font-style:italic}
+.lbl.zen::before{width:13px;height:13px;margin-top:-7px;left:-20px;border-color:var(--beam);box-shadow:0 0 14px var(--beam)}
+.lbl em{font-style:normal;color:var(--dim);margin-left:4px}
+
+/* рамка с координатными шкалами */
+.frame{position:absolute;inset:16px;pointer-events:none;border:1px solid var(--gold-soft)}
+.scale-ra{position:absolute;left:0;right:0;top:-1px;height:12px;
+  background:repeating-linear-gradient(90deg,var(--gold-soft) 0 1px,transparent 1px calc(100%/24)),
+             repeating-linear-gradient(90deg,var(--gold-faint) 0 1px,transparent 1px calc(100%/96));
+  background-size:100% 12px,100% 6px;background-repeat:no-repeat}
+.scale-dec{position:absolute;top:0;bottom:0;left:-1px;width:12px;
+  background:repeating-linear-gradient(180deg,var(--gold-soft) 0 1px,transparent 1px calc(100%/12)),
+             repeating-linear-gradient(180deg,var(--gold-faint) 0 1px,transparent 1px calc(100%/36));
+  background-size:12px 100%,6px 100%;background-repeat:no-repeat}
+.ra-num,.dec-num{position:absolute;font-size:11.2px;color:var(--dim);font-variant-numeric:tabular-nums}
+.ra-num{top:14px;transform:translateX(-50%)}
+.dec-num{left:16px;transform:translateY(-50%)}
+.mark{position:absolute;color:var(--gold);font-size:12.3px;font-weight:500;white-space:nowrap;transition:left .8s cubic-bezier(.2,.8,.2,1),top .8s cubic-bezier(.2,.8,.2,1)}
+.mark-ra{top:-1px;transform:translateX(-50%);padding-top:16px}
+.mark-ra::before{content:"";position:absolute;top:0;left:50%;margin-left:-5px;border:5px solid transparent;border-top:9px solid var(--gold)}
+.mark-dec{left:-1px;transform:translateY(-50%);padding-left:18px}
+.mark-dec::before{content:"";position:absolute;left:0;top:50%;margin-top:-5px;border:5px solid transparent;border-left:9px solid var(--gold)}
+
+/* верхняя строка */
+.topline{position:absolute;top:50px;left:44px;right:34px;display:flex;align-items:center;justify-content:space-between;gap:16px;z-index:5}
+.wordmark{font-family:var(--serif);font-size:26.9px;font-weight:600;letter-spacing:.04em;text-decoration:none;display:flex;align-items:baseline;gap:10px}
+.wordmark small{font-family:var(--sans);font-size:13.4px;font-weight:400;letter-spacing:0;color:var(--gold)}
+.menu{display:flex;gap:26px;font-size:15.1px}
+.menu a{text-decoration:none;color:var(--haze);transition:color .2s}
+.menu a:hover{color:var(--star)}
+.tools{display:flex;gap:10px;align-items:center}
+.ca{font-size:13.4px;color:var(--haze);border-bottom:1px dashed var(--gold-soft);padding-bottom:1px}
+.ca:hover{color:var(--star)}
+.tools{display:flex;gap:10px;align-items:center}
+.toggle{display:inline-flex;border:1px solid var(--gold-soft);border-radius:20px;padding:2px}
+.toggle button{font-size:13.4px;padding:5px 12px;border-radius:16px;color:var(--haze)}
+.toggle button.on{background:var(--gold);color:#120d02;font-weight:500}
+
+/* основной блок слева */
+.reading{position:absolute;left:44px;bottom:118px;width:min(560px,46vw);z-index:5;display:flex;flex-direction:column;gap:22px}
+.reading h1{font-family:var(--serif);font-weight:500;font-size:clamp(33.6px,3.7vw,51.52px);line-height:1.05;letter-spacing:-.01em;max-width:15em}
+.distance{font-family:var(--serif);font-weight:600;font-size:clamp(38.08px,4.03vw,62.72px);white-space:nowrap;line-height:.95;letter-spacing:-.015em;font-variant-numeric:lining-nums tabular-nums;color:#fff;word-break:break-word}
+.distance-sub{display:flex;gap:26px;flex-wrap:wrap;margin-top:10px;font-size:14.6px;color:var(--haze)}
+.distance-sub b{display:block;font-family:var(--serif);font-size:26.9px;font-weight:600;color:var(--star);font-variant-numeric:lining-nums tabular-nums}
+.distance-sub .hot b{color:var(--beam)}
+.log{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;padding:16px;background:rgba(7,11,36,.82);border:1px solid var(--gold-soft);backdrop-filter:blur(6px)}
+.f{display:flex;flex-direction:column;gap:5px;position:relative}
+.f label{font-size:13.4px;color:var(--haze);display:flex;justify-content:space-between;gap:8px}
+.f label > span:last-child:not(:first-child){color:var(--dim);font-size:12.3px}
+.in{min-width:0;max-width:100%;box-sizing:border-box;-webkit-appearance:none;appearance:none;display:block;text-align:left;height:40px;padding:0 12px;background:rgba(0,0,0,.55);border:1px solid rgba(154,163,199,.28);border-radius:3px;outline:none;font-size:15.7px;width:100%;transition:border-color .2s}
+.in:focus{border-color:var(--gold)}
+input[type=datetime-local]::-webkit-date-and-time-value{text-align:left}
+input[type=datetime-local]::-webkit-calendar-picker-indicator{filter:invert(.8) sepia(1) saturate(2) hue-rotate(5deg);cursor:pointer}
+.err{font-size:13.4px;color:var(--rose);display:none}
+.quick{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;color:var(--dim);align-items:baseline}
+.quick button{color:var(--haze);border-bottom:1px solid transparent;padding:1px 0}
+.quick button:hover{color:var(--star);border-bottom-color:var(--gold-soft)}
+.quick .q-gold{color:var(--gold)}
+.dropdown{position:absolute;top:68px;left:0;right:0;z-index:30;background:var(--plate);border:1px solid var(--gold-soft);display:none;box-shadow:0 24px 60px rgba(0,0,0,.7)}
+.dropdown button{width:100%;text-align:left;padding:10px 12px;font-size:14.6px;display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid rgba(154,163,199,.12)}
+.dropdown button:hover{background:var(--plate-2)}
+.dropdown small{color:var(--dim);white-space:nowrap}
+
+/* легенда справа */
+.legend{position:absolute;right:34px;bottom:118px;width:310px;z-index:5;display:flex;flex-direction:column;gap:14px}
+.legend h2{font-family:var(--serif);font-size:24.6px;font-weight:600;border-top:1px solid var(--gold-soft);padding-top:10px}
+.legend dl{display:grid;grid-template-columns:auto 1fr;gap:7px 14px;font-size:14.6px}
+.legend dt{color:var(--haze)}
+.legend dd{text-align:right;font-variant-numeric:tabular-nums}
+.moonline{display:flex;gap:12px;align-items:center}
+#moonPhaseCanvas{width:50px;height:50px;flex:none}
+.voy{font-size:14.6px;line-height:1.5;color:var(--haze);padding-left:12px;border-left:2px solid var(--gold)}
+.voy b{color:var(--star);font-weight:500}
+.views{display:flex;gap:4px;flex-wrap:wrap}
+.views button{font-size:14px;padding:6px 11px;border:1px solid rgba(154,163,199,.25);border-radius:20px;color:var(--haze);background:rgba(0,0,0,.4)}
+.views button.on{border-color:var(--beam);color:#fff;background:var(--beam-soft)}
+
+/* шкала расстояний внизу пластинки */
+.dist-scale{position:absolute;left:44px;right:34px;bottom:34px;z-index:5}
+.dist-head{display:flex;justify-content:space-between;gap:12px;font-size:13.4px;color:var(--haze);margin-bottom:6px}
+.dist-head b{color:var(--beam);font-weight:500}
+.track{position:relative;height:42px}
+.track-rail{position:absolute;left:0;right:0;top:12px;height:1px;background:var(--gold-soft)}
+.track-fill{position:absolute;left:0;top:10.5px;height:3.5px;background:var(--beam);box-shadow:0 0 10px var(--beam),0 0 26px rgba(255,106,61,.5)}
+.track-head{position:absolute;top:6px;width:13px;height:13px;margin-left:-6.5px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px var(--beam-soft),0 0 16px var(--beam)}
+.tick{position:absolute;top:4px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;font-size:12.3px;color:var(--dim);white-space:nowrap}
+.tick i{width:1px;height:17px;background:currentColor}
+.tick span{margin-top:3px}
+.tick.on{color:#FFB79C}
+.tick.gold{color:var(--gold)}
+
+.boot{position:absolute;inset:0;z-index:40;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity 1s ease,visibility 1s}
+.boot.done{opacity:0;visibility:hidden;pointer-events:none}
+.boot-ring{width:min(180px,40vw);height:auto;overflow:visible}
+.boot-ticks{transform-origin:60px 60px;animation:spin 14s linear infinite}
+.boot-scan{transform-origin:60px 60px;animation:spin 2.4s cubic-bezier(.6,.1,.4,.9) infinite}
+.boot-arc{transition:stroke-dashoffset .5s ease}
+@keyframes spin{to{transform:rotate(360deg)}}
+.boot-word{font-family:var(--serif);font-weight:600;font-size:24.6px;letter-spacing:.32em;color:var(--gold);margin-right:-.32em}
+.boot-text{font-family:var(--serif);font-style:italic;font-size:20.2px;color:var(--haze);min-height:1.4em}
+.boot-pct{font-size:13.4px;color:var(--dim);letter-spacing:.08em}
+@media (max-width:900px){.boot{position:fixed}}
+
+/* ---------------- СТРАНИЦА ---------------- */
+.page{max-width:1240px;margin:0 auto;padding:0 28px}
+.chapter{padding:110px 0 10px;scroll-margin-top:20px}
+.chapter-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:end;margin-bottom:34px}
+.chapter h2{font-family:var(--serif);font-weight:500;font-size:clamp(35.84px,4.48vw,58.24px);line-height:1.02;letter-spacing:-.01em}
+.chapter-head p{color:var(--haze);font-size:16.8px;max-width:34em}
+.lead{font-family:var(--serif);font-size:clamp(26.88px,2.91vw,38.08px);line-height:1.25;font-weight:500;max-width:30em;margin-bottom:34px}
+.lead b{font-weight:700;color:#fff}
+.lead .hot{color:var(--beam)}
+
+/* хроника — горизонтальная лента по расстоянию */
+.rail{position:relative;display:flex;gap:26px;overflow-x:auto;scroll-snap-type:x proximity;padding:8px 2px 26px;scrollbar-color:var(--gold-soft) transparent}
+.rail::-webkit-scrollbar{height:4px}.rail::-webkit-scrollbar-thumb{background:var(--gold-soft)}
+.stop{flex:0 0 176px;scroll-snap-align:start;position:relative}
+.stop .yr{font-family:var(--serif);font-size:22.4px;font-weight:600;color:var(--dim);height:28px;font-variant-numeric:lining-nums}
+.stop.reached .yr{color:var(--beam)}
+.stop .line{position:relative;height:20px;margin:0 -13px}
+.stop .line::before{content:"";position:absolute;left:0;right:0;top:9px;height:1px;background:var(--gold-soft)}
+.stop.reached .line::before{background:var(--beam);height:2px;top:8px}
+.stop .line::after{content:"";position:absolute;left:13px;top:4px;width:11px;height:11px;border-radius:50%;background:#000;border:1px solid var(--gold)}
+.stop.reached .line::after{background:var(--beam);border-color:var(--beam);box-shadow:0 0 10px var(--beam)}
+.disc{position:relative;width:176px;height:176px;border-radius:50%;overflow:hidden;background:#05071a;margin-top:12px;box-shadow:0 0 0 1px var(--gold-soft),0 0 0 7px #000,0 0 0 8px var(--gold-faint)}
+.disc img{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s}
+.disc img.ok{opacity:1}
+.stop:not(.reached) .disc img{filter:grayscale(.6) brightness(.7)}
+.disc .src{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-size:10.6px;color:rgba(238,240,255,.7);text-shadow:0 0 4px #000}
+.stop h3{font-family:var(--serif);font-size:22.4px;font-weight:600;margin-top:16px;line-height:1.1}
+.stop p{font-size:14px;color:var(--haze);margin-top:3px}
+.stop .when{color:var(--star)}
+
+.atlas-table{width:100%;border-collapse:collapse;font-size:15.1px}
+.atlas-table th{font-weight:400;color:var(--dim);font-size:13.4px;text-align:left;padding:10px 12px;border-bottom:1px solid var(--gold-soft)}
+.atlas-table td{padding:11px 12px;border-bottom:1px solid rgba(154,163,199,.1);font-variant-numeric:tabular-nums}
+.atlas-table tr:hover td{background:rgba(205,163,73,.04)}
+.exo{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 28px;margin-top:70px;padding-top:30px;border-top:1px solid var(--gold-soft)}
+.exo-nav{font-family:var(--serif);font-size:30px;color:var(--haze)}
+.exo-nav a{color:var(--beam);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:6px}
+.exo-nav a:hover{color:#fff}
+.exo h3{font-family:var(--serif);font-size:33.6px;font-weight:500;line-height:1.1}
+.exo-scroll{max-height:380px;overflow:auto}
+.tabs{display:flex;gap:18px;margin-top:20px;font-size:15.1px}
+.tabs button{color:var(--haze);padding-bottom:4px;border-bottom:1px solid transparent}
+.tabs button.on{color:var(--star);border-bottom-color:var(--beam)}
+
+/* телескоп */
+.scope{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:30px;align-items:start}
+.eyepiece{position:relative;aspect-ratio:1/1;width:min(100%,640px);margin:0 auto}
+.eyepiece-inner{position:absolute;inset:5%;border-radius:50%;overflow:hidden;background:#000}
+#aladin-lite-div{width:100%;height:100%}
+#aladin-lite-div .aladin-logo-container{opacity:.35}
+.ring{position:absolute;inset:0;pointer-events:none}
+.scope-ctl{position:absolute;right:2%;bottom:6%;display:flex;flex-direction:column;gap:8px;z-index:5}
+.scope-ctl button{width:40px;height:40px;border-radius:50%;background:rgba(7,11,36,.85);border:1px solid var(--gold-soft);font-size:20.2px;color:var(--gold)}
+.scope-status{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:14px;color:var(--haze);margin-top:10px}
+.surveys{display:flex;flex-wrap:wrap;gap:6px}
+.surveys button{font-size:14.6px;padding:7px 13px;border-radius:20px;border:1px solid rgba(154,163,199,.25);color:var(--haze)}
+.surveys button.on{border-color:var(--gold);color:var(--gold)}
+.side{display:flex;flex-direction:column;gap:26px}
+[hidden]{display:none!important}
+.apod-img{aspect-ratio:4/3;background:var(--deep);overflow:hidden}
+.apod-img img{width:100%;height:100%;object-fit:cover;display:block}
+.apod-meta{font-size:14px;color:var(--gold);margin-top:12px}
+.side h3{font-family:var(--serif);font-size:26.9px;font-weight:600;line-height:1.15;margin-top:4px}
+.side p{font-size:14.6px;color:var(--haze);margin-top:8px}
+.side a{font-size:14.6px;color:var(--blue)}
+.cut{display:flex;gap:16px;align-items:center;padding-top:20px;border-top:1px solid var(--gold-soft)}
+.cut-img{width:120px;height:120px;border-radius:50%;overflow:hidden;flex:none;box-shadow:0 0 0 1px var(--gold),0 0 0 5px #000,0 0 0 6px var(--gold-faint)}
+.cut-img img{width:100%;height:100%;object-fit:cover}
+.share{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+
+/* кнопки */
+.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:30px;font-size:15.7px;font-weight:500;transition:background .2s,color .2s,border-color .2s}
+.btn-hot{background:var(--beam);color:#1a0600}
+.btn-hot:hover{background:#FF8358}
+.btn-line{border:1px solid var(--gold-soft);color:var(--star)}
+.btn-line:hover{border-color:var(--gold);color:var(--gold)}
+.btn[disabled]{opacity:.35;cursor:not-allowed}
+.btn.wide{width:100%}
+
+/* паспорт */
+.pass{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;align-items:start}
+.keep{font-family:var(--serif);font-size:27px;line-height:1.2;color:#fff;margin-bottom:18px}
+.setup-h{font-family:var(--serif);font-size:27px;font-weight:500;margin-bottom:14px}
+.split{display:grid;grid-template-columns:2fr 1fr 2fr;gap:2px;margin:6px 0 18px}
+.split div{padding:12px 0 0;border-top:3px solid}
+.split b{font-family:var(--serif);font-size:24.6px;font-weight:600;display:block}
+.split p{font-size:14px;color:var(--haze);padding-right:12px}
+.summary{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;font-size:15.1px;padding:14px 0;border-top:1px solid var(--gold-soft);border-bottom:1px solid var(--gold-soft)}
+.summary dt{color:var(--haze)}
+.summary dd{text-align:right;font-variant-numeric:tabular-nums}
+.ships{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+.ship{text-align:left;padding:16px;border:1px solid rgba(154,163,199,.22);border-radius:4px;background:rgba(12,18,50,.5);transition:border-color .2s}
+.ship.on{border-color:var(--gold);background:rgba(205,163,73,.07)}
+.ship b{display:block;font-family:var(--serif);font-size:23.5px;font-weight:600;line-height:1.1}
+.ship p{font-size:14px;color:var(--haze);margin-top:6px}
+.ship .sel{font-size:12.9px;color:var(--gold);margin-top:10px;display:none}
+.ship.on .sel{display:block}
+.checkout{display:none;flex-direction:column;gap:14px;margin-top:18px;padding:18px;border:1px solid var(--gold-soft);background:var(--deep)}
+.qr-row{display:flex;gap:16px;align-items:center}
+#qrCanvas{width:140px;height:140px;background:#fff;flex:none;border-radius:4px}
+.uri{font-size:12.9px;padding:8px 10px;background:#000;border:1px solid rgba(154,163,199,.2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--haze)}
+.steps{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;counter-reset:s}
+.step{font-size:13.4px;color:var(--dim);padding-top:8px;border-top:2px solid rgba(154,163,199,.18)}
+.step b{display:block;font-weight:500}
+.step.done{color:var(--haze);border-top-color:var(--gold)}
+.step.act{color:var(--star);border-top-color:var(--beam)}
+.cert{display:grid;gap:14px}
+.cert canvas{width:100%;height:auto;display:block;filter:drop-shadow(0 10px 24px rgba(0,0,0,.6))}
+.status{font-size:14px;color:var(--gold)}
+
+/* выплаты */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--gold-soft);border-bottom:1px solid var(--gold-soft);margin-bottom:26px}
+.kpis>div{padding:18px 16px;border-right:1px solid rgba(205,163,73,.15)}
+.kpis>div:last-child{border-right:0}
+.kpis dt{font-size:14px;color:var(--haze)}
+.kpis dd{font-family:var(--serif);font-size:33.6px;font-weight:600;line-height:1.1;margin-top:4px;font-variant-numeric:lining-nums tabular-nums}
+.kpis small{font-size:13.4px;color:var(--dim)}
+.demo{font-size:13.4px;color:var(--gold);border:1px solid var(--gold-soft);border-radius:20px;padding:3px 10px}
+
+/* регистрация пилота */
+.count{font-size:15.1px;color:var(--gold);display:flex;gap:8px;align-items:center}
+.count::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--beam);box-shadow:0 0 10px var(--beam)}
+.reg{display:grid;gap:14px;margin-top:6px}
+.reg-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fine{font-size:14px;color:var(--dim);line-height:1.5}
+.reg-done{display:none;padding:18px;border:1px solid var(--gold);background:rgba(205,163,73,.06)}
+.reg-done.show{display:block}
+.reg-done .no{font-family:var(--serif);font-size:49.3px;font-weight:600;line-height:1;color:#fff;font-variant-numeric:lining-nums}
+.reg-done .no small{font-family:var(--sans);font-size:14.6px;font-weight:400;color:var(--gold);margin-left:10px;vertical-align:middle}
+.reflink{display:flex;gap:8px;margin-top:12px}
+.reflink input{flex:1;min-width:0}
+.photo-row{display:flex;gap:16px;align-items:center;padding:14px;border:1px dashed var(--gold-soft);border-radius:4px;margin-bottom:6px}
+#photoPrev{width:72px;height:96px;border-radius:3px;box-shadow:0 0 0 1px var(--gold);flex:none}
+.photo-ph{width:72px;height:96px;border-radius:3px;border:1px solid rgba(154,163,199,.25);flex:none;display:grid;place-items:center;color:var(--dim);font-size:29.1px;font-family:var(--serif)}
+.bgrow{display:flex;gap:8px;align-items:center;font-size:14.6px;color:var(--star);cursor:pointer}
+.bgrow input{accent-color:var(--beam);width:16px;height:16px}
+.bgrow em{font-style:normal;color:var(--dim);font-size:13.4px}
+.photo-btns{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.photo-btn{padding:9px 16px;font-size:14.6px;cursor:pointer}
+.vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;clip:rect(0 0 0 0)}
+.linkbtn{font-size:14.6px;color:var(--haze);text-decoration:underline;text-underline-offset:3px}
+.cert-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+@media (max-width:560px){.reg-row{grid-template-columns:1fr}}
+footer{margin-top:110px;padding:34px 0 50px;border-top:1px solid var(--gold-soft);font-size:14px;color:var(--dim);line-height:1.7}
+footer p{max-width:80em}
+footer p+p{margin-top:10px}
+footer a{color:var(--haze)}
+.toast{position:fixed;right:20px;bottom:20px;z-index:90;padding:12px 18px;background:var(--plate);border:1px solid var(--gold);font-size:14.6px;color:var(--star);box-shadow:0 20px 50px rgba(0,0,0,.7);transform:translateY(160%);transition:transform .35s}
+.toast.show{transform:none}
+
+@media (max-width:1100px){
+  .menu{display:none}
+  .reading{width:min(520px,52vw)}
+  .legend{width:270px}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpis>div:nth-child(2){border-right:0}
+}
+@media (max-width:900px){
+  .plate-hero{height:auto;min-height:0;display:flex;flex-direction:column}
+  #scene{position:relative;height:64svh}
+  #labels,.shade,.frame{height:64svh;bottom:auto}
+  .frame{inset:10px 10px auto 10px;height:calc(64svh - 20px);border-bottom:0}
+  .topline{top:22px;left:26px;right:22px}
+  .top-cta{display:none}
+  .reading,.legend,.dist-scale{position:relative;left:auto;right:auto;bottom:auto;width:auto;margin:0 18px}
+  .reading{margin-top:-90px}
+  .legend{margin-top:30px}
+  .dist-scale{margin:30px 18px 20px}
+  .chapter-head,.scope,.pass,.exo{grid-template-columns:1fr}
+  .chapter-head{gap:14px}
+  .tick span{display:none}
+  .ra-num,.dec-num,.mark{display:none}
+  .distance{white-space:normal}
+  .distance-sub{gap:18px}
+  .distance-sub b{font-size:22.4px}
+}
+/* мобильный порядок: заголовок, счётчик, переключатель вида, шкала, затем форма и «Небо в минуту рождения» */
+@media (max-width:900px){
+  .reading,.legend{display:contents}
+  .reading>*,.legend>*{margin-left:18px;margin-right:18px}
+  .reading>div:first-child{order:1;margin-top:-90px;position:relative;z-index:5}
+  .reading>div:nth-child(2){order:2;margin-top:18px}
+  #cams{order:3;margin-top:20px}
+  .dist-scale{order:4;margin:22px 18px 0}
+  .log{order:5;margin-top:26px}
+  .legend>*:not(#cams){order:6;margin-top:14px}
+  .legend>h2{margin-top:32px}
+  .legend>.voy{margin-bottom:24px}
+}
+@media (max-width:560px){
+  .log{grid-template-columns:1fr}
+  .ships,.qr-row{grid-template-columns:1fr;flex-direction:column}
+  .steps{grid-template-columns:1fr 1fr}
+  .split{grid-template-columns:1fr}
+  .page{padding:0 18px}
+}
+
+/* ===== пульт навигации, как панель управления кораблём ===== */
+.console{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:60;display:flex;gap:5px;padding:6px;background:rgba(5,8,24,.86);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--gold-soft);border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.06)}
+.console a{position:relative;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:76px;padding:10px 10px 8px;border-radius:10px;color:var(--haze);text-decoration:none;font-size:13px;letter-spacing:.03em;background:linear-gradient(#0d1233,#070a1f);border:1px solid rgba(205,163,73,.16);cursor:pointer;transition:color .15s,border-color .15s,box-shadow .15s}
+.console svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round}
+.console a::before{content:'';position:absolute;top:6px;right:7px;width:5px;height:5px;border-radius:50%;background:#262b48;transition:background .15s,box-shadow .15s}
+.console a:hover{color:#fff;border-color:var(--gold-soft)}
+.console a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.console a.on{color:#fff;border-color:var(--beam);box-shadow:0 0 16px rgba(255,106,61,.32),inset 0 0 14px rgba(255,106,61,.14)}
+.console a.on::before{background:var(--beam);box-shadow:0 0 8px var(--beam)}
+body{padding-bottom:96px}
+@media (max-width:700px){
+  .console{left:0;right:0;bottom:0;transform:none;border-radius:16px 16px 0 0;border-bottom:0;gap:4px;padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+  .console a{min-width:0;flex:1;padding:9px 2px 7px;font-size:11px}
+  body{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+}
+/* ===== страницы: главная — два экрана (луч и ID), остальное отдельно ===== */
+html[data-page="home"]{scroll-snap-type:y proximity}
+[data-page="home"] .plate-hero,[data-page="home"] #passport{scroll-snap-align:start}
+[data-page="home"] #route,[data-page="home"] #telescope,[data-page="home"] .legend>*:not(#cams){display:none!important}
+[data-page="sky"] .reading,[data-page="sky"] .dist-scale,[data-page="sky"] #cams,[data-page="sky"] main>section{display:none!important}
+[data-page="chronicle"] .plate-hero>*:not(.topline),[data-page="scope"] .plate-hero>*:not(.topline){display:none!important}
+[data-page="chronicle"] .plate-hero,[data-page="scope"] .plate-hero{height:130px;min-height:0}
+[data-page="chronicle"] #passport,[data-page="chronicle"] #telescope,[data-page="scope"] #passport,[data-page="scope"] #route{display:none!important}
+[data-page="chronicle"] .top-cta,[data-page="scope"] .top-cta,[data-page="sky"] .top-cta{display:none}
+</style>
+</head>
+<body>
+<nav class="console" aria-label="Разделы" data-i18n-aria="aNav">
+  <a data-go="home"><svg viewBox="0 0 24 24"><path d="M5.5 18.5 19 5"/><circle cx="19.5" cy="4.5" r="2"/><circle cx="5" cy="19" r="3"/></svg><span data-i18n="cBeam">Луч</span></a>
+  <a data-go="id"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="8.5" cy="12" r="2.2"/><path d="M13 10h5M13 14h4"/></svg><span>ID</span></a>
+  <a data-go="sky"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="1.5"/></svg><span data-i18n="cSky">Небо</span></a>
+  <a data-go="chronicle"><svg viewBox="0 0 24 24"><path d="M2 12h20"/><circle cx="6" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2"/></svg><span data-i18n="cRoute">Хроника</span></a>
+  <a data-go="worlds"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><ellipse cx="12" cy="12" rx="10.5" ry="3.6" transform="rotate(-20 12 12)"/></svg><span data-i18n="cWorlds">Миры</span></a>
+  <a data-go="scope"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 2v6M12 16v6M2 12h6M16 12h6"/></svg><span data-i18n="cScope">Окуляр</span></a>
+</nav>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<section class="plate-hero" id="top">
+  <canvas id="scene" aria-label="Земля в момент твоего рождения и луч света" data-i18n-aria="aScene"></canvas>
+  <div class="shade"></div>
+  <div id="labels"></div>
+  <div class="frame" aria-hidden="true">
+    <div class="scale-ra"></div><div class="scale-dec"></div>
+    <div id="raNums"></div><div id="decNums"></div>
+    <div class="mark mark-ra" id="raMark">—</div>
+    <div class="mark mark-dec" id="decMark">—</div>
+  </div>
+  <div class="boot" id="loader" role="status" aria-live="polite">
+    <svg class="boot-ring" viewBox="0 0 120 120" aria-hidden="true">
+      <g class="boot-ticks"><line x1="60" y1="6" x2="60" y2="14" transform="rotate(0 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(6 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(12 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(18 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(24 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(30 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(36 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(42 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(48 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(54 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(60 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(66 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(72 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(78 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(84 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(90 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(96 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(102 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(108 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(114 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(120 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(126 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(132 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(138 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(144 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(150 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(156 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(162 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(168 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(174 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(180 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(186 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(192 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(198 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(204 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(210 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(216 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(222 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(228 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(234 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(240 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(246 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(252 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(258 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(264 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(270 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(276 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(282 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(288 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(294 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(300 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(306 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(312 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(318 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(324 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="6" x2="60" y2="14" transform="rotate(330 60 60)" stroke="rgba(205,163,73,0.9)" stroke-width="1.1"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(336 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(342 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(348 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/><line x1="60" y1="9" x2="60" y2="14" transform="rotate(354 60 60)" stroke="rgba(205,163,73,0.4)" stroke-width="0.6"/></g>
+      <circle cx="60" cy="60" r="44" fill="none" stroke="rgba(205,163,73,.18)" stroke-width="1"/>
+      <circle class="boot-arc" id="bootArc" cx="60" cy="60" r="44" fill="none" stroke="#FF6A3D" stroke-width="2" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="276.5" transform="rotate(-90 60 60)"/>
+      <g class="boot-scan"><path d="M60 60 L60 22" stroke="rgba(255,106,61,.55)" stroke-width="1"/><circle cx="60" cy="22" r="2.2" fill="#FF6A3D"/></g>
+      <circle cx="60" cy="60" r="3.5" fill="#FF6A3D"/><circle cx="60" cy="60" r="9" fill="none" stroke="rgba(255,106,61,.5)"/>
+    </svg>
+    <div class="boot-word">STARBEAM</div>
+    <div class="boot-text" data-i18n="loader">Проявляем пластинку…</div>
+    <div class="boot-pct num" id="bootPct">0%</div>
+  </div>
+
+  <div class="topline">
+    <a class="wordmark" href="#top">STARBEAM</a>
+    <div class="tools">
+      <div class="toggle" role="group" aria-label="Language" id="langs"><button data-lang="ru">RU</button><button data-lang="en">EN</button><button data-lang="es">ES</button></div>
+      <a class="btn btn-line top-cta" style="padding:8px 16px;font-size:14.6px" href="#passport" data-i18n="getId">Получить Galactic ID</a>
+    </div>
+  </div>
+
+  <div class="reading">
+    <div>
+      <h1 data-i18n="h1">Свет, родившийся вместе с тобой, сейчас вот здесь</h1>
+      <p class="count" id="pilotCount" hidden></p>
+    </div>
+    <div>
+      <div class="distance" id="kmCounter">0 км</div>
+      <div class="distance-sub">
+        <div class="hot"><b id="lyCounter">0</b><span data-i18n="uLy">световых лет</span></div>
+        <div><b id="ldCounter">0</b><span data-i18n="uLd">световых дней</span></div>
+        <div><b id="auCounter">0</b><span data-i18n="uAu">астр. единиц</span></div>
+      </div>
+    </div>
+    <div class="log">
+      <div class="f">
+        <label for="birthInput"><span data-i18n="lWhen">Когда ты родился</span> <span id="tzLabel"></span></label>
+        <input class="in num" type="datetime-local" id="birthInput" min="1920-01-01T00:00" />
+        <div class="err" id="dateErr"></div>
+      </div>
+      <div class="f">
+        <label for="cityInput"><span data-i18n="lWhere">Где</span> <span id="cityCoords"></span></label>
+        <input class="in" id="cityInput" autocomplete="off" placeholder="Начни вводить город" data-i18n-ph="phCity" />
+        <div class="dropdown" id="cityDropdown"></div>
+      </div>
+      <div class="quick" id="datePresets"><span data-i18n="dates">Даты:</span>
+        <button data-preset="1920-01-01T00:00" data-i18n="p1920">1 января 1920</button>
+        <button class="q-gold" data-preset="1977-09-05T08:56" data-i18n="pVoy">запуск «Вояджера‑1»</button>
+        <button data-preset="2009-01-03T15:15" data-i18n="pBtc">генезис-блок биткоина</button>
+      </div>
+      <div class="quick" id="cityPresets"></div>
+    </div>
+  </div>
+
+  <aside class="legend">
+    <h2 data-i18n="skyH">Небо в минуту рождения</h2>
+    <dl>
+      <dt data-i18n="dtZen">Зенит, J2000</dt><dd id="fZenith">—</dd>
+      <dt data-i18n="dtLst">Звёздное время</dt><dd id="fLst">—</dd>
+      <dt data-i18n="dtConst">Созвездие</dt><dd id="fConst">—</dd>
+      <dt data-i18n="dtSun">Солнце</dt><dd id="fSun">—</dd>
+    </dl>
+    <div class="moonline">
+      <canvas id="moonPhaseCanvas" width="100" height="100"></canvas>
+      <div><div id="fMoon" style="font-family:var(--serif);font-size:21.3px;font-weight:600">—</div><div class="muted" style="font-size:13.4px" id="fMoonD">—</div></div>
+    </div>
+    <div class="voy"><span data-i18n="voyA">«Вояджер‑1» сейчас в</span> <b id="voyKm" class="num">—</b> <span data-i18n="voyB">от Земли.</span> <span id="voyStory"></span></div>
+    <div class="views" id="cams" role="group" aria-label="Камера" data-i18n-aria="aCams">
+      <button data-cam="earth" class="on" data-i18n="camEarth">Земля</button><button data-cam="ship" data-i18n="camShip">Корабль</button><button data-cam="beam" data-i18n="camBeam">Вдоль луча</button><button data-cam="moon" data-i18n="camMoon">Луна</button>
+    </div>
+  </aside>
+
+  <div class="dist-scale">
+    <div class="dist-head"><span id="scaleTxt">Шкала: от световой секунды до 2145 года</span><b id="ladderNext"></b></div>
+    <div class="track" id="track"><div class="track-rail"></div><div class="track-fill" id="trackFill"></div><div class="track-head" id="trackHead"></div></div>
+  </div>
+</section>
+
+<main class="page">
+  <section class="chapter" id="passport">
+    <div class="chapter-head">
+      <h2>Galactic Pilot ID</h2>
+      <p data-i18n="passP">Именной документ пилота. Запишись в бортовой журнал — получишь номер по порядку и ссылку для друзей.</p>
+    </div>
+    <div class="pass">
+      <div>
+        <p class="keep" data-i18n="keepCta">Получи свою карточку пилота на память: распечатай, заламинируй и подари — или отправь друзьям.</p>
+        <div class="cert"><canvas id="passportCanvas" width="2054" height="1296" aria-label="Galactic Pilot ID, front"></canvas><canvas id="passportBack" width="2054" height="1296" aria-label="Galactic Pilot ID, back"></canvas></div>
+        <div class="cert-actions">
+          <button class="btn btn-hot" id="printCertBtn" data-i18n="printId">Получить карточку на память, PDF</button>
+          <button class="btn btn-line" id="downloadCertBtn" data-i18n="dlId">Скачать PNG</button>
+          <button class="btn btn-line" id="copyPostBtn2" data-i18n="copyPost2">Скопировать пост со ссылкой</button>
+        </div>
+        <p class="fine" style="margin-top:10px" data-i18n="certFine">Карточка размером с права, 85,6×54 мм. PDF на A4: печатай в масштабе 100 %, вырежи по меткам, согни по пунктиру, заламинируй — и подарок готов. PNG с обеими сторонами — для мессенджеров. QR ведёт на сайт по твоей ссылке.</p>
+      </div>
+      <div>
+        <h3 class="setup-h" data-i18n="setupH">Настрой карточку</h3>
+        <dl class="summary">
+          <dt data-i18n="dtStart">Старт луча, UTC</dt><dd id="oBirth">—</dd>
+          <dt data-i18n="dtCity">Город</dt><dd id="oCity">—</dd>
+          <dt data-i18n="dtZen">Зенит, J2000</dt><dd id="oCoords">—</dd>
+          <dt data-i18n="dtVoy">Против «Вояджера‑1»</dt><dd id="oVoy">—</dd>
+        </dl>
+        <div class="ships">
+          <button class="ship on" data-style="star_wars"><b>Vanguard</b><p data-i18n="shipV">Пилотируемый корабль: капсула в духе Orion и сервисный модуль с крестом солнечных крыльев.</p><span class="sel" data-i18n="shipSel">Выбран, летит в сцене</span></button>
+          <button class="ship" data-style="star_trek"><b>Aether</b><p data-i18n="shipA">Беспилотный разведчик: антенна «Вояджера», ферма с радиаторами в духе JIMO и ядерно‑электрическая тяга.</p><span class="sel" data-i18n="shipSel">Выбран, летит в сцене</span></button>
+        </div>
+
+        <div class="photo-row">
+          <div class="photo-ph" id="photoPh" aria-hidden="true">☺</div>
+          <canvas id="photoPrev" width="144" height="192" hidden></canvas>
+          <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+            <span style="font-size:13.4px;color:var(--haze)" data-i18n="photoLabel">Фото пилота, необязательно</span>
+            <div class="photo-btns">
+              <label class="btn btn-line photo-btn" for="photoInput"><span id="photoBtnTxt">Добавить фото</span></label>
+              <input class="vh" type="file" id="photoInput" accept="image/*" />
+              <button type="button" class="linkbtn" id="photoRemove" hidden data-i18n="photoRemove">Убрать фото</button>
+            </div>
+            <em id="photoState" style="font-style:normal;color:var(--dim);font-size:13px"></em>
+            <p class="fine" data-i18n="photoNote">Фото станет золотой полупрозрачной подложкой, как защита на правах. Оно не уходит на сервер и исчезает при обновлении страницы.</p>
+          </div>
+        </div>
+        <form class="reg" id="regForm" novalidate>
+          <div class="f">
+            <label for="callsignInput" data-i18n="lCall">Позывной пилота <span>до 24 символов, будет на документе</span></label>
+            <input class="in" id="callsignInput" maxlength="24" autocomplete="nickname" placeholder="Ваше имя, бренд, ник в соцсетях и т. д." data-i18n-ph="phCall" spellcheck="false" />
+          </div>
+          <div class="reg-row">
+            <div class="f">
+              <label for="contactInput" data-i18n="lContact">Email или Telegram</label>
+              <input class="in" id="contactInput" maxlength="120" autocomplete="email" placeholder="you@mail.com или @nick" data-i18n-ph="phContact" spellcheck="false" />
+            </div>
+            <div class="f">
+              <label for="walletInput" data-i18n="lWallet">Кошелёк Solana <span>необязательно</span></label>
+              <input class="in num" id="walletInput" maxlength="44" placeholder="Адрес кошелька" data-i18n-ph="phWallet" spellcheck="false" />
+            </div>
+          </div>
+          <div class="err" id="regErr" role="alert"></div>
+          <button class="btn btn-hot wide" id="registerBtn" type="submit">Записаться в бортовой журнал</button>
+          <p class="fine" id="regNote">Номера идут по порядку: раньше запишешься — меньше номер. Кошелёк пригодится, если будем что‑то раздавать первым пилотам. Храним только позывной, контакт и кошелёк, удалим по запросу.</p>
+        </form>
+
+        <div class="reg-done" id="regDone" aria-live="polite">
+          <div class="no"><span data-i18n="noSign">№</span> <span id="regNo">—</span><small id="regBadge"></small></div>
+          <p class="muted" style="margin-top:8px;font-size:15.1px"><span data-i18n="regDoneP">Ты в бортовом журнале. Отправь эту ссылку друзьям — по ней видно, кого привёл ты.</span> <span id="refCount"></span></p>
+          <div class="reflink"><input class="in num" id="refLink" readonly /><button class="btn btn-line" type="button" id="copyRefBtn" style="padding:9px 16px;font-size:14.6px" data-i18n="copy">Скопировать</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="route">
+    <div class="chapter-head">
+      <h2 data-i18n="routeH">Хроника света</h2>
+    </div>
+    <p class="lead"><span data-i18n="ld1">Твой свет уже коснулся</span> <b id="sStars">—</b> <span data-i18n="ld2">из</span> <span id="sStarsTot">—</span> <span data-i18n="ld3">ближайших звёзд и</span> <b class="hot" id="sExo">—</b> <span data-i18n="ld4">экзопланет. Следующая на пути —</span> <b id="sNext">—</b>, <span id="sNextEta">—</span>. <span data-i18n="ld5">Радиопузырь Земли сейчас около</span> <span id="sRadio">—</span>.</p>
+    <div class="rail" id="routeGrid"></div>
+
+    <div class="exo">
+      <h3 data-i18n="exoH">Миры, до которых дошёл твой свет</h3>
+      <p class="exo-nav"><a id="exoReachedLink" href="/worlds-reached.html" data-i18n="exoReachedA">достигнутые</a> <span data-i18n="exoAnd">и</span> <a id="exoNextLink" href="/worlds-next.html" data-i18n="exoNextA">следующие</a></p>
+    </div>
+  </section>
+
+  <section class="chapter" id="telescope">
+    <div class="chapter-head">
+      <h2 data-i18n="scopeH">Окуляр, наведённый на твой зенит</h2>
+      <div>
+        <p><span data-i18n="sc1">Настоящие обзоры неба в точке</span> <span id="teleCoords" class="num">—</span>. <span data-i18n="sc2">Поверни и приблизь, переключи оптику, инфракрасный 2MASS или NASA WISE.</span></p>
+        <div class="surveys" id="surveys" style="margin-top:14px">
+          <button class="on" data-survey="https://skies.esac.esa.int/DSSColor/" data-hips="CDS/P/DSS2/color">DSS2</button>
+          <button data-survey="https://skies.esac.esa.int/2MASSColor/" data-hips="CDS/P/2MASS/color">2MASS</button>
+          <button data-survey="https://skies.esac.esa.int/AllWISEColor/" data-hips="CDS/P/allWISE/color">NASA WISE</button>
+        </div>
+      </div>
+    </div>
+    <div class="scope">
+      <div>
+        <div class="eyepiece">
+          <div class="eyepiece-inner"><div id="aladin-lite-div"></div></div>
+          <svg class="ring" viewBox="0 0 400 400" aria-hidden="true" id="eyeRing"></svg>
+          <div class="scope-ctl"><button id="zIn" aria-label="Приблизить" data-i18n-aria="aZin">+</button><button id="zOut" aria-label="Отдалить" data-i18n-aria="aZout">−</button><button id="zHome" aria-label="Вернуть на зенит" data-i18n-aria="aZhome">⊙</button></div>
+        </div>
+        <div class="scope-status"><span id="aladinStatus">Подключаемся к обзорам неба…</span><span id="fovLabel" class="num">поле 1,50°</span></div>
+        <div class="share">
+          <button class="btn btn-line" id="copyPostBtn" data-i18n="copyPost">Скопировать пост для X</button>
+          <button class="btn btn-line" id="shareCardBtn" data-i18n="shareCard">Скачать карточку 1200×675</button>
+        </div>
+      </div>
+      <div class="side">
+        <div id="apodBox">
+          <div class="apod-img" id="apodImg"></div>
+          <div class="apod-meta" id="apodDate">NASA APOD</div>
+          <h3 id="apodTitle">Снимок дня NASA в твой день рождения</h3>
+          <p id="apodText">Загружаем…</p>
+          <a id="apodLink" href="https://apod.nasa.gov/" target="_blank" rel="noopener" data-i18n="apodOpen">Открыть на apod.nasa.gov</a>
+        </div>
+        <div class="cut">
+          <div class="cut-img"><img id="cutImg" alt="Снимок неба в точке зенита" data-i18n-alt="aCut" /></div>
+          <div><h3 style="font-size:22.4px" data-i18n="cutH">Кадр зенита</h3><p><span data-i18n="cut1">Поле 0,45°, обзор</span> <span id="cutSurvey">DSS2</span>. <span data-i18n="cut2">Этот кадр попадёт в твой Galactic ID.</span></p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <footer>
+    <p data-i18n="footer1">Земля и Луна — текстуры на основе NASA Blue Marble и Earth at Night (через three.js). Карта неба — 112 тысяч звёзд каталога Hipparcos (ESA, данные d3-celestial) и модель Млечного Пути. Обзоры в окуляре — <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a>: DSS2 (STScI), 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Снимок дня — <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Экзопланеты — <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Архив — <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Города — Open‑Meteo.</p>
+    <p data-i18n="footer2">Расчёты: звёздное время IAU 1982, прецессия IAU 1976 к J2000, Солнце и Луна по упрощённым формулам Меёса (0,1–0,5°). Положения «Вояджеров» приблизительные. NASA не связано с проектом и не одобряет его.</p>
+  </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+/* =====================================================================
+   0. CONFIG — заменить перед продом
+   ===================================================================== */
+const CONFIG = {
+  NASA_API_KEY: 'D6Gr9WtLKPNJkHfDCKKzDbD6pfhrKQPGMpPLgtgF', // api.nasa.gov, лимит 1000 запросов/час на ключ; ответы кэшируются в браузере
+  // Бортовой журнал пилотов (Supabase): ключи задаются в /config.js — один файл на все языковые версии
+  SUPABASE_URL: window.STARBEAM_CONFIG?.SUPABASE_URL || '',
+  SUPABASE_ANON_KEY: window.STARBEAM_CONFIG?.SUPABASE_ANON_KEY || '',
+  SITE_URL: 'https://peaceindex.online',
+};
+const TEX = '/'; // все файлы в корне репозитория — без папок, чтобы GitHub‑загрузка с телефона ничего не теряла; // текстуры NASA Blue Marble / Earth at Night (из примеров three.js), пережаты в WebP
+const HIPS2FITS = 'https://alasky.cds.unistra.fr/hips-image-services/hips2fits';
+
+/* =====================================================================
+   1. CONSTANTS
+   ===================================================================== */
+const DEG = Math.PI / 180;
+const C_KMS = 299792.458, KM_AU = 149597870.7, SEC_DAY = 86400, DAYS_YR = 365.25;
+const KM_LD = C_KMS * SEC_DAY, KM_LY = KM_LD * DAYS_YR, SEC_YR = SEC_DAY * DAYS_YR;
+const MIN_BIRTH_MS = Date.UTC(1920, 0, 1);
+const VOY_EPOCH = Date.UTC(2026, 10, 19), VOY_KM0 = 25.95e9, VOY_KMS = 16.999;
+
+// Ближайшие звёзды и ориентиры: RA/Dec J2000 (°), расстояние (св. лет)
+const STARS = [
+  { id:'proxima', name:'Проксима Центавра', ra:217.429, dec:-62.680, ly:4.246, note:'ближайшая звезда, планета Proxima b' },
+  { id:'acen', name:'Альфа Центавра A/B', ra:219.902, dec:-60.834, ly:4.37 },
+  { id:'barnard', name:'Звезда Барнарда', ra:269.452, dec:4.693, ly:5.96 },
+  { id:'wolf359', name:'Вольф 359', ra:164.120, dec:7.015, ly:7.86 },
+  { id:'lalande', name:'Лаланд 21185', ra:165.836, dec:35.970, ly:8.31 },
+  { id:'sirius', name:'Сириус', ra:101.287, dec:-16.716, ly:8.60, label:true },
+  { id:'epseri', name:'Эпсилон Эридана', ra:53.233, dec:-9.458, ly:10.47 },
+  { id:'procyon', name:'Процион', ra:114.825, dec:5.225, ly:11.46, label:true },
+  { id:'61cyg', name:'61 Лебедя', ra:316.725, dec:38.749, ly:11.40 },
+  { id:'epsind', name:'Эпсилон Индейца', ra:330.840, dec:-56.786, ly:11.87 },
+  { id:'tauceti', name:'Тау Кита', ra:26.017, dec:-15.937, ly:11.91 },
+  { id:'teegarden', name:'Звезда Тигардена', ra:43.254, dec:16.881, ly:12.50 },
+  { id:'altair', name:'Альтаир', ra:297.696, dec:8.868, ly:16.73, label:true },
+  { id:'vega', name:'Вега', ra:279.235, dec:38.784, ly:25.04, label:true },
+  { id:'fomalhaut', name:'Фомальгаут', ra:344.413, dec:-29.622, ly:25.13, label:true },
+  { id:'pollux', name:'Поллукс', ra:116.329, dec:28.026, ly:33.78, label:true },
+  { id:'arcturus', name:'Арктур', ra:213.915, dec:19.182, ly:36.7, label:true },
+  { id:'trappist', name:'TRAPPIST‑1', ra:346.622, dec:-5.041, ly:40.7, note:'7 планет земного типа' },
+  { id:'capella', name:'Капелла', ra:79.172, dec:45.998, ly:42.9, label:true },
+  { id:'castor', name:'Кастор', ra:113.650, dec:31.888, ly:51.0 },
+  { id:'aldebaran', name:'Альдебаран', ra:68.980, dec:16.509, ly:65.3, label:true },
+  { id:'regulus', name:'Регул', ra:152.093, dec:11.967, ly:79.3, label:true },
+  { id:'hyades', name:'Скопление Гиады', ra:66.75, dec:15.87, ly:153 },
+];
+const SOLAR = [
+  { id:'moon', name:'Луна', sec:1.282, nasaQ:'Moon Lunar Reconnaissance Orbiter', note:'1,28 св. секунды' },
+  { id:'sun', name:'Солнце', sec:499.0, nasaQ:'Sun Solar Dynamics Observatory', note:'8,3 св. минуты' },
+  { id:'voyager1', name:'Вояджер‑1', sec:SEC_DAY, nasaQ:'Voyager spacecraft', note:'≈ 1 св. сутки, ноябрь 2026', gold:true },
+];
+// Приблизительные текущие направления «Вояджеров» (J2000)
+const PROBES = [ { name:'Вояджер‑1', ra:258.6, dec:12.1 }, { name:'Вояджер‑2', ra:302.0, dec:-59.5 } ];
+// Резервный список экзопланет (если API архива недоступен)
+const EXO_FALLBACK = [
+  ['Proxima Cen b',217.429,-62.680,4.246,2016],['Proxima Cen d',217.429,-62.680,4.246,2022],['Barnard b',269.452,4.693,5.96,2024],
+  ['Lalande 21185 b',165.836,35.970,8.31,2019],['eps Eri b',53.233,-9.458,10.47,2000],['Ross 128 b',176.937,0.800,11.0,2017],
+  ['GJ 1061 d',53.999,-44.512,12.0,2019],['Teegarden\'s Star b',43.254,16.881,12.5,2019],['Teegarden\'s Star c',43.254,16.881,12.5,2019],
+  ['Wolf 1061 c',247.575,-12.663,14.0,2015],['Gliese 876 b',343.320,-14.264,15.2,1998],['GJ 682 b',260.982,-44.319,16.3,2014],
+  ['Gliese 581 c',229.862,-7.722,20.5,2007],['Gliese 667 C c',259.746,-34.997,23.6,2013],['HD 219134 b',348.321,57.168,21.3,2015],
+  ['TRAPPIST-1 e',346.622,-5.041,40.7,2017],['TRAPPIST-1 f',346.622,-5.041,40.7,2017],['55 Cnc e',133.149,28.330,41.0,2004],
+  ['LHS 1140 b',11.247,-15.272,48.8,2017],['51 Peg b',344.367,20.769,50.6,1995],['HD 189733 b',300.182,22.711,64.5,2005],
+  ['HD 209458 b',330.795,18.884,159,1999]
+].map(([n,ra,dec,ly,y]) => ({ name:n, ra, dec, ly, year:y }));
+
+const CITY_PRESETS = [
+  { name:'Буэнос-Айрес, Аргентина', lat:-34.6037, lon:-58.3816, tz:'America/Argentina/Buenos_Aires' },
+  { name:'Москва, Россия', lat:55.7558, lon:37.6173, tz:'Europe/Moscow' },
+  { name:'Нижний Новгород, Россия', lat:56.3269, lon:44.0059, tz:'Europe/Moscow' },
+  { name:'Ташкент, Узбекистан', lat:41.2995, lon:69.2401, tz:'Asia/Tashkent' },
+  { name:'Нью-Йорк, США', lat:40.7128, lon:-74.0060, tz:'America/New_York' },
+  { name:'Токио, Япония', lat:35.6762, lon:139.6503, tz:'Asia/Tokyo' },
+];
+
+/* =====================================================================
+   2. STATE + UTILS
+   ===================================================================== */
+const $ = (id) => document.getElementById(id);
+let intFmt = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 });
+let f2 = new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+const pad = (n) => String(n).padStart(2, '0');
+const norm360 = (x) => ((x % 360) + 360) % 360;
+const fmtDec = (d, p = 2) => (d >= 0 ? '+' : '−') + Math.abs(d).toFixed(p) + '°';
+
+/* =====================================================================
+   2b. I18N — RU / EN / ES. Разметка: data-i18n (innerHTML), data-i18n-ph, data-i18n-aria, data-i18n-alt;
+   русский текст берётся из самой разметки, здесь только переводы. Строки из скриптов — t('key').
+   ===================================================================== */
+const LOC = { ru: 'ru-RU', en: 'en-US', es: 'es-AR' };
+const L = {
+  ru: {
+    title: 'STARBEAM — куда долетел свет твоего рождения',
+    photoBgWork: 'убираем фон…', photoBgFail: 'фон убрать не удалось, оставили исходное фото',
+    photoAdd: 'Добавить фото', photoChange: 'Заменить фото', photoAdded: 'Фото добавлено защитной подложкой', scaleH: 'Шкала: от световой секунды до {y} года ({n} св. лет)', photoFail: 'Не удалось открыть фото. Попробуй JPG или PNG.',
+    km: 'км', lyS: 'св. л.', lyLong: 'световых лет', sec: 'с', min: 'мин', h: 'ч',
+    zen: 'твой луч', front: 'фронт твоего света', copyFail: 'Не удалось скопировать', pngFail: 'Не удалось собрать PNG',
+    mNew: 'Новолуние', mFull: 'Полнолуние', mWaxC: 'Растущий серп', mFirst: 'Первая четверть', mWaxG: 'Растущая Луна', mWanC: 'Убывающий серп', mLast: 'Последняя четверть', mWanG: 'Убывающая Луна',
+    ladderNext: 'до звезды {name} осталось {d} св. лет', beyond: 'луч за пределами каталога',
+    voyPassed: 'Твой свет обогнал его {date} и ушёл в <b class="num">{x}</b> раз дальше. Зонду понадобится <b class="num">{y}</b> лет, чтобы догнать.',
+    voyAhead: 'Твой свет пройдёт его через {h} ч.',
+    tzLocal: 'по местному, UTC {t}', day: 'день', twilight: 'сумерки', night: 'ночь',
+    moonD: 'освещено {p}%, {pos}', above: 'над горизонтом', below: 'под горизонтом',
+    oFar: 'в {x} раз дальше', oPart: '{p}% пути', radio: '{n} световых лет',
+    errDate: 'Введи корректную дату и время.', errMin: 'Минимум — 01.01.1920 00:00 UTC.', errFuture: 'Дата в будущем — поставлено текущее время.',
+    cities: 'Города:', cityNone: 'Такого города нет в Open‑Meteo. Попробуй написать по‑английски.',
+    probePassed: 'свет прошёл зонд {date}', afterBirth: 'после твоего рождения', arrived: 'свет дошёл {date}', willArrive: 'свет будет здесь в {y} году',
+    catalogEnd: 'конец каталога', nextEta: 'свет будет там в {y} году',
+    note_moon: '1,28 св. секунды', note_sun: '8,3 св. минуты', note_voyager1: '≈ 1 св. сутки, ноябрь 2026',
+    exoLive: 'Данные загружены из NASA Exoplanet Archive сейчас.', exoFallback: 'Архив NASA не ответил, показан встроенный список из 22 планет.',
+    thPlanet: 'Планета', thFound: 'Открыта', thDist: 'Расстояние', thLight: 'Свет там', exoNone: 'Свет ещё не добрался до ближайших миров. Первый на пути — Proxima Centauri b.',
+    loadingArchive: 'Загружаем архив…',
+    aladinFail: 'Aladin Lite не загрузился: проверь доступ к cdn.jsdelivr.net и skies.esac.esa.int.', aladinOk: 'CDS Aladin Lite: тяни, чтобы осмотреться, колесом — приблизить.', aladinConn: 'Подключаемся к обзорам неба…', landmarks: 'Ориентиры',
+    fov: 'поле {v}°', scopeHome: 'Окуляр снова смотрит в твой зенит',
+    apodBirth: 'Снимок NASA в день твоего рождения', apodBday: 'Снимок NASA в твой день рождения (архив ведётся с 1995)', apodLoading: 'Загружаем…', apodTitle0: 'Снимок дня NASA в твой день рождения',
+    apodFail: 'Снимок дня не загрузился', apod429: 'NASA временно ограничило запросы. Попробуй через час или открой архив по ссылке ниже.', apodDown: 'NASA API недоступен. Открой архив по ссылке ниже.',
+    pilots: ['пилот', 'пилота', 'пилотов'], first1000: 'из первой тысячи', refCount: 'По твоей ссылке уже {n} {p}.', countLine: 'В бортовом журнале {n} {p}',
+    regBtn: 'Записаться в бортовой журнал', regBusy: 'Записываем…', regSoon: 'Бортовой журнал скоро откроется',
+    regSoonNote: 'Регистрация первых пилотов откроется в ближайшие дни. Документ можно скачать уже сейчас.',
+    regNote: 'Номера идут по порядку: раньше запишешься — меньше номер. Кошелёк пригодится, если будем что‑то раздавать первым пилотам. Храним только позывной, контакт и кошелёк, удалим по запросу.',
+    errCall: 'Впиши позывной — он будет на документе.', errContact: 'Нужен email (name@mail.com) или ник в Telegram (@nick, от 5 символов).',
+    errWallet: 'Адрес Solana — 32–44 символа без 0, O, I и l. Или оставь поле пустым.', errContactSrv: 'Проверь email или Telegram.', errWalletSrv: 'Проверь адрес кошелька Solana.',
+    errCallSrv: 'Позывной: от 1 до 24 символов.', errNet: 'Журнал сейчас не отвечает. Попробуй ещё раз через минуту — документ можно скачать и без записи.',
+    toastExisting: 'Ты уже в журнале: пилот № {n}', toastNew: 'Записан: пилот № {n}', linkCopied: 'Ссылка скопирована', idDownloaded: 'Galactic Pilot ID скачан', dlId: 'Скачать PNG', printId: 'Получить карточку на память, PDF', pdfReady: 'PDF готов: печатай в масштабе 100 %',
+    post: '🚀 Свет моего рождения улетел на {km} км ({ly} св. лет).\n🛰 Это в {x} раз дальше «Вояджера‑1».\n✨ Он уже дошёл до {s} звёзд и {e} экзопланет.\n\nПроверь, где твой: {link}', postCopied: 'Пост скопирован',
+    cardLead: 'Свет моего рождения улетел от Земли на', cardLy: '{ly} св. лет', cardVoy: 'в {x} раз дальше «Вояджера‑1»', cardZen: 'Зенит: {city}, RA {ra}° / Dec {dec}', cardSphere: 'Звёзд в световой сфере: {s}, экзопланет: {e}', cardDone: 'Карточка 1200×675 скачана',
+  },
+  en: {
+    title: 'STARBEAM — where the light of your birth is now',
+    photoBgWork: 'removing background…', photoBgFail: 'could not remove the background, kept the original', photoBg: 'Space background and emblem',
+    photoAdd: 'Add a photo', photoChange: 'Change photo', photoAdded: 'Photo added as a security layer', photoFail: 'Could not open the photo. Try a JPG or PNG.',
+    photoLabel: 'Pilot photo, optional', photoRemove: 'Remove photo', photoNote: 'Your photo becomes a translucent gold security layer, like on a driving licence. It never leaves this device and disappears when you reload the page.',
+    km: 'km', lyS: 'ly', lyLong: 'light years', sec: 's', min: 'min', h: 'h',
+    zen: 'your beam', front: 'front of your light', copyFail: 'Could not copy', pngFail: 'Could not build the PNG',
+    mNew: 'New Moon', mFull: 'Full Moon', mWaxC: 'Waxing crescent', mFirst: 'First quarter', mWaxG: 'Waxing gibbous', mWanC: 'Waning crescent', mLast: 'Last quarter', mWanG: 'Waning gibbous',
+    ladderNext: '{d} ly to go to {name}', beyond: 'the beam has left the catalogue',
+    voyPassed: 'Your light passed it on {date} and is now <b class="num">{x}</b> times farther. The probe would need <b class="num">{y}</b> years to catch up.',
+    voyAhead: 'Your light will pass it in {h} h.',
+    tzLocal: 'local time, UTC {t}', day: 'day', twilight: 'twilight', night: 'night',
+    moonD: '{p}% lit, {pos}', above: 'above the horizon', below: 'below the horizon',
+    oFar: '{x}× farther', oPart: '{p}% of the way', radio: '{n} light years',
+    errDate: 'Enter a valid date and time.', errMin: 'The earliest date is 1 Jan 1920, 00:00 UTC.', errFuture: 'That date is in the future, so we set the current time.',
+    cities: 'Cities:', cityNone: 'Open‑Meteo has no such city. Try another spelling.',
+    probePassed: 'light passed the probe on {date}', afterBirth: 'after you were born', arrived: 'light arrived on {date}', willArrive: 'light arrives here in {y}',
+    catalogEnd: 'end of catalogue', nextEta: 'your light gets there in {y}',
+    note_moon: '1.28 light seconds', note_sun: '8.3 light minutes', note_voyager1: '≈ 1 light day, November 2026',
+    exoLive: 'Loaded live from the NASA Exoplanet Archive.', exoFallback: 'The NASA archive did not respond, so a built‑in list of 22 planets is shown.',
+    thPlanet: 'Planet', thFound: 'Found', thDist: 'Distance', thLight: 'Light there', exoNone: 'Your light has not reached the nearest worlds yet. First in line: Proxima Centauri b.',
+    loadingArchive: 'Loading the archive…',
+    aladinFail: 'Aladin Lite did not load: check access to cdn.jsdelivr.net and skies.esac.esa.int.', aladinOk: 'CDS Aladin Lite: drag to look around, scroll to zoom.', aladinConn: 'Connecting to sky surveys…', landmarks: 'Landmarks',
+    fov: 'field {v}°', scopeHome: 'The eyepiece is back on your zenith',
+    apodBirth: 'NASA picture on the day you were born', apodBday: 'NASA picture on your birthday (the archive starts in 1995)', apodLoading: 'Loading…', apodTitle0: 'NASA picture of the day on your birthday',
+    apodFail: 'The picture of the day did not load', apod429: 'NASA is limiting requests right now. Try again in an hour or open the archive below.', apodDown: 'The NASA API is unavailable. Open the archive below.',
+    pilots: ['pilot', 'pilots'], first1000: 'one of the first 1000', refCount: '{n} {p} joined through your link.', countLine: '{n} {p} in the logbook',
+    regBtn: 'Join the logbook', regBusy: 'Logging you in…', regSoon: 'The logbook opens soon',
+    regSoonNote: 'Registration for the first pilots opens in the coming days. You can download your ID right now.',
+    regNote: 'Numbers go in order: join earlier, get a lower number. A wallet helps if we hand out something to the first pilots. We keep only your call sign, contact and wallet, and delete them on request.',
+    errCall: 'Enter a call sign — it goes on your ID.', errContact: 'Use an email (name@mail.com) or a Telegram handle (@nick, 5+ characters).',
+    errWallet: 'A Solana address is 32–44 characters without 0, O, I or l. Or leave it empty.', errContactSrv: 'Check your email or Telegram.', errWalletSrv: 'Check your Solana address.',
+    errCallSrv: 'Call sign: 1 to 24 characters.', errNet: 'The logbook is not responding. Try again in a minute — you can download your ID without joining.',
+    toastExisting: 'You are already in the logbook: pilot No. {n}', toastNew: 'Logged: pilot No. {n}', linkCopied: 'Link copied', idDownloaded: 'Galactic Pilot ID downloaded',
+    post: '🚀 The light from my birth has travelled {km} km ({ly} light years).\n🛰 That is {x} times farther than Voyager 1.\n✨ It has already reached {s} stars and {e} exoplanets.\n\nSee where yours is: {link}', postCopied: 'Post copied',
+    cardLead: 'The light from my birth has travelled', cardLy: '{ly} light years', cardVoy: '{x} times farther than Voyager 1', cardZen: 'Zenith: {city}, RA {ra}° / Dec {dec}', cardSphere: 'Stars in my light sphere: {s}, exoplanets: {e}', cardDone: '1200×675 card downloaded',
+    // разметка
+    aScene: 'Earth at the moment of your birth and the light beam', loader: 'Developing the plate…', aNav: 'Sections', navRoute: 'Light chronicle', navScope: 'Telescope', getId: 'Get your Galactic ID',
+    h1: 'The light born with you is right here now', uLy: 'light years', uLd: 'light days', uAu: 'astronomical units',
+    lWhen: 'When you were born', lWhere: 'Where', phCity: 'Start typing a city', dates: 'Dates:', p1920: '1 January 1920', pVoy: 'Voyager 1 launch', pBtc: 'Bitcoin genesis block',
+    skyH: 'The sky at your birth', dtZen: 'Zenith, J2000', dtLst: 'Sidereal time', dtConst: 'Constellation', dtSun: 'Sun',
+    voyA: 'Voyager 1 is now', voyB: 'from Earth.', aCams: 'Camera', camEarth: 'Earth', camShip: 'Ship', camBeam: 'Along the beam', camMoon: 'Moon',
+    scaleH: 'Scale: from one light second to the year {y} ({n} ly)',
+    routeH: 'Light chronicle', routeP: 'Light spreads in every direction: every star closer than your age in light years has already received the flash of your birth. Stars are DSS2 survey frames at exact coordinates; Solar System objects come from the NASA archive.',
+    ld1: 'Your light has already reached', ld2: 'of the', ld3: 'nearest stars and', ld4: 'exoplanets. Next on its way:', ld5: 'Earth’s radio bubble is now about',
+    exoH: 'Worlds your light has reached', exoP: 'Confirmed exoplanets from the NASA Exoplanet Archive within 110 light years. In the 3D sky they are dots: orange ones are already inside your light sphere.',
+    tabReached: 'Reached', tabNext: 'Next', exoReachedA: 'reached', cBeam: 'Beam', cSky: 'Sky', cRoute: 'Chronicle', cWorlds: 'Worlds', cScope: 'Eyepiece', keepCta: 'Get your pilot card as a keepsake: print it, laminate it and give it as a gift, or send it to friends.', setupH: 'Customize your card', exoAnd: 'and', exoNextA: 'next',
+    scopeH: 'An eyepiece pointed at your zenith', sc1: 'Real sky surveys at', sc2: 'Rotate and zoom, switch between optical, infrared 2MASS or NASA WISE.',
+    aZin: 'Zoom in', aZout: 'Zoom out', aZhome: 'Back to zenith', copyPost: 'Copy a post for X', shareCard: 'Download 1200×675 card', apodOpen: 'Open on apod.nasa.gov',
+    aCut: 'Sky frame at your zenith', cutH: 'Zenith frame', cut1: '0.45° field, survey', cut2: 'This frame goes on your Galactic ID.',
+    passP: 'Your pilot document. Join the logbook to get a number in order and a link for friends.',
+    dtStart: 'Beam start, UTC', dtCity: 'City', dtVoy: 'Versus Voyager 1',
+    shipV: 'Crewed ship: an Orion‑style capsule and a service module with an X of solar wings.', shipA: 'Robotic scout: a Voyager dish, a JIMO‑style truss with radiators and nuclear‑electric drive.', shipSel: 'Selected, flying in the scene',
+    lCall: 'Pilot call sign <span>up to 24 characters, printed on your ID</span>', phCall: 'Your name, brand, social media handle, etc.', lContact: 'Email or Telegram', phContact: 'you@mail.com or @nick',
+    lWallet: 'Solana wallet <span>optional</span>', phWallet: 'Wallet address',
+    noSign: 'No.', regDoneP: 'You are in the logbook. Send this link to friends — it shows who you brought in.', copy: 'Copy',
+    dlId: 'Download PNG', printId: 'Get your keepsake card, PDF', pdfReady: 'PDF ready: print at 100%', copyPost2: 'Copy a post with your link', certFine: 'A card the size of a driving licence, 85.6×54 mm. The PDF is an A4 sheet: print at 100%, cut along the marks, fold on the dashed line and laminate for a ready gift. The PNG with both sides is for chats. The QR opens the site with your link.',
+    footer1: 'Earth and Moon: textures based on NASA Blue Marble and Earth at Night (via three.js). Sky map: 112,000 stars from the Hipparcos catalogue (ESA, d3-celestial data) and a Milky Way model. Eyepiece surveys: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Picture of the day: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanets: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archive: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Cities: Open‑Meteo.',
+    footer2: 'Calculations: sidereal time IAU 1982, IAU 1976 precession to J2000, Sun and Moon by simplified Meeus formulas (0.1–0.5°). Voyager positions are approximate. NASA is not affiliated with this project and does not endorse it.',
+  },
+  es: {
+    title: 'STARBEAM — hasta dónde llegó la luz de tu nacimiento',
+    photoBgWork: 'quitando el fondo…', photoBgFail: 'no se pudo quitar el fondo, dejamos la foto original', photoBg: 'Fondo espacial y emblema',
+    photoAdd: 'Agregar foto', photoChange: 'Cambiar foto', photoAdded: 'Foto agregada como fondo de seguridad', photoFail: 'No se pudo abrir la foto. Probá con JPG o PNG.',
+    photoLabel: 'Foto del piloto, opcional', photoRemove: 'Quitar foto', photoNote: 'Tu foto pasa a ser un fondo dorado translúcido de seguridad, como en un registro de conducir. No sale de este dispositivo y desaparece al recargar la página.',
+    km: 'km', lyS: 'a. l.', lyLong: 'años luz', sec: 's', min: 'min', h: 'h',
+    zen: 'tu rayo', front: 'frente de tu luz', copyFail: 'No se pudo copiar', pngFail: 'No se pudo generar el PNG',
+    mNew: 'Luna nueva', mFull: 'Luna llena', mWaxC: 'Luna creciente', mFirst: 'Cuarto creciente', mWaxG: 'Gibosa creciente', mWanC: 'Luna menguante', mLast: 'Cuarto menguante', mWanG: 'Gibosa menguante',
+    ladderNext: 'faltan {d} a. l. hasta {name}', beyond: 'el rayo ya salió del catálogo',
+    voyPassed: 'Tu luz la superó el {date} y ya está <b class="num">{x}</b> veces más lejos. A la sonda le llevaría <b class="num">{y}</b> años alcanzarla.',
+    voyAhead: 'Tu luz la va a superar en {h} h.',
+    tzLocal: 'hora local, UTC {t}', day: 'de día', twilight: 'crepúsculo', night: 'de noche',
+    moonD: 'iluminada {p}%, {pos}', above: 'sobre el horizonte', below: 'bajo el horizonte',
+    oFar: '{x} veces más lejos', oPart: '{p}% del camino', radio: '{n} años luz',
+    errDate: 'Ingresá una fecha y hora válidas.', errMin: 'La fecha mínima es 01/01/1920 00:00 UTC.', errFuture: 'Esa fecha está en el futuro: pusimos la hora actual.',
+    cities: 'Ciudades:', cityNone: 'Open‑Meteo no tiene esa ciudad. Probá escribirla de otra forma.',
+    probePassed: 'la luz pasó la sonda el {date}', afterBirth: 'después de tu nacimiento', arrived: 'la luz llegó el {date}', willArrive: 'la luz llega en {y}',
+    catalogEnd: 'fin del catálogo', nextEta: 'tu luz llega en {y}',
+    note_moon: '1,28 segundos luz', note_sun: '8,3 minutos luz', note_voyager1: '≈ 1 día luz, noviembre de 2026',
+    exoLive: 'Datos cargados en vivo del NASA Exoplanet Archive.', exoFallback: 'El archivo de la NASA no respondió: mostramos una lista propia de 22 planetas.',
+    thPlanet: 'Planeta', thFound: 'Descubierto', thDist: 'Distancia', thLight: 'La luz llega', exoNone: 'Tu luz todavía no alcanzó los mundos más cercanos. El primero es Proxima Centauri b.',
+    loadingArchive: 'Cargando el archivo…',
+    aladinFail: 'Aladin Lite no cargó: revisá el acceso a cdn.jsdelivr.net y skies.esac.esa.int.', aladinOk: 'CDS Aladin Lite: arrastrá para mirar alrededor, rueda para acercar.', aladinConn: 'Conectando con los relevamientos…', landmarks: 'Referencias',
+    fov: 'campo {v}°', scopeHome: 'El ocular vuelve a apuntar a tu cenit',
+    apodBirth: 'Foto de la NASA del día en que naciste', apodBday: 'Foto de la NASA de tu cumpleaños (el archivo empieza en 1995)', apodLoading: 'Cargando…', apodTitle0: 'Foto del día de la NASA en tu cumpleaños',
+    apodFail: 'La foto del día no cargó', apod429: 'La NASA está limitando pedidos. Probá en una hora o abrí el archivo abajo.', apodDown: 'La API de la NASA no responde. Abrí el archivo abajo.',
+    pilots: ['piloto', 'pilotos'], first1000: 'de los primeros 1000', refCount: 'Ya llegaron {n} {p} por tu enlace.', countLine: '{n} {p} en la bitácora',
+    regBtn: 'Anotarme en la bitácora', regBusy: 'Anotando…', regSoon: 'La bitácora abre pronto',
+    regSoonNote: 'El registro de los primeros pilotos abre en los próximos días. Ya podés descargar tu documento.',
+    regNote: 'Los números van en orden: cuanto antes te anotes, más bajo el número. La billetera sirve si repartimos algo a los primeros pilotos. Guardamos solo tu nombre de piloto, contacto y billetera, y los borramos si lo pedís.',
+    errCall: 'Escribí un nombre de piloto: va en tu documento.', errContact: 'Usá un email (nombre@mail.com) o un usuario de Telegram (@nick, 5 caracteres o más).',
+    errWallet: 'Una dirección de Solana tiene 32–44 caracteres sin 0, O, I ni l. O dejá el campo vacío.', errContactSrv: 'Revisá el email o Telegram.', errWalletSrv: 'Revisá la dirección de Solana.',
+    errCallSrv: 'Nombre de piloto: de 1 a 24 caracteres.', errNet: 'La bitácora no responde. Probá de nuevo en un minuto: podés descargar el documento sin anotarte.',
+    toastExisting: 'Ya estás en la bitácora: piloto N.º {n}', toastNew: 'Anotado: piloto N.º {n}', linkCopied: 'Enlace copiado', idDownloaded: 'Galactic Pilot ID descargado',
+    post: '🚀 La luz de mi nacimiento ya recorrió {km} km ({ly} años luz).\n🛰 Está {x} veces más lejos que la Voyager 1.\n✨ Ya llegó a {s} estrellas y {e} exoplanetas.\n\nMirá dónde está la tuya: {link}', postCopied: 'Publicación copiada',
+    cardLead: 'La luz de mi nacimiento ya recorrió', cardLy: '{ly} años luz', cardVoy: '{x} veces más lejos que la Voyager 1', cardZen: 'Cenit: {city}, AR {ra}° / Dec {dec}', cardSphere: 'Estrellas en mi esfera de luz: {s}, exoplanetas: {e}', cardDone: 'Tarjeta 1200×675 descargada',
+    aScene: 'La Tierra en el momento de tu nacimiento y el rayo de luz', loader: 'Revelando la placa…', aNav: 'Secciones', navRoute: 'Crónica de la luz', navScope: 'Telescopio', getId: 'Obtené tu Galactic ID',
+    h1: 'La luz que nació con vos está ahora acá', uLy: 'años luz', uLd: 'días luz', uAu: 'unidades astronómicas',
+    lWhen: 'Cuándo naciste', lWhere: 'Dónde', phCity: 'Empezá a escribir una ciudad', dates: 'Fechas:', p1920: '1 de enero de 1920', pVoy: 'lanzamiento de la Voyager 1', pBtc: 'bloque génesis de Bitcoin',
+    skyH: 'El cielo cuando naciste', dtZen: 'Cenit, J2000', dtLst: 'Hora sidérea', dtConst: 'Constelación', dtSun: 'Sol',
+    voyA: 'La Voyager 1 está ahora a', voyB: 'de la Tierra.', aCams: 'Cámara', camEarth: 'Tierra', camShip: 'Nave', camBeam: 'Por el rayo', camMoon: 'Luna',
+    scaleH: 'Escala: de un segundo luz al año {y} ({n} a. l.)',
+    routeH: 'Crónica de la luz', routeP: 'La luz va en todas direcciones: cada estrella más cercana que tu edad en años luz ya recibió el destello de tu nacimiento. Las estrellas son tomas del relevamiento DSS2 en coordenadas exactas; el Sistema Solar viene del archivo de la NASA.',
+    ld1: 'Tu luz ya alcanzó', ld2: 'de las', ld3: 'estrellas más cercanas y', ld4: 'exoplanetas. La próxima en el camino:', ld5: 'La burbuja de radio de la Tierra mide hoy unos',
+    exoH: 'Mundos a los que llegó tu luz', exoP: 'Exoplanetas confirmados del NASA Exoplanet Archive a menos de 110 años luz. En el cielo 3D son puntos: los naranjas ya están dentro de tu esfera de luz.',
+    tabReached: 'Alcanzados', tabNext: 'Próximos', exoReachedA: 'alcanzados', cBeam: 'Haz', cSky: 'Cielo', cRoute: 'Crónica', cWorlds: 'Mundos', cScope: 'Ocular', keepCta: 'Llevate tu tarjeta de piloto de recuerdo: imprimila, plastificala y regalala, o mandala a tus amigos.', setupH: 'Personalizá tu tarjeta', exoAnd: 'y', exoNextA: 'próximos',
+    scopeH: 'Un ocular apuntado a tu cenit', sc1: 'Relevamientos reales del cielo en', sc2: 'Girá y acercá, cambiá entre óptico, infrarrojo 2MASS o NASA WISE.',
+    aZin: 'Acercar', aZout: 'Alejar', aZhome: 'Volver al cenit', copyPost: 'Copiar publicación para X', shareCard: 'Descargar tarjeta 1200×675', apodOpen: 'Abrir en apod.nasa.gov',
+    aCut: 'Toma del cielo en tu cenit', cutH: 'Toma del cenit', cut1: 'Campo de 0,45°, relevamiento', cut2: 'Esta toma va en tu Galactic ID.',
+    passP: 'Tu documento de piloto. Anotate en la bitácora para tener un número en orden y un enlace para amigos.',
+    dtStart: 'Inicio del rayo, UTC', dtCity: 'Ciudad', dtVoy: 'Frente a la Voyager 1',
+    shipV: 'Nave tripulada: cápsula estilo Orion y módulo de servicio con alas solares en X.', shipA: 'Sonda robótica: antena del Voyager, armazón con radiadores estilo JIMO y propulsión nuclear eléctrica.', shipSel: 'Elegida, vuela en la escena',
+    lCall: 'Nombre de piloto <span>hasta 24 caracteres, va en el documento</span>', phCall: 'Tu nombre, marca, usuario en redes, etc.', lContact: 'Email o Telegram', phContact: 'vos@mail.com o @nick',
+    lWallet: 'Billetera Solana <span>opcional</span>', phWallet: 'Dirección de la billetera',
+    noSign: 'N.º', regDoneP: 'Estás en la bitácora. Mandá este enlace a tus amigos: muestra a quién trajiste vos.', copy: 'Copiar',
+    dlId: 'Descargar PNG', printId: 'Obtené tu tarjeta de recuerdo, PDF', pdfReady: 'PDF listo: imprimí al 100 %', copyPost2: 'Copiar publicación con tu enlace', certFine: 'Una tarjeta del tamaño de un registro, 85,6×54 mm. El PDF es una hoja A4: imprimí al 100 %, recortá por las marcas, doblá por la línea punteada y plastificala para regalar. El PNG con los dos lados es para chats. El QR abre el sitio con tu enlace.',
+    footer1: 'Tierra y Luna: texturas basadas en NASA Blue Marble y Earth at Night (vía three.js). Mapa del cielo: 112.000 estrellas del catálogo Hipparcos (ESA, datos de d3-celestial) y un modelo de la Vía Láctea. Relevamientos del ocular: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Foto del día: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanetas: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archivo: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Ciudades: Open‑Meteo.',
+    footer2: 'Cálculos: hora sidérea IAU 1982, precesión IAU 1976 a J2000, Sol y Luna con fórmulas simplificadas de Meeus (0,1–0,5°). Las posiciones de las Voyager son aproximadas. La NASA no está vinculada a este proyecto ni lo respalda.',
+  },
+};
+// названия: [en, es]; русские берутся из исходных данных
+const NAMES = {
+  proxima: ['Proxima Centauri', 'Próxima Centauri'], acen: ['Alpha Centauri A/B', 'Alfa Centauri A/B'], barnard: ['Barnard’s Star', 'Estrella de Barnard'],
+  wolf359: ['Wolf 359', 'Wolf 359'], lalande: ['Lalande 21185', 'Lalande 21185'], sirius: ['Sirius', 'Sirio'], epseri: ['Epsilon Eridani', 'Épsilon Eridani'],
+  procyon: ['Procyon', 'Proción'], '61cyg': ['61 Cygni', '61 Cygni'], epsind: ['Epsilon Indi', 'Épsilon Indi'], tauceti: ['Tau Ceti', 'Tau Ceti'],
+  teegarden: ['Teegarden’s Star', 'Estrella de Teegarden'], altair: ['Altair', 'Altair'], vega: ['Vega', 'Vega'], fomalhaut: ['Fomalhaut', 'Fomalhaut'],
+  pollux: ['Pollux', 'Pólux'], arcturus: ['Arcturus', 'Arturo'], trappist: ['TRAPPIST‑1', 'TRAPPIST‑1'], capella: ['Capella', 'Capella'], castor: ['Castor', 'Cástor'],
+  aldebaran: ['Aldebaran', 'Aldebarán'], regulus: ['Regulus', 'Régulo'], hyades: ['Hyades cluster', 'Cúmulo de las Híades'],
+  moon: ['Moon', 'Luna'], sun: ['Sun', 'Sol'], voyager1: ['Voyager 1', 'Voyager 1'],
+};
+const CONST_I18N = {
+  'Андромеда':['Andromeda','Andrómeda'],'Кассиопея':['Cassiopeia','Casiopea'],'Овен':['Aries','Aries'],'Персей':['Perseus','Perseo'],'Телец':['Taurus','Tauro'],'Возничий':['Auriga','Auriga'],
+  'Орион':['Orion','Orión'],'Заяц':['Lepus','Liebre'],'Близнецы':['Gemini','Géminis'],'Большой Пёс':['Canis Major','Can Mayor'],'Малый Пёс':['Canis Minor','Can Menor'],'Рак':['Cancer','Cáncer'],
+  'Гидра':['Hydra','Hidra'],'Лев':['Leo','Leo'],'Большая Медведица':['Ursa Major','Osa Mayor'],'Секстант':['Sextans','Sextante'],'Чаша':['Crater','Copa'],'Дева':['Virgo','Virgo'],
+  'Волосы Вероники':['Coma Berenices','Cabellera de Berenice'],'Ворон':['Corvus','Cuervo'],'Центавр':['Centaurus','Centauro'],'Южный Крест':['Crux','Cruz del Sur'],'Волопас':['Boötes','Boyero'],
+  'Весы':['Libra','Libra'],'Северная Корона':['Corona Borealis','Corona Boreal'],'Скорпион':['Scorpius','Escorpio'],'Геркулес':['Hercules','Hércules'],'Змееносец':['Ophiuchus','Ofiuco'],
+  'Стрелец':['Sagittarius','Sagitario'],'Лира':['Lyra','Lira'],'Орёл':['Aquila','Águila'],'Лебедь':['Cygnus','Cisne'],'Козерог':['Capricornus','Capricornio'],'Водолей':['Aquarius','Acuario'],
+  'Пегас':['Pegasus','Pegaso'],'Южная Рыба':['Piscis Austrinus','Pez Austral'],'Рыбы':['Pisces','Piscis'],'Кит':['Cetus','Ballena'],'Эридан':['Eridanus','Erídano'],'Киль':['Carina','Quilla'],
+  'Паруса':['Vela','Vela'],'Корма':['Puppis','Popa'],'Журавль':['Grus','Grulla'],'Тукан':['Tucana','Tucán'],'Павлин':['Pavo','Pavo'],'Индеец':['Indus','Indio'],'Малая Медведица':['Ursa Minor','Osa Menor'],
+  'Дракон':['Draco','Dragón'],'Цефей':['Cepheus','Cefeo'],'Жираф':['Camelopardalis','Jirafa'],'Золотая Рыба':['Dorado','Dorado'],'Октант':['Octans','Octante'],'Феникс':['Phoenix','Fénix'],
+  'Скульптор':['Sculptor','Escultor'],'Голубь':['Columba','Paloma'],'Единорог':['Monoceros','Unicornio'],'Рысь':['Lynx','Lince'],'Гончие Псы':['Canes Venatici','Lebreles'],'Волк':['Lupus','Lobo'],
+  'Жертвенник':['Ara','Altar'],'Южный Треугольник':['Triangulum Australe','Triángulo Austral'],'Южная Гидра':['Hydrus','Hidra Macho'],'Райская Птица':['Apus','Ave del Paraíso'],
+  'Телескоп':['Telescopium','Telescopio'],'Микроскоп':['Microscopium','Microscopio'],'Дельфин':['Delphinus','Delfín'],'Ящерица':['Lacerta','Lagarto'],'Треугольник':['Triangulum','Triángulo'],
+  'Резец':['Caelum','Buril'],'Часы':['Horologium','Reloj'],'Сетка':['Reticulum','Retículo'],'Живописец':['Pictor','Pintor'],'Насос':['Antlia','Máquina Neumática'],'Наугольник':['Norma','Escuadra'],
+  'Циркуль':['Circinus','Compás'],'Муха':['Musca','Mosca'],'Хамелеон':['Chamaeleon','Camaleón'],'Летучая Рыба':['Volans','Pez Volador'],'Столовая Гора':['Mensa','Mesa'],'Печь':['Fornax','Horno'],
+  'Стрела':['Sagitta','Flecha'],'Лисичка':['Vulpecula','Zorra'],'Щит':['Scutum','Escudo'],'Змея':['Serpens','Serpiente'],'Малый Конь':['Equuleus','Caballo Menor'],'Малый Лев':['Leo Minor','León Menor'],
+  'Южная Корона':['Corona Australis','Corona Austral'],
+};
+const CITY_I18N = {
+  'Буэнос-Айрес, Аргентина': ['Buenos Aires, Argentina', 'Buenos Aires, Argentina'], 'Москва, Россия': ['Moscow, Russia', 'Moscú, Rusia'],
+  'Нижний Новгород, Россия': ['Nizhny Novgorod, Russia', 'Nizhni Nóvgorod, Rusia'], 'Ташкент, Узбекистан': ['Tashkent, Uzbekistan', 'Taskent, Uzbekistán'],
+  'Нью-Йорк, США': ['New York, USA', 'Nueva York, EE. UU.'], 'Токио, Япония': ['Tokyo, Japan', 'Tokio, Japón'],
+};
+let LANG = 'ru';
+const t = (k, v) => { let s = L[LANG][k] ?? L.ru[k] ?? k; if (v) for (const [a, b] of Object.entries(v)) s = s.split(`{${a}}`).join(b); return s; };
+const tr = (ru, table) => (LANG === 'ru' || !table?.[ru] ? ru : table[ru][LANG === 'en' ? 0 : 1]);
+const constName = (ru) => tr(ru, CONST_I18N);
+const cityName = (ru) => tr(ru, CITY_I18N);
+const plural = (n, forms = t('pilots')) => {
+  if (forms.length === 2) return n === 1 ? forms[0] : forms[1];
+  const m10 = n % 10, m100 = n % 100; return m10 === 1 && m100 !== 11 ? forms[0] : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? forms[1] : forms[2];
+};
+const dateFmt = (d) => d.toLocaleDateString(LOC[LANG]);
+const numFmt = (x, dmax = 2) => new Intl.NumberFormat(LOC[LANG], { maximumFractionDigits: dmax }).format(x);
+function pickLang() {
+  const forced = window.STARBEAM_LANG, q = /[?&]lang=(ru|en|es)\b/.exec(location.search)?.[1];
+  let saved = null; try { saved = localStorage.getItem('sb_lang'); } catch {}
+  const nav = (navigator.language || 'en').slice(0, 2);
+  return forced || q || saved || (nav === 'ru' || nav === 'uk' || nav === 'be' ? 'ru' : nav === 'es' ? 'es' : 'en');
+}
+
+const PAGE = document.documentElement.dataset.page || 'home', NO3D = PAGE === 'chronicle' || PAGE === 'scope';
+let birthLocal = '1995-06-15T12:00';
+let city = { ...CITY_PRESETS[0] };
+// дата и город общие для всех страниц сайта
+try { const st = JSON.parse(localStorage.getItem('sb_state')); if (st?.birthLocal && st.city?.name) { birthLocal = st.birthLocal; city = st.city; } } catch {}
+let birthMs = 0;
+let sky = null;
+let selectedStyle = 'star_wars';
+let exoplanets = [];
+let exoSource = 'fallback';
+
+let toastT;
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2800); }
+async function copyText(text, msg) {
+  try { await navigator.clipboard.writeText(text); toast(msg); }
+  catch { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); toast(msg); } catch { toast(t('copyFail')); } ta.remove(); }
+}
+// На телефонах — системное меню «Поделиться» (на iPhone там «Сохранить изображение» в Фото); иначе обычная загрузка
+async function download(canvas, name) {
+  const blob = await new Promise((res) => canvas.toBlob(res, 'image/png'));
+  if (!blob) { toast(t('pngFail')); return false; }
+  return saveBlob(blob, name);
+}
+async function saveBlob(blob, name) {
+  const file = new File([blob], name, { type: blob.type });
+  if (matchMedia('(pointer: coarse)').matches && navigator.canShare?.({ files: [file] })) {
+    try { await navigator.share({ files: [file] }); return true; }
+    catch (e) { if (e.name === 'AbortError') return false; } // иначе — обычная загрузка ниже
+  }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000); return true;
+}
+const dssCut = (ra, dec, fovDeg) => `https://archive.stsci.edu/cgi-bin/dss_search?r=${ra.toFixed(5)}&d=${dec.toFixed(5)}&e=J2000&h=${Math.min(60, fovDeg * 60).toFixed(1)}&w=${Math.min(60, fovDeg * 60).toFixed(1)}&f=gif&v=poss2ukstu_red`;
+const hipsCut = (hips, ra, dec, fov, w) => `${HIPS2FITS}?hips=${encodeURIComponent(hips)}&ra=${ra.toFixed(5)}&dec=${dec.toFixed(5)}&fov=${fov}&width=${w}&height=${w}&projection=TAN&format=jpg`;
+function loadImg(url) { return new Promise((res, rej) => { const i = new Image(); i.crossOrigin = 'anonymous'; i.onload = () => res(i); i.onerror = rej; i.src = url; }); }
+
+/* =====================================================================
+   3. TIME ZONES — время рождения вводится по часам города рождения
+   ===================================================================== */
+function tzOffsetMs(tz, utcMs) {
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
+    .formatToParts(new Date(utcMs)).map((x) => [x.type, x.value]));
+  return Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour % 24, +p.minute, +p.second) - utcMs;
+}
+function localToUtc(str, c) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(str); if (!m) return NaN;
+  const guess = Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]);
+  try {
+    const off = tzOffsetMs(c.tz, guess); let utc = guess - off;
+    const off2 = tzOffsetMs(c.tz, utc); if (off2 !== off) utc = guess - off2;
+    return utc;
+  } catch { return guess - (c.lon / 15) * 3600000; } // нет tz — среднее солнечное время
+}
+function utcToLocalStr(ms, c) {
+  let off; try { off = tzOffsetMs(c.tz, ms); } catch { off = (c.lon / 15) * 3600000; }
+  const d = new Date(ms + off);
+  return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}T${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`;
+}
+
+/* =====================================================================
+   4. ASTRONOMY
+   ===================================================================== */
+const jdOf = (ms) => ms / 86400000 + 2440587.5;
+function gmstDeg(jd) { const d = jd - 2451545, T = d / 36525; return norm360(280.46061837 + 360.98564736629 * d + 0.000387933 * T * T - T * T * T / 38710000); }
+// координаты эпохи даты → J2000 (IAU 1976, обратное преобразование)
+function precessToJ2000(raDeg, decDeg, jd) {
+  const T = (jd - 2451545) / 36525, as = DEG / 3600;
+  const zeta = (2306.2181 * T + 0.30188 * T * T + 0.017998 * T ** 3) * as;
+  const z = (2306.2181 * T + 1.09468 * T * T + 0.018203 * T ** 3) * as;
+  const th = (2004.3109 * T - 0.42665 * T * T - 0.041833 * T ** 3) * as;
+  const a = raDeg * DEG - z, d = decDeg * DEG;
+  const A = Math.cos(d) * Math.sin(a);
+  const B = Math.cos(th) * Math.cos(d) * Math.cos(a) + Math.sin(th) * Math.sin(d);
+  const C = -Math.sin(th) * Math.cos(d) * Math.cos(a) + Math.cos(th) * Math.sin(d);
+  return { ra: norm360((Math.atan2(A, B) - zeta) / DEG), dec: Math.asin(Math.max(-1, Math.min(1, C))) / DEG };
+}
+function eclToEq(lam, bet, eps) {
+  const l = lam * DEG, b = bet * DEG, e = eps * DEG;
+  return { ra: norm360(Math.atan2(Math.sin(l) * Math.cos(e) - Math.tan(b) * Math.sin(e), Math.cos(l)) / DEG),
+           dec: Math.asin(Math.sin(b) * Math.cos(e) + Math.cos(b) * Math.sin(e) * Math.sin(l)) / DEG };
+}
+function altitude(ra, dec, lstDeg, lat) {
+  const H = (lstDeg - ra) * DEG;
+  return Math.asin(Math.sin(lat * DEG) * Math.sin(dec * DEG) + Math.cos(lat * DEG) * Math.cos(dec * DEG) * Math.cos(H)) / DEG;
+}
+function computeSky(ms, c) {
+  const jd = jdOf(ms), n = jd - 2451545;
+  const gmst = gmstDeg(jd), lst = norm360(gmst + c.lon);
+  const z = precessToJ2000(lst, c.lat, jd);
+  const eps = 23.439 - 0.0000004 * n;
+  // Солнце
+  const Ls = norm360(280.460 + 0.9856474 * n), g = norm360(357.528 + 0.9856003 * n);
+  const lamS = Ls + 1.915 * Math.sin(g * DEG) + 0.020 * Math.sin(2 * g * DEG);
+  const sun = eclToEq(lamS, 0, eps); sun.alt = altitude(sun.ra, sun.dec, lst, c.lat);
+  // Луна
+  const L = norm360(218.316 + 13.176396 * n), M = norm360(134.963 + 13.064993 * n), F = norm360(93.272 + 13.229350 * n), D = norm360(297.850 + 12.190749 * n);
+  const lamM = L + 6.289 * Math.sin(M * DEG) + 1.274 * Math.sin((2 * D - M) * DEG) + 0.658 * Math.sin(2 * D * DEG) + 0.214 * Math.sin(2 * M * DEG) - 0.186 * Math.sin(g * DEG) - 0.114 * Math.sin(2 * F * DEG);
+  const betM = 5.128 * Math.sin(F * DEG) + 0.281 * Math.sin((M + F) * DEG) + 0.278 * Math.sin((M - F) * DEG);
+  const distM = 385001 - 20905 * Math.cos(M * DEG);
+  const moon = eclToEq(lamM, betM, eps);
+  const elong = Math.acos(Math.cos(betM * DEG) * Math.cos((lamM - lamS) * DEG));
+  moon.illum = (1 - Math.cos(elong)) / 2; moon.waxing = norm360(lamM - lamS) < 180; moon.dist = distM;
+  moon.alt = altitude(moon.ra, moon.dec, lst, c.lat);
+  return { jd, gmst, lst, raDate: lst, decDate: c.lat, ra: z.ra, dec: z.dec, sun, moon };
+}
+function moonPhaseName(m) {
+  const i = m.illum;
+  if (i < 0.03) return t('mNew'); if (i > 0.97) return t('mFull');
+  if (m.waxing) return t(i < 0.4 ? 'mWaxC' : i < 0.6 ? 'mFirst' : 'mWaxG');
+  return t(i < 0.4 ? 'mWanC' : i < 0.6 ? 'mLast' : 'mWanG');
+}
+// Созвездие по координатам — грубые границы для ярких областей через сервис нет; используем ближайшую яркую звезду‑ориентир
+const CONST_REF = [
+  ['Андромеда',10,38],['Кассиопея',15,60],['Овен',35,22],['Персей',50,45],['Телец',68,17],['Возничий',80,42],['Орион',84,0],['Заяц',82,-19],['Близнецы',110,25],['Большой Пёс',105,-22],['Малый Пёс',114,5],['Рак',130,20],['Гидра',140,-10],['Лев',155,15],['Большая Медведица',165,55],['Секстант',152,-2],['Чаша',170,-15],['Дева',200,0],['Волосы Вероники',190,22],['Ворон',187,-18],['Центавр',205,-47],['Южный Крест',187,-60],['Волопас',215,30],['Весы',228,-15],['Северная Корона',237,30],['Скорпион',253,-30],['Геркулес',255,30],['Змееносец',258,-5],['Стрелец',285,-28],['Лира',283,36],['Орёл',297,5],['Лебедь',308,42],['Козерог',315,-18],['Водолей',335,-10],['Пегас',340,20],['Южная Рыба',340,-30],['Рыбы',10,10],['Кит',30,-10],['Эридан',60,-20],['Киль',120,-60],['Паруса',145,-48],['Корма',115,-35],['Журавль',335,-45],['Тукан',0,-65],['Павлин',300,-65],['Индеец',320,-55],['Малая Медведица',225,77],['Дракон',260,65],['Цефей',330,65],['Жираф',90,70],['Золотая Рыба',80,-60],['Октант',0,-88],['Феникс',15,-48],['Скульптор',5,-32],['Голубь',90,-35],['Единорог',105,-3],['Рысь',120,47],['Гончие Псы',195,40],['Волк',230,-42],['Жертвенник',260,-55],['Южный Треугольник',240,-65],['Южная Гидра',0,-75],['Райская Птица',240,-75],['Телескоп',280,-50],['Микроскоп',315,-37],['Дельфин',310,13],['Ящерица',337,45],['Треугольник',30,32],['Резец',70,-38],['Часы',45,-52],['Сетка',60,-60],['Живописец',85,-52],['Насос',150,-32],['Наугольник',240,-50],['Циркуль',225,-63],['Муха',190,-70],['Хамелеон',160,-80],['Летучая Рыба',115,-70],['Столовая Гора',85,-77],['Печь',45,-30],['Стрела',295,18],['Лисичка',300,25],['Щит',280,-10],['Змея',240,10],['Малый Конь',318,7],['Малый Лев',155,33],['Южная Корона',285,-41]
+];
+function constellationOf(ra, dec) {
+  let best = null, bd = 1e9;
+  for (const [n, r, d] of CONST_REF) {
+    const cd = Math.sin(dec * DEG) * Math.sin(d * DEG) + Math.cos(dec * DEG) * Math.cos(d * DEG) * Math.cos((ra - r) * DEG);
+    const ang = Math.acos(Math.max(-1, Math.min(1, cd)));
+    if (ang < bd) { bd = ang; best = n; }
+  }
+  return best;
+}
+function telemetry(now) {
+  const sec = Math.max(1, (now - birthMs) / 1000);
+  const km = sec * C_KMS, ly = km / KM_LY;
+  const voyKm = VOY_KM0 + ((now - VOY_EPOCH) / 1000) * VOY_KMS;
+  return { sec, km, ly, ld: km / KM_LD, au: km / KM_AU, voyKm, voyLd: voyKm / KM_LD, voyAu: voyKm / KM_AU, ratio: km / voyKm,
+           catchUpYears: km / VOY_KMS / SEC_YR, overtake: new Date(birthMs + (voyKm / C_KMS) * 1000) };
+}
+
+/* =====================================================================
+   5. THREE.JS SCENE — Земля NASA, настоящее небо, Солнце/Луна на момент рождения
+   ===================================================================== */
+const R_SKY = 6000;
+const canvas3d = $('scene');
+// Телефоны: меньше пикселей и без свечения — иначе iOS Safari закрывает вкладку из‑за видеопамяти
+const LITE = matchMedia('(pointer: coarse)').matches || Math.min(screen.width, screen.height) < 820;
+const renderer = new THREE.WebGLRenderer({ canvas: canvas3d, antialias: !LITE, preserveDrawingBuffer: true, powerPreference: LITE ? 'low-power' : 'high-performance' });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, LITE ? 1.25 : 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, 1, 0.01, 20000);
+camera.position.set(0, 0.6, 3.4);
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(1024, 1024), 0.5, 0.35, 0.92);
+composer.addPass(bloom); composer.addPass(new OutputPass());
+if (LITE) composer.passes.length = 0; // на телефоне рендерим напрямую, без постобработки
+const envTex = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+// OrbitControls запоминает camera.up при создании, поэтому после смены «верха» кадра пересоздаём их
+let controls = null;
+function makeControls() {
+  const tgt = controls ? controls.target.clone() : new THREE.Vector3(), on = controls ? controls.enabled : true;
+  controls?.dispose();
+  controls = new OrbitControls(camera, canvas3d);
+  controls.enableDamping = true; controls.dampingFactor = 0.06; controls.enablePan = false;
+  controls.minDistance = 1.15; controls.maxDistance = 420; controls.rotateSpeed = 0.5;
+  controls.target.copy(tgt); controls.enabled = on;
+}
+makeControls();
+
+const loadMgr = new THREE.LoadingManager();
+// экран загрузки: прогресс по текстурам Земли/Луны и карте неба; закрывается по готовности или через 12 с
+let bootDone = false;
+function finishBoot() { if (bootDone) return; bootDone = true; setBoot(1); setTimeout(() => $('loader').classList.add('done'), 350); }
+function setBoot(f) { $('bootArc').style.strokeDashoffset = String(276.5 * (1 - f)); $('bootPct').textContent = Math.round(f * 100) + '%'; }
+loadMgr.onProgress = (_u, loaded, total) => { if (!bootDone && total) setBoot(Math.min(0.98, loaded / total)); };
+loadMgr.onLoad = finishBoot;
+setTimeout(finishBoot, 12000);
+const texLoader = new THREE.TextureLoader(loadMgr);
+texLoader.setCrossOrigin('anonymous');
+function tex(url, srgb = true, essential = true) { const t = (essential ? texLoader : lazyLoader).load(url); if (srgb) t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; }
+const lazyLoader = new THREE.TextureLoader(); // второстепенное не держит экран загрузки
+
+// RA/Dec → направление в сцене (Y = северный полюс мира)
+function skyDir(ra, dec) { const a = ra * DEG, d = dec * DEG; return new THREE.Vector3(-Math.cos(d) * Math.cos(a), Math.sin(d), Math.cos(d) * Math.sin(a)); }
+
+// --- небесная сфера: реальная фотокарта всего неба (CAR, ICRS) через CDS hips2fits
+const skyMat = new THREE.MeshBasicMaterial({ side: THREE.BackSide, depthWrite: false, color: 0x000000 }); // чёрное, пока не пришла карта неба (иначе белая вспышка)
+const skyMesh = new THREE.Mesh(new THREE.SphereGeometry(R_SKY, 96, 48), skyMat);
+scene.add(skyMesh);
+function applySkyTexture(t) {
+  t.colorSpace = THREE.SRGBColorSpace; t.wrapS = THREE.RepeatWrapping; t.repeat.x = -1; t.offset.x = 1; t.needsUpdate = true; // RA растёт влево на снимке неба
+  skyMat.map = t; skyMat.color.setScalar(1); skyMat.needsUpdate = true;
+}
+function proceduralSky() {
+  const c = document.createElement('canvas'); c.width = 2048; c.height = 1024; const g = c.getContext('2d');
+  g.fillStyle = '#000'; g.fillRect(0, 0, 2048, 1024);
+  for (let i = 0; i < 9000; i++) { const b = Math.random() ** 3; g.fillStyle = `rgba(255,${240 + 15 * Math.random()},${220 + 35 * Math.random()},${0.25 + b * 0.75})`; g.fillRect(Math.random() * 2048, Math.random() * 1024, b > 0.9 ? 2 : 1, b > 0.9 ? 2 : 1); }
+  applySkyTexture(new THREE.CanvasTexture(c));
+}
+// Карта неба — свой файл в репозитории (каталог Hipparcos, 112 тыс. звёзд, + модель Млечного Пути), без внешних сервисов.
+// 8K — для больших экранов и GPU, которые это тянут; иначе 4K.
+const bigSky = !LITE && renderer.capabilities.maxTextureSize >= 8192 && Math.max(screen.width, screen.height) * (devicePixelRatio || 1) >= 1800;
+loadMgr.itemStart('sky');
+const skyLoader = new THREE.TextureLoader();
+skyLoader.load(LITE ? '/sky-2k.webp' : '/sky-4k.webp', (tx) => {
+  applySkyTexture(tx); loadMgr.itemEnd('sky');
+  if (bigSky) setTimeout(() => skyLoader.load('/sky-8k.webp', (hi) => { const old = skyMat.map; applySkyTexture(hi); old?.dispose(); scheduleCert(); }), 1500);
+}, undefined, () => {
+  skyLoader.load('/sky-4k.jpg', (tx) => { applySkyTexture(tx); loadMgr.itemEnd('sky'); }, undefined, () => { proceduralSky(); loadMgr.itemEnd('sky'); });
+});
+
+// --- Земля: шейдер день/ночь по реальному направлению на Солнце
+const sunDir = new THREE.Vector3(1, 0, 0);
+const earthUniforms = {
+  dayMap: { value: tex(TEX + 'earth_atmos_2048.webp') }, nightMap: { value: tex(TEX + 'earth_lights_2048.webp', true, false) },
+  specMap: { value: tex(TEX + 'earth_specular_2048.webp', false, false) }, cloudMap: { value: tex(TEX + 'earth_clouds_1024.webp', true, false) },
+  sunDir: { value: sunDir }, cloudShift: { value: 0 },
+};
+const earthMat = new THREE.ShaderMaterial({
+  uniforms: earthUniforms,
+  vertexShader: `varying vec2 vUv; varying vec3 vN; varying vec3 vP;
+    void main(){ vUv=uv; vN=normalize(mat3(modelMatrix)*normal); vec4 w=modelMatrix*vec4(position,1.); vP=w.xyz; gl_Position=projectionMatrix*viewMatrix*w; }`,
+  fragmentShader: `uniform sampler2D dayMap,nightMap,specMap,cloudMap; uniform vec3 sunDir; uniform float cloudShift;
+    varying vec2 vUv; varying vec3 vN; varying vec3 vP;
+    void main(){
+      vec3 n=normalize(vN); float ndl=dot(n,sunDir);
+      float dayMix=smoothstep(-0.12,0.22,ndl);
+      vec3 day=texture2D(dayMap,vUv).rgb; vec3 night=texture2D(nightMap,vUv).rgb;
+      vec4 cs=texture2D(cloudMap,vec2(vUv.x+cloudShift,vUv.y)); float cl=cs.a*dot(cs.rgb,vec3(.3333));
+      vec3 dayCol=day*(max(ndl,0.)*1.15+0.03);
+      dayCol=mix(dayCol,vec3(.92)*(max(ndl,0.)*0.95+0.02),cl*0.85);
+      vec3 nightCol=night*vec3(1.,.82,.55)*1.8*(1.-cl*.85)+day*0.012;
+      vec3 V=normalize(cameraPosition-vP); vec3 H=normalize(sunDir+V);
+      float spec=pow(max(dot(n,H),0.),48.)*texture2D(specMap,vUv).r*0.4*smoothstep(0.,.1,ndl)*(1.-cl);
+      vec3 col=mix(nightCol,dayCol,dayMix)+spec*vec3(1.,.93,.8);
+      float rim=pow(1.-max(dot(n,V),0.),3.);
+      col+=vec3(.28,.55,1.)*rim*(.12+.88*smoothstep(-.25,.45,ndl));
+      gl_FragColor=vec4(col,1.);
+      #include <tonemapping_fragment>
+      #include <colorspace_fragment>
+    }`,
+});
+const earth = new THREE.Mesh(new THREE.SphereGeometry(1, 128, 64), earthMat);
+scene.add(earth);
+const atmo = new THREE.Mesh(new THREE.SphereGeometry(1.022, 96, 48), new THREE.ShaderMaterial({
+  uniforms: { sunDir: { value: sunDir } }, side: THREE.BackSide, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false,
+  vertexShader: `varying vec3 vN; varying vec3 vP; void main(){ vN=normalize(mat3(modelMatrix)*normal); vec4 w=modelMatrix*vec4(position,1.); vP=w.xyz; gl_Position=projectionMatrix*viewMatrix*w; }`,
+  fragmentShader: `uniform vec3 sunDir; varying vec3 vN; varying vec3 vP;
+    void main(){ vec3 V=normalize(cameraPosition-vP); float f=pow(clamp(1.-abs(dot(normalize(vN),V)),0.,1.),2.2);
+      float lit=smoothstep(-.35,.4,dot(normalize(vP),sunDir)); gl_FragColor=vec4(vec3(.3,.6,1.)*f*(.15+lit),f*(.15+lit));
+      #include <tonemapping_fragment>
+      #include <colorspace_fragment>
+    }`,
+}));
+scene.add(atmo);
+
+// --- Солнце, свет
+const sunLight = new THREE.DirectionalLight(0xfff4e6, 2.6); scene.add(sunLight);
+scene.add(new THREE.HemisphereLight(0x5577aa, 0x050505, 0.35));
+function glowTexture(inner, outer) {
+  const c = document.createElement('canvas'); c.width = c.height = 256; const g = c.getContext('2d');
+  const gr = g.createRadialGradient(128, 128, 0, 128, 128, 128); gr.addColorStop(0, inner); gr.addColorStop(0.2, outer); gr.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = gr; g.fillRect(0, 0, 256, 256); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+const sunSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,255,255,1)', 'rgba(255,220,160,.55)'), blending: THREE.AdditiveBlending, depthWrite: false }));
+sunSprite.scale.setScalar(520); scene.add(sunSprite);
+
+// --- Луна на реальной дистанции (радиусы Земли)
+const moonGeo = new THREE.SphereGeometry(0.2727, 64, 32); moonGeo.rotateY(-Math.PI / 2); // лунный нулевой меридиан → +Z (к Земле после lookAt)
+const moon = new THREE.Mesh(moonGeo, new THREE.MeshStandardMaterial({ map: tex(TEX + 'moon_1024.webp', true, false), roughness: 1, metalness: 0 }));
+scene.add(moon);
+
+// --- Город, луч, импульсы
+const cityMarker = new THREE.Mesh(new THREE.SphereGeometry(0.012, 16, 8), new THREE.MeshBasicMaterial({ color: 0xFF6A3D }));
+scene.add(cityMarker);
+const cityGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,220,200,1)', 'rgba(255,106,61,.5)'), blending: THREE.AdditiveBlending, depthWrite: false }));
+cityGlow.scale.setScalar(0.12); scene.add(cityGlow);
+const beamGroup = new THREE.Group(); scene.add(beamGroup);
+const FRONT_D = 6; // где рисуем «фронт света» (в радиусах Земли): условно, настоящий фронт — в десятках световых лет
+const BEAM_LEN = FRONT_D;
+const beamCore = new THREE.Mesh(new THREE.CylinderGeometry(0.0046, 0.0046, 1, 8, 1, true), new THREE.MeshBasicMaterial({ color: 0xFFE2D4, transparent: true, opacity: 0.95, blending: THREE.AdditiveBlending, depthWrite: false }));
+const beamHalo = new THREE.Mesh(new THREE.CylinderGeometry(0.0205, 0.0205, 1, 12, 1, true), new THREE.MeshBasicMaterial({ color: 0xFF6A3D, transparent: true, opacity: 0.24, blending: THREE.AdditiveBlending, depthWrite: false }));
+const beamGlow = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 1, 16, 1, true), new THREE.MeshBasicMaterial({ color: 0xFF7A4A, transparent: true, opacity: 0.07, blending: THREE.AdditiveBlending, depthWrite: false }));
+const setBeamWidth = (k) => [beamCore, beamHalo, beamGlow].forEach((m) => { m.scale.x = m.scale.z = k; });
+[beamCore, beamHalo, beamGlow].forEach((m) => { m.geometry.translate(0, 0.5, 0); m.scale.y = BEAM_LEN; beamGroup.add(m); });
+const pulses = Array.from({ length: 4 }, () => { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,255,255,1)', 'rgba(255,106,61,.6)'), blending: THREE.AdditiveBlending, depthWrite: false })); scene.add(s); return s; });
+const targetGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,230,215,.9)', 'rgba(255,106,61,.35)'), blending: THREE.AdditiveBlending, depthWrite: false }));
+targetGlow.scale.setScalar(160); scene.add(targetGlow);
+// фронт света — светящаяся «голова» луча, рядом с ней летит корабль
+const frontGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,255,255,1)', 'rgba(255,120,70,.7)'), blending: THREE.AdditiveBlending, depthWrite: false }));
+frontGlow.scale.setScalar(0.7); scene.add(frontGlow);
+
+// --- звёзды каталога и экзопланеты на небе
+const starPts = new THREE.Points(new THREE.BufferGeometry(), new THREE.PointsMaterial({ size: 9, sizeAttenuation: false, vertexColors: true, transparent: true, opacity: 0.95, depthWrite: false, map: glowTexture('rgba(255,255,255,1)', 'rgba(255,255,255,.4)'), blending: THREE.AdditiveBlending }));
+const exoPts = new THREE.Points(new THREE.BufferGeometry(), new THREE.PointsMaterial({ size: 4, sizeAttenuation: false, vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
+scene.add(starPts, exoPts);
+function setPoints(points, list, colorFn, r) {
+  const pos = new Float32Array(list.length * 3), col = new Float32Array(list.length * 3), c = new THREE.Color();
+  list.forEach((o, i) => { const v = skyDir(o.ra, o.dec).multiplyScalar(r); pos.set([v.x, v.y, v.z], i * 3); c.set(colorFn(o)); col.set([c.r, c.g, c.b], i * 3); });
+  points.geometry.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  points.geometry.setAttribute('color', new THREE.BufferAttribute(col, 3));
+  points.geometry.computeBoundingSphere();
+}
+
+/* =====================================================================
+   6. КОРАБЛИ — процедурные модели по мотивам настоящей техники (нос по +Z)
+   Vanguard: капсула Orion/Dragon + сервисный модуль ESM с крестом солнечных панелей.
+   Aether: беспилотник — антенна «Вояджера», ферма и радиаторы JIMO, ядерно‑электрическая тяга.
+   ===================================================================== */
+function panelTex(bg, line, step) {
+  const c = document.createElement('canvas'); c.width = 256; c.height = 128; const g = c.getContext('2d');
+  g.fillStyle = bg; g.fillRect(0, 0, 256, 128); g.strokeStyle = line; g.lineWidth = 1;
+  for (let x = 0; x <= 256; x += step) { g.beginPath(); g.moveTo(x + 0.5, 0); g.lineTo(x + 0.5, 128); g.stroke(); }
+  for (let y = 0; y <= 128; y += step) { g.beginPath(); g.moveTo(0, y + 0.5); g.lineTo(256, y + 0.5); g.stroke(); }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t;
+}
+const M = {
+  hull: new THREE.MeshStandardMaterial({ color: 0xcfd4dc, metalness: 0.92, roughness: 0.24, envMap: envTex, envMapIntensity: 0.55 }),
+  white: new THREE.MeshStandardMaterial({ color: 0xeceef2, metalness: 0.1, roughness: 0.55, envMap: envTex, envMapIntensity: 0.35 }),
+  dark: new THREE.MeshStandardMaterial({ color: 0x2a2f3c, metalness: 0.6, roughness: 0.5, envMap: envTex, envMapIntensity: 0.3 }),
+  shield: new THREE.MeshStandardMaterial({ color: 0x3b2f29, metalness: 0.1, roughness: 0.9 }),
+  gold: new THREE.MeshStandardMaterial({ color: 0xd4a440, metalness: 1, roughness: 0.38, envMap: envTex, envMapIntensity: 0.7 }),
+  bell: new THREE.MeshStandardMaterial({ color: 0x5b4a40, metalness: 0.85, roughness: 0.35, envMap: envTex, envMapIntensity: 0.5, side: THREE.DoubleSide }),
+  glass: new THREE.MeshStandardMaterial({ color: 0x0b1030, metalness: 1, roughness: 0.05, envMap: envTex, envMapIntensity: 0.9 }),
+  cell: new THREE.MeshStandardMaterial({ map: panelTex('#0e1a4a', 'rgba(150,175,255,.45)', 16), metalness: 0.55, roughness: 0.22, envMap: envTex, envMapIntensity: 0.9, side: THREE.DoubleSide }),
+  radiator: new THREE.MeshStandardMaterial({ map: panelTex('#d9dde4', 'rgba(120,128,145,.55)', 32), metalness: 0.25, roughness: 0.45, envMap: envTex, envMapIntensity: 0.4, side: THREE.DoubleSide }),
+  nozzle: new THREE.MeshBasicMaterial({ color: 0xbff4ff }),
+};
+const alongZ = (geo) => geo.rotateX(Math.PI / 2); // ось цилиндра Y → Z, «верх» цилиндра смотрит в нос
+function rod(g, a, b, r, mat) {
+  const A = new THREE.Vector3(...a), d = new THREE.Vector3(...b).sub(A), L = d.length();
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, L, 6), mat); m.position.copy(A).addScaledVector(d, 0.5);
+  m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.normalize()); g.add(m); return m;
+}
+function exhaust(group, x, y, z, r, color) {
+  const n = new THREE.Mesh(new THREE.CircleGeometry(r * 0.8, 20), M.nozzle); n.position.set(x, y, z - 0.001); n.rotation.y = Math.PI; group.add(n);
+  const cone = new THREE.Mesh(new THREE.ConeGeometry(r * 0.75, r * 9, 16, 1, true), new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.32, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
+  cone.rotation.x = Math.PI / 2; cone.position.set(x, y, z - r * 4.5); group.add(cone);
+  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,255,255,1)', color === 0x8fa4ff ? 'rgba(143,164,255,.6)' : 'rgba(255,150,110,.6)'), blending: THREE.AdditiveBlending, depthWrite: false }));
+  glow.scale.setScalar(r * 7); glow.position.set(x, y, z - r * 0.5); group.add(glow);
+}
+function buildVanguard() {
+  const g = new THREE.Group(), add = (geo, mat, z) => { const m = new THREE.Mesh(geo, mat); m.position.z = z; g.add(m); return m; };
+  // капсула экипажа: усечённый конус, стыковочный узел, окна, теплозащитный экран
+  add(alongZ(new THREE.CylinderGeometry(0.034, 0.078, 0.09, 40)), M.white, 0.17);
+  add(alongZ(new THREE.CylinderGeometry(0.022, 0.026, 0.024, 24)), M.hull, 0.226);
+  add(new THREE.TorusGeometry(0.023, 0.003, 8, 32), M.dark, 0.239);
+  for (let k = 0; k < 4; k++) { const a = k * Math.PI / 2 + Math.PI / 4, w = new THREE.Mesh(new THREE.BoxGeometry(0.013, 0.009, 0.003), M.glass); w.position.set(Math.cos(a) * 0.05, Math.sin(a) * 0.05, 0.19); w.lookAt(Math.cos(a) * 0.2, Math.sin(a) * 0.2, 0.27); g.add(w); }
+  add(alongZ(new THREE.CylinderGeometry(0.08, 0.08, 0.008, 40)), M.shield, 0.122);
+  // переходник и сервисный модуль: металл и золотая экранно‑вакуумная изоляция
+  add(alongZ(new THREE.CylinderGeometry(0.074, 0.072, 0.02, 40)), M.dark, 0.107);
+  add(alongZ(new THREE.CylinderGeometry(0.072, 0.072, 0.13, 40)), M.hull, 0.03);
+  add(alongZ(new THREE.CylinderGeometry(0.0735, 0.0735, 0.045, 40)), M.gold, 0.035);
+  for (let k = 0; k < 4; k++) { const a = k * Math.PI / 2, q = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.012, 0.012), M.dark); q.position.set(Math.cos(a) * 0.078, Math.sin(a) * 0.078, 0.075); g.add(q); }
+  // четыре крыла солнечных батарей крестом, как у Orion ESM
+  for (let k = 0; k < 4; k++) {
+    const arm = new THREE.Group(); arm.rotation.z = Math.PI / 4 + k * Math.PI / 2; arm.position.z = 0.0;
+    rod(arm, [0.07, 0, 0], [0.105, 0, 0], 0.003, M.hull);
+    for (let p = 0; p < 3; p++) { const pn = new THREE.Mesh(new THREE.BoxGeometry(0.074, 0.056, 0.0025), M.cell); pn.position.x = 0.145 + p * 0.077; pn.rotation.x = 0.35; arm.add(pn); }
+    g.add(arm);
+  }
+  // корма: переходник, маршевое сопло и восемь вспомогательных
+  add(alongZ(new THREE.CylinderGeometry(0.072, 0.05, 0.03, 40)), M.dark, -0.05);
+  add(alongZ(new THREE.CylinderGeometry(0.016, 0.042, 0.075, 32, 1, true)), M.bell, -0.1);
+  for (let k = 0; k < 8; k++) { const a = k * Math.PI / 4 + Math.PI / 8, b = new THREE.Mesh(alongZ(new THREE.CylinderGeometry(0.004, 0.008, 0.016, 12, 1, true)), M.bell); b.position.set(Math.cos(a) * 0.058, Math.sin(a) * 0.058, -0.072); g.add(b); }
+  exhaust(g, 0, 0, -0.138, 0.034, 0xff9a6e);
+  return g;
+}
+function buildAether() {
+  const g = new THREE.Group(), add = (geo, mat, x, y, z) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); g.add(m); return m; };
+  // приборный отсек: десятигранник в золотой изоляции
+  add(alongZ(new THREE.CylinderGeometry(0.055, 0.055, 0.05, 10)), M.gold, 0, 0, 0.2);
+  // остронаправленная антенна, как у «Вояджера»: смотрит назад, на Землю
+  const dish = add(new THREE.SphereGeometry(0.2, 48, 10, 0, Math.PI * 2, 0, 0.62), M.white, 0, 0, 0); dish.rotation.x = Math.PI / 2; dish.position.z = 0.17 - 0.2;
+  add(alongZ(new THREE.CylinderGeometry(0.006, 0.01, 0.03, 12)), M.dark, 0, 0, 0.095);
+  for (let k = 0; k < 3; k++) { const a = k * 2 * Math.PI / 3; rod(g, [Math.cos(a) * 0.11, Math.sin(a) * 0.11, 0.135], [0, 0, 0.08], 0.0018, M.hull); }
+  // штанга РИТЭГов и штанга магнитометра
+  rod(g, [-0.05, 0, 0.21], [-0.2, 0, 0.21], 0.003, M.hull);
+  for (let k = 0; k < 3; k++) { const r = add(new THREE.CylinderGeometry(0.012, 0.012, 0.03, 12), M.dark, -0.12 - k * 0.032, 0, 0.21); r.rotation.z = Math.PI / 2; add(new THREE.BoxGeometry(0.03, 0.036, 0.002), M.dark, -0.12 - k * 0.032, 0, 0.21); }
+  rod(g, [0.05, 0, 0.21], [0.36, 0, 0.21], 0.0015, M.hull);
+  // ферма: четыре лонжерона и раскосы
+  const w = 0.016, z0 = 0.08, z1 = -0.36, corners = [[w, w], [-w, w], [-w, -w], [w, -w]];
+  corners.forEach(([x, y]) => rod(g, [x, y, z0], [x, y, z1], 0.0022, M.hull));
+  for (let i = 0, n = 10; i < n; i++) { const za = z0 + (z1 - z0) * i / n, zb = z0 + (z1 - z0) * (i + 1) / n; for (let c = 0; c < 4; c++) { const [x1, y1] = corners[c], [x2, y2] = corners[(c + 1) % 4]; rod(g, [x1, y1, za], [x2, y2, zb], 0.0012, M.hull); } }
+  // радиаторы по бокам фермы
+  for (const sx of [-1, 1]) { const r = add(new THREE.BoxGeometry(0.1, 0.002, 0.26), M.radiator, sx * (w + 0.055), 0, -0.17); r.rotation.z = sx * 0.12; }
+  // реактор за теневой защитой и три ионных двигателя
+  add(alongZ(new THREE.CylinderGeometry(0.03, 0.06, 0.04, 24)), M.dark, 0, 0, -0.38);
+  add(alongZ(new THREE.CylinderGeometry(0.022, 0.022, 0.04, 20)), M.hull, 0, 0, -0.42);
+  for (let k = 0; k < 3; k++) { const a = k * 2 * Math.PI / 3 + Math.PI / 2, x = Math.cos(a) * 0.05, y = Math.sin(a) * 0.05; add(alongZ(new THREE.CylinderGeometry(0.016, 0.016, 0.02, 20)), M.dark, x, y, -0.41); exhaust(g, x, y, -0.421, 0.013, 0x8fa4ff); }
+  return g;
+}
+const ships = { star_wars: buildVanguard(), star_trek: buildAether() };
+const shipRoot = new THREE.Group(); shipRoot.scale.setScalar(0.4);
+shipRoot.add(ships.star_wars, ships.star_trek); scene.add(shipRoot);
+function setShip(style) { ships.star_wars.visible = style === 'star_wars'; ships.star_trek.visible = style === 'star_trek'; }
+setShip(selectedStyle);
+
+/* --- размещение объектов по моменту рождения */
+const viewN = new THREE.Vector3(0, 0, 1), camUp = new THREE.Vector3(0, 1, 0);
+let beamDir = new THREE.Vector3(0, 1, 0), cityPos = new THREE.Vector3(0, 1, 0), perp = new THREE.Vector3(1, 0, 0);
+function placeScene() {
+  // Земля: меридиан города смотрит в направлении LST (GMST + долгота)
+  earth.rotation.y = sky.gmst * DEG - Math.PI;
+  cityPos = skyDir(sky.raDate, sky.decDate);                 // зенит эпохи даты = нормаль в точке города
+  cityMarker.position.copy(cityPos).multiplyScalar(1.002); cityGlow.position.copy(cityMarker.position);
+  beamDir = skyDir(sky.ra, sky.dec).normalize();             // луч в ICRS J2000 — совпадает с фотокартой неба
+  perp = new THREE.Vector3().crossVectors(beamDir, Math.abs(beamDir.y) > 0.95 ? new THREE.Vector3(1, 0, 0) : new THREE.Vector3(0, 1, 0)).normalize();
+  beamGroup.position.copy(cityPos);
+  beamGroup.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), beamDir);
+  targetGlow.position.copy(beamDir).multiplyScalar(R_SKY * 0.96);
+  frontGlow.position.copy(cityPos).add(beamDir.clone().multiplyScalar(FRONT_D));
+  sunDir.copy(skyDir(sky.sun.ra, sky.sun.dec)).normalize();
+  sunLight.position.copy(sunDir).multiplyScalar(50);
+  sunSprite.position.copy(sunDir).multiplyScalar(R_SKY * 0.9);
+  moon.position.copy(skyDir(sky.moon.ra, sky.moon.dec)).multiplyScalar(sky.moon.dist / 6371);
+  moon.lookAt(0, 0, 0);
+  // кадр: смотрим перпендикулярно лучу со стороны Солнца (с краем терминатора), «верх» экрана = луч с наклоном
+  viewN.copy(sunDir).addScaledVector(beamDir, -sunDir.dot(beamDir));
+  if (viewN.lengthSq() < 1e-3) viewN.crossVectors(beamDir, perp);
+  viewN.normalize().applyAxisAngle(beamDir, 0.6);
+  camUp.copy(beamDir).applyAxisAngle(viewN, canvas3d.clientWidth > 900 ? 0.4 : -0.38).normalize();
+}
+
+/* --- камера */
+let camMode = 'earth', tween = null;
+function camShot(mode) {
+  const s = shipWorldPos(performance.now() / 1000);
+  const mid = cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D * 0.45));
+  if (mode === 'earth') return earthShot(mid);
+  if (mode === 'beam') return { pos: cityPos.clone().multiplyScalar(1.08).add(perp.clone().multiplyScalar(0.12)), tgt: cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D)) };
+  if (mode === 'moon') { const mid = moon.position.clone().multiplyScalar(0.5); const off = new THREE.Vector3().crossVectors(moon.position, new THREE.Vector3(0, 1, 0)).normalize().multiplyScalar(48); return { pos: mid.clone().add(off).add(new THREE.Vector3(0, 14, 0)), tgt: mid }; }
+  // вид с фронта назад: корабль крупно, за ним луч и Земля
+  return { pos: s.clone().add(beamDir.clone().multiplyScalar(0.75)).add(perp.clone().multiplyScalar(0.38)), tgt: s.clone().add(beamDir.clone().multiplyScalar(-0.8)) };
+}
+// Ракурс «Земля»: Земля внизу, луч уходит вверх, фронт с кораблём сверху; на широком экране сюжет
+// сдвинут в свободную колонку между текстом слева и панелью справа, на телефоне поднят над заголовком
+function earthShot(mid) {
+  const w = canvas3d.clientWidth, h = canvas3d.clientHeight, narrow = w <= 900;
+  const D = narrow ? 15.5 : 13.5, halfH = D * Math.tan(camera.fov * DEG / 2), halfW = halfH * (w / h);
+  const right = new THREE.Vector3().crossVectors(viewN.clone().negate(), camUp).normalize();
+  const tgt = mid.clone().addScaledVector(right, -(narrow ? 0 : 0.2) * halfW).addScaledVector(camUp, narrow ? -0.2 * halfH : -0.06 * halfH);
+  return { pos: tgt.clone().addScaledVector(viewN, D), tgt };
+}
+function setCam(mode) {
+  camMode = mode;
+  document.querySelectorAll('#cams button').forEach((b) => b.classList.toggle('on', b.dataset.cam === mode));
+  const shot = camShot(mode);
+  tween = { t: 0, p0: camera.position.clone(), t0: controls.target.clone(), p1: shot.pos, t1: shot.tgt, u0: camera.up.clone(), u1: camUp.clone() };
+  controls.enabled = mode !== 'ship';
+}
+document.querySelectorAll('#cams button').forEach((b) => b.addEventListener('click', () => setCam(b.dataset.cam)));
+// корабль идёт рядом с фронтом света, чуть сбоку от луча
+function shipWorldPos(t) { const rt = new THREE.Vector3().crossVectors(perp, beamDir).normalize(); return cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D - 0.35 + 0.05 * Math.sin(t * 0.8))).add(rt.multiplyScalar(0.12)); }
+
+/* --- подписи (HTML поверх WebGL) */
+const labelEls = [];
+function buildLabels() {
+  const host = $('labels'); host.innerHTML = ''; labelEls.length = 0;
+  const add = (cls, html, vec) => { const el = document.createElement('div'); el.className = 'lbl ' + cls; el.innerHTML = html; host.appendChild(el); labelEls.push({ el, vec }); };
+  add('voy front', t('front'), cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D + 0.25)));
+  add('zen', t('zen'), beamDir.clone().multiplyScalar(R_SKY * 0.95));
+  const ly = telemetry(Date.now()).ly;
+  STARS.filter((s) => s.label || s.ly < 6 || s.id === 'trappist').forEach((s) => add(ly >= s.ly ? 'reached' : '', esc(s.name) + '<em>' + numFmt(s.ly) + ' ' + t('lyS') + '</em>', skyDir(s.ra, s.dec).multiplyScalar(R_SKY * 0.94)));
+  PROBES.forEach((p) => add('voy', p.name, skyDir(p.ra, p.dec).multiplyScalar(R_SKY * 0.94)));
+}
+const _v = new THREE.Vector3(), _f = new THREE.Vector3();
+let blockers = [];
+function measureBlockers() {
+  const hero = canvas3d.getBoundingClientRect();
+  blockers = ['.reading', '.legend', '.topline', '.dist-scale'].map((q) => document.querySelector(q)?.getBoundingClientRect()).filter(Boolean)
+    .map((b) => ({ l: b.left - hero.left - 200, t: b.top - hero.top - 12, r: b.right - hero.left + 150, b: b.bottom - hero.top + 12 }));
+}
+const blocked = (x, y) => blockers.some((k) => x > k.l && x < k.r && y > k.t && y < k.b);
+function updateLabels() {
+  const w = canvas3d.clientWidth, h = canvas3d.clientHeight; camera.getWorldDirection(_f);
+  for (const { el, vec } of labelEls) {
+    _v.copy(vec).sub(camera.position);
+    if (_v.dot(_f) <= 0) { el.style.display = 'none'; continue; }
+    _v.copy(vec).project(camera);
+    if (Math.abs(_v.x) > 1.05 || Math.abs(_v.y) > 1.05) { el.style.display = 'none'; continue; }
+    const px = (_v.x + 1) / 2 * w, py = (1 - _v.y) / 2 * h;
+    if (blocked(px, py)) { el.style.display = 'none'; continue; }
+    el.style.display = 'block'; el.style.left = px + 'px'; el.style.top = py + 'px';
+  }
+}
+
+function resize() {
+  const w = canvas3d.clientWidth, h = canvas3d.clientHeight; if (!w || !h) return;
+  renderer.setSize(w, h, false); if (!LITE) { composer.setSize(w, h); bloom.resolution.set(w, h); } camera.aspect = w / h;
+  if (w > 900) camera.setViewOffset(w, h, -w * 0.09, 0, w, h); else camera.clearViewOffset();
+  camera.updateProjectionMatrix(); measureBlockers();
+}
+window.addEventListener('resize', resize);
+
+/* --- снимок 3D для сертификата/карточки (WebGL‑холст не «грязный»: все текстуры с CORS) */
+function snapshot3D(w, h) {
+  const t = performance.now() / 1000, rt = new THREE.Vector3().crossVectors(perp, beamDir).normalize(), S = cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D - 0.35)).add(rt.clone().multiplyScalar(0.12));
+  const prev = shipRoot.position.clone(), prevQ = shipRoot.quaternion.clone();
+  shipRoot.position.copy(S); orientShip(t);
+  const cam = new THREE.PerspectiveCamera(36, w / h, 0.01, 20000);
+  cam.position.copy(S).add(beamDir.clone().multiplyScalar(0.8)).add(perp.clone().multiplyScalar(0.55)).add(rt.clone().multiplyScalar(0.2));
+  cam.up.copy(rt); cam.lookAt(S.clone().add(beamDir.clone().multiplyScalar(-0.2)));
+  const size = renderer.getSize(new THREE.Vector2()), pr = renderer.getPixelRatio();
+  labelsHidden = true; setBeamWidth(1.6);
+  renderer.setPixelRatio(1); renderer.setSize(w, h, false); renderer.render(scene, cam);
+  const out = document.createElement('canvas'); out.width = w; out.height = h; out.getContext('2d').drawImage(renderer.domElement, 0, 0, w, h);
+  renderer.setPixelRatio(pr); renderer.setSize(size.x, size.y, false); labelsHidden = false;
+  shipRoot.position.copy(prev); shipRoot.quaternion.copy(prevQ);
+  return out;
+}
+let labelsHidden = false;
+const _q = new THREE.Quaternion(), _roll = new THREE.Quaternion();
+const _m4 = new THREE.Matrix4(), _right = new THREE.Vector3();
+// нос по лучу, «верх» корабля смотрит вдоль perp — так камера видит его сверху, а не с ребра
+function orientShip(t) { _right.crossVectors(perp, beamDir).normalize(); _m4.makeBasis(_right, perp, beamDir); shipRoot.quaternion.setFromRotationMatrix(_m4); _roll.setFromAxisAngle(new THREE.Vector3(0, 0, 1), 0.18 * Math.sin(t * 0.6)); shipRoot.quaternion.multiply(_roll); }
+
+/* =====================================================================
+   7. ANIMATION LOOP
+   ===================================================================== */
+let lastSlow = 0, lastFrame = 0;
+function frame(now) {
+  if (NO3D) return; // на страницах без 3D сцену не рисуем
+  const dt = Math.min(0.1, lastFrame ? (now - lastFrame) / 1000 : 0.016); lastFrame = now;
+  const tt = now / 1000;
+  earthUniforms.cloudShift.value = (tt * 0.0008) % 1;
+  // корабль держится на луче
+  shipRoot.position.copy(shipWorldPos(tt)); orientShip(tt);
+  // импульсы света уходят по лучу
+  pulses.forEach((p, i) => { const k = ((tt * 0.18 + i / pulses.length) % 1); const d = 0.05 + Math.pow(k, 2) * FRONT_D; p.position.copy(cityPos).add(beamDir.clone().multiplyScalar(d)); p.scale.setScalar(0.05 + d * 0.03); p.material.opacity = 1 - k; });
+  // камера
+  if (tween) {
+    tween.t = Math.min(1, tween.t + dt / 1.6); /* по времени, а не по кадрам */ const e = 1 - Math.pow(1 - tween.t, 3);
+    camera.position.lerpVectors(tween.p0, tween.p1, e); controls.target.lerpVectors(tween.t0, tween.t1, e);
+    camera.up.lerpVectors(tween.u0, tween.u1, e).normalize();
+    if (tween.t >= 1) { tween = null; makeControls(); }
+  } else if (camMode === 'ship') { const s = camShot('ship'); camera.position.lerp(s.pos, 0.08); controls.target.lerp(s.tgt, 0.08); }
+  if (camMode === 'ship' || tween) camera.lookAt(controls.target); else controls.update();
+  setBeamWidth(Math.max(1, camera.position.distanceTo(controls.target) / (LITE ? 3.2 : 6.5)));
+  if (LITE) renderer.render(scene, camera); else composer.render();
+  if (!labelsHidden) updateLabels();
+
+  // счётчики
+  const tm = telemetry(Date.now());
+  $('kmCounter').textContent = intFmt.format(Math.floor(tm.km)) + ' ' + t('km');
+  $('lyCounter').textContent = LANG === 'en' ? tm.ly.toFixed(6) : tm.ly.toFixed(6).replace('.', ',');
+  $('ldCounter').textContent = f2.format(tm.ld);
+  $('auCounter').textContent = intFmt.format(Math.floor(tm.au));
+  $('voyKm').textContent = intFmt.format(Math.floor(tm.voyKm)) + ' ' + t('km');
+  if (now - lastSlow > 500) { lastSlow = now; slowUpdate(tm); }
+  requestAnimationFrame(frame);
+}
+
+/* =====================================================================
+   8. UI: ladder, facts, Voyager story
+   ===================================================================== */
+const LMIN = Math.log10(1 / SEC_YR), END_YEAR = 2145; let LMAX = Math.log10(110), END_LY = 110;
+const lpos = (ly) => Math.max(0, Math.min(100, (Math.log10(ly) - LMIN) / (LMAX - LMIN) * 100));
+const LADDER = [
+  ...SOLAR.map((s) => ({ id: s.id, ly: s.sec / SEC_YR, gold: s.gold })),
+  { id: 'proxima', short: ['Проксима', 'Proxima', 'Próxima'], ly: 4.246 }, { id: 'vega', ly: 25.04 },
+];
+const ladderAll = () => [...LADDER, { short: [String(END_YEAR), String(END_YEAR), String(END_YEAR)], ly: END_LY * 0.999, gold: true }];
+function buildLadder() {
+  const tr = $('track');
+  tr.querySelectorAll('.tick').forEach((e) => e.remove());
+  ladderAll().forEach((m, i) => { const el = document.createElement('div'); el.className = 'tick' + (m.gold ? ' gold' : ''); el.style.left = lpos(m.ly) + '%'; el.innerHTML = '<i></i><span>' + esc(m.short ? m.short[['ru', 'en', 'es'].indexOf(LANG)] : [...SOLAR, ...STARS].find((x) => x.id === m.id).name) + '</span>'; el.dataset.ly = m.ly; tr.appendChild(el); });
+}
+function slowUpdate(tm) {
+  measureBlockers();
+  const p = lpos(tm.ly); $('trackFill').style.width = p + '%'; $('trackHead').style.left = p + '%';
+  document.querySelectorAll('#track .tick').forEach((el) => { if (!el.classList.contains('gold')) el.classList.toggle('on', tm.ly >= +el.dataset.ly); });
+  const next = STARS.find((s) => s.ly > tm.ly);
+  $('ladderNext').textContent = next ? t('ladderNext', { name: next.name, d: f2.format(next.ly - tm.ly) }) : t('beyond');
+  if (tm.ratio >= 1) {
+    $('voyStory').innerHTML = t('voyPassed', { date: dateFmt(tm.overtake), x: intFmt.format(Math.round(tm.ratio)), y: intFmt.format(Math.round(tm.catchUpYears)) });
+  } else {
+    $('voyStory').innerHTML = t('voyAhead', { h: f2.format((tm.voyKm - tm.km) / C_KMS / 3600) });
+  }
+}
+function drawMoonPhase(m) {
+  const c = $('moonPhaseCanvas'), g = c.getContext('2d'), r = 44, cx = 50, cy = 50;
+  g.clearRect(0, 0, 100, 100);
+  g.fillStyle = '#141a3d'; g.beginPath(); g.arc(cx, cy, r, 0, Math.PI * 2); g.fill();
+  // освещённая часть: полукруг + эллипс терминатора (северное полушарие; в южном картинка зеркальная)
+  const k = 1 - 2 * m.illum, flip = (m.waxing ? 1 : -1) * (city.lat < 0 ? -1 : 1);
+  g.save(); g.translate(cx, cy); g.scale(flip, 1);
+  g.fillStyle = '#EDE6D2'; g.beginPath(); g.arc(0, 0, r, -Math.PI / 2, Math.PI / 2, false);
+  g.ellipse(0, 0, Math.abs(k) * r, r, 0, Math.PI / 2, -Math.PI / 2, k > 0); g.fill(); g.restore();
+  g.strokeStyle = 'rgba(205,163,73,.6)'; g.lineWidth = 1; g.beginPath(); g.arc(cx, cy, r + 4, 0, Math.PI * 2); g.stroke();
+}
+
+/* =====================================================================
+   9. MAIN SYNC
+   ===================================================================== */
+function navLinks() {
+  const home = LANG === 'ru' ? '/' : '/' + LANG, q = '?lang=' + LANG;
+  const go = { home, id: (PAGE === 'home' ? '' : home) + '#passport', sky: '/sky.html' + q, chronicle: '/chronicle.html' + q, worlds: `/worlds-reached.html${q}&b=${birthMs}`, scope: '/scope.html' + q };
+  document.querySelectorAll('.console a').forEach((a) => { a.href = go[a.dataset.go]; a.classList.toggle('on', a.dataset.go === PAGE); });
+}
+function recompute() {
+  birthMs = localToUtc(birthLocal, city);
+  try { localStorage.setItem('sb_state', JSON.stringify({ birthLocal, city, birthMs })); } catch {}
+  navLinks();
+  sky = computeSky(birthMs, city);
+  END_LY = Math.max(5, (Date.UTC(END_YEAR, 0, 1) - birthMs) / (SEC_YR * 1000)); LMAX = Math.log10(END_LY);
+  $('scaleTxt').textContent = t('scaleH', { y: END_YEAR, n: intFmt.format(Math.round(END_LY)) }); buildLadder();
+  placeScene();
+  buildLabels();
+  if (!tween && camMode === 'earth') setCam('earth');
+  const tm = telemetry(Date.now());
+  const d = new Date(birthMs);
+  const utcStr = `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`;
+  $('tzLabel').textContent = t('tzLocal', { t: utcStr.slice(11) });
+  $('cityCoords').textContent = `${city.lat.toFixed(2)}°, ${city.lon.toFixed(2)}°`;
+  $('fZenith').textContent = `${sky.ra.toFixed(2)}°, ${fmtDec(sky.dec)}`;
+  placeFrameMarks();
+  const lh = sky.lst / 15; $('fLst').textContent = `${pad(Math.floor(lh))}h ${pad(Math.floor((lh % 1) * 60))}m`;
+  $('fConst').textContent = '≈ ' + constName(constellationOf(sky.ra, sky.dec));
+  $('fSun').textContent = `${t(sky.sun.alt > 0 ? 'day' : sky.sun.alt > -6 ? 'twilight' : 'night')}, ${sky.sun.alt >= 0 ? '+' : '−'}${Math.abs(sky.sun.alt).toFixed(1)}°`;
+  $('fMoon').textContent = moonPhaseName(sky.moon);
+  $('fMoonD').textContent = t('moonD', { p: Math.round(sky.moon.illum * 100), pos: t(sky.moon.alt > 0 ? 'above' : 'below') });
+  drawMoonPhase(sky.moon);
+  $('teleCoords').textContent = `α ${sky.ra.toFixed(3)}°, δ ${fmtDec(sky.dec, 3)}`;
+  $('oBirth').textContent = utcStr;
+  $('oCity').textContent = cityName(city.name);
+  $('oCoords').textContent = `${sky.ra.toFixed(2)}°, ${fmtDec(sky.dec)}`;
+  $('oVoy').textContent = tm.ratio >= 1 ? t('oFar', { x: intFmt.format(Math.round(tm.ratio)) }) : t('oPart', { p: numFmt(tm.ratio * 100, 1) });
+  $('sRadio').textContent = t('radio', { n: Math.round((Date.now() - Date.UTC(1920, 10, 2)) / 1000 / SEC_YR) });
+  renderRoute(tm); renderExo(tm); updateTelescope(); loadApod();
+  scheduleCert();
+}
+
+/* --- ввод даты */
+const birthInput = $('birthInput');
+function applyBirth(val) {
+  const err = $('dateErr'); err.style.display = 'none';
+  const ms = localToUtc(val, city);
+  if (Number.isNaN(ms)) { err.textContent = t('errDate'); err.style.display = 'block'; return; }
+  if (ms < MIN_BIRTH_MS) { val = utcToLocalStr(MIN_BIRTH_MS, city); err.textContent = t('errMin'); err.style.display = 'block'; }
+  else if (ms > Date.now()) { val = utcToLocalStr(Date.now(), city); err.textContent = t('errFuture'); err.style.display = 'block'; }
+  birthLocal = val; birthInput.value = val; recompute();
+}
+birthInput.addEventListener('change', (e) => applyBirth(e.target.value));
+document.querySelectorAll('#datePresets button').forEach((b) => b.addEventListener('click', () => applyBirth(b.dataset.preset)));
+
+/* --- город (Open-Meteo, с часовым поясом) */
+const cityInput = $('cityInput'), dd = $('cityDropdown');
+function setCity(c) { city = c; cityInput.value = cityName(c.name); dd.style.display = 'none'; applyBirth(birthLocal); }
+function renderCityPresets() {
+  $('cityPresets').innerHTML = esc(t('cities')) + ' ' + CITY_PRESETS.map((c, i) => `<button data-i="${i}">${esc(cityName(c.name).split(',')[0])}</button>`).join('');
+  document.querySelectorAll('#cityPresets button').forEach((b) => b.addEventListener('click', () => setCity({ ...CITY_PRESETS[+b.dataset.i] })));
+}
+let cityDeb;
+cityInput.addEventListener('input', () => {
+  const q = cityInput.value.trim(); clearTimeout(cityDeb);
+  if (q.length < 2) { dd.style.display = 'none'; return; }
+  cityDeb = setTimeout(async () => {
+    try {
+      const r = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=6&language=${LANG}`);
+      const res = (await r.json()).results || [];
+      dd.innerHTML = res.length ? res.map((it, i) => `<button data-i="${i}"><span>${esc([it.name, it.admin1, it.country].filter(Boolean).join(', '))}</span><small>${(+it.latitude).toFixed(2)}°, ${(+it.longitude).toFixed(2)}°</small></button>`).join('') : `<div class="muted" style="padding:12px;font-size:14.6px">${esc(t('cityNone'))}</div>`;
+      dd.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { const it = res[+b.dataset.i];
+        setCity({ name: [it.name, it.admin1, it.country].filter(Boolean).join(', '), lat: +it.latitude, lon: +it.longitude, tz: it.timezone }); }));
+      dd.style.display = 'block';
+    } catch { dd.style.display = 'none'; }
+  }, 300);
+});
+document.addEventListener('click', (e) => { if (!cityInput.contains(e.target) && !dd.contains(e.target)) dd.style.display = 'none'; });
+
+/* --- шкалы рамки: прямое восхождение (0–24ч) сверху, склонение слева */
+(function buildFrameScales() {
+  $('raNums').innerHTML = Array.from({ length: 13 }, (_, i) => `<span class="ra-num" style="left:${(i / 12) * 100}%">${24 - i * 2}ʰ</span>`).join('');
+  $('decNums').innerHTML = [90, 60, 30, 0, -30, -60, -90].map((d) => `<span class="dec-num" style="top:${((90 - d) / 180) * 100}%">${d > 0 ? '+' : d < 0 ? '−' : ''}${Math.abs(d)}°</span>`).join('');
+  // гравированное кольцо окуляра: деления по 2°, подписи по 30°
+  let s = '<circle cx="200" cy="200" r="191" fill="none" stroke="rgba(205,163,73,.55)"/><circle cx="200" cy="200" r="181" fill="none" stroke="rgba(205,163,73,.25)"/>';
+  for (let a = 0; a < 360; a += 2) { const L = a % 30 === 0 ? 12 : a % 10 === 0 ? 7 : 4, t = a * DEG, c = Math.cos(t), si = Math.sin(t);
+    s += `<line x1="${200 + 191 * c}" y1="${200 + 191 * si}" x2="${200 + (191 - L) * c}" y2="${200 + (191 - L) * si}" stroke="rgba(205,163,73,${a % 30 === 0 ? .9 : .45})" stroke-width="${a % 30 === 0 ? 1.2 : .7}"/>`;
+    if (a % 30 === 0) s += `<text x="${200 + 172 * c}" y="${200 + 172 * si + 3}" fill="rgba(205,163,73,.75)" font-size="8" text-anchor="middle" font-family="Geologica">${a}</text>`; }
+  s += '<path d="M200 60v40M200 300v40M60 200h40M300 200h40" stroke="rgba(255,106,61,.7)" stroke-width="1"/><circle cx="200" cy="200" r="22" fill="none" stroke="rgba(255,106,61,.7)"/>';
+  $('eyeRing').innerHTML = s;
+})();
+function placeFrameMarks() {
+  const raH = sky.ra / 15;
+  const m1 = $('raMark'); m1.style.left = ((24 - raH) / 24 * 100) + '%'; m1.textContent = `α ${Math.floor(raH)}ʰ${pad(Math.floor((raH % 1) * 60))}ᵐ`;
+  const m2 = $('decMark'); m2.style.top = ((90 - sky.dec) / 180 * 100) + '%'; m2.textContent = `δ ${fmtDec(sky.dec, 1)}`;
+}
+
+/* =====================================================================
+   10. ROUTE CARDS — DSS2 по координатам звезды, NASA Image Library для Солнечной системы
+   ===================================================================== */
+const nasaCache = {};
+async function nasaImage(q) {
+  if (nasaCache[q]) return nasaCache[q];
+  nasaCache[q] = fetch(`https://images-api.nasa.gov/search?q=${encodeURIComponent(q)}&media_type=image&page_size=5`)
+    .then((r) => r.json()).then((j) => { const it = (j.collection?.items || []).find((x) => x.links?.[0]?.href); return it ? { href: it.links[0].href, id: it.data?.[0]?.nasa_id } : null; }).catch(() => null);
+  return nasaCache[q];
+}
+let routeBuilt = false;
+function renderRoute(tm) {
+  const rail = $('routeGrid');
+  const items = [...SOLAR.map((s) => Object.assign(s, { ly: s.sec / SEC_YR, solar: true })), ...STARS];
+  if (!routeBuilt) {
+    rail.innerHTML = items.map((o) => `
+      <article class="stop" data-id="${o.id}">
+        <div class="yr num"></div><div class="line"></div>
+        <div class="disc"><img alt="${esc(o.name)}" loading="lazy" ${o.solar ? '' : `src="/star-${o.id}.webp"`} onload="this.classList.add('ok')" /><span class="src">${o.solar ? 'NASA' : o.id === 'sirius' ? 'Hipparcos' : 'DSS2'}</span></div>
+        <h3>${esc(o.name)}</h3>
+        <p class="rnote">${o.solar ? esc(o.note) : numFmt(o.ly) + ' ' + t('lyLong')}</p>
+        <p class="when"></p>
+      </article>`).join('');
+    items.filter((o) => o.solar).forEach(async (o) => {
+      const res = await nasaImage(o.nasaQ); const el = rail.querySelector(`[data-id="${o.id}"]`);
+      if (res && el) { el.querySelector('img').src = res.href; el.querySelector('.src').textContent = 'NASA ' + (res.id || ''); }
+    });
+    routeBuilt = true;
+  }
+  let reached = 0;
+  items.forEach((o) => {
+    const el = rail.querySelector(`[data-id="${o.id}"]`); if (!el) return;
+    const ok = tm.ly >= o.ly; if (!o.solar && ok) reached++;
+    el.classList.toggle('reached', ok);
+    const when = new Date(birthMs + o.ly * SEC_YR * 1000);
+    el.querySelector('.yr').textContent = o.solar && o.id !== 'voyager1' ? (o.sec < 60 ? f2.format(o.sec) + ' ' + t('sec') : f2.format(o.sec / 60) + ' ' + t('min')) : when.getFullYear();
+    el.querySelector('.when').textContent = o.solar
+      ? (o.id === 'voyager1' ? t('probePassed', { date: dateFmt(when) }) : t('afterBirth'))
+      : ok ? t('arrived', { date: dateFmt(when) }) : t('willArrive', { y: when.getFullYear() });
+  });
+  $('sStars').textContent = reached; $('sStarsTot').textContent = STARS.length;
+  const next = STARS.find((s) => s.ly > tm.ly);
+  $('sNext').textContent = next ? next.name : t('catalogEnd');
+  $('sNextEta').textContent = next ? t('nextEta', { y: new Date(birthMs + next.ly * SEC_YR * 1000).getFullYear() }) : '';
+  setPoints(starPts, STARS, (s) => (tm.ly >= s.ly ? '#FF6A3D' : '#9AA3C7'), R_SKY * 0.95);
+}
+
+/* --- экзопланеты NASA */
+async function loadExoplanets() {
+  const q = 'select pl_name,hostname,sy_dist,ra,dec,disc_year from pscomppars where sy_dist < 34';
+  try {
+    const r = await fetch('/exo.json'); // полный каталог NASA, сохранённый на сайте
+    if (!r.ok) throw 0;
+    exoplanets = (await r.json()).map(([name, ly, ra, dec, year]) => ({ name, ly, ra, dec, year })).sort((a, b) => a.ly - b.ly);
+    exoSource = 'exoLive';
+  } catch { exoplanets = EXO_FALLBACK.slice().sort((a, b) => a.ly - b.ly); exoSource = 'exoFallback'; }
+  if (sky) renderExo(telemetry(Date.now()));
+}
+function renderExo(tm) {
+  const q = `?b=${birthMs}&lang=${LANG}`;
+  $('exoReachedLink').href = '/worlds-reached.html' + q; $('exoNextLink').href = '/worlds-next.html' + q;
+  if (!exoplanets.length) return;
+  $('sExo').textContent = intFmt.format(exoplanets.filter((p) => p.ly <= tm.ly).length);
+  setPoints(exoPts, exoplanets, (p) => (p.ly <= tm.ly ? '#FF8A5C' : '#4b5383'), R_SKY * 0.93);
+}
+
+/* =====================================================================
+   11. TELESCOPE — Aladin Lite v3 + hips2fits + NASA APOD
+   ===================================================================== */
+let aladinCat = null, zenithFromAladin = false, aladinOk = false, aladin = null, fov = 1.5, survey = { aladin: 'https://skies.esac.esa.int/DSSColor/', hips: 'CDS/P/DSS2/color', label: 'DSS2' }, zenithImg = null, cutKey = '';
+let A = null;
+function initAladin(mod) {
+  A = mod?.default; if (!A?.init) { $('aladinStatus').textContent = t('aladinFail'); return; }
+  Promise.resolve(A.init).then(() => {
+    aladin = A.aladin('#aladin-lite-div', { survey: survey.aladin, fov, target: `${sky.ra} ${sky.dec}`, showReticle: false, showLayersControl: false, showGotoControl: false, showZoomControl: false, showFullscreenControl: false, showFrame: false, showCooGridControl: false, showCooLocation: false, showFov: false, showProjectionControl: false, showSettingsControl: false, showShareControl: false, showSimbadPointerControl: false, showStatusBar: false, showContextMenu: false });
+    const cat = A.catalog({ name: t('landmarks'), sourceSize: 14, color: '#CDA349', labelColumn: 'name', displayLabel: true, labelColor: '#CDA349', labelFont: '12px Geologica' });
+    aladin.addCatalog(cat); aladinCat = cat;
+    cat.addSources(STARS.map((s) => A.source(s.ra, s.dec, { name: s.name })));
+    $('aladinStatus').textContent = t('aladinOk'); aladinOk = true;
+    scheduleZenithCapture();
+  }).catch(() => { $('aladinStatus').textContent = t('aladinFail'); });
+}
+function updateTelescope() {
+  if (aladin) aladin.gotoRaDec(sky.ra, sky.dec);
+  const key = `${survey.hips}_${sky.ra.toFixed(3)}_${sky.dec.toFixed(3)}`; if (key === cutKey) return; cutKey = key;
+  zenithFromAladin = false; scheduleZenithCapture();
+  const url = dssCut(sky.ra, sky.dec, 0.45);
+  $('cutImg').src = url; $('cutSurvey').textContent = 'DSS2';
+  loadImg(url).then((i) => { if (!zenithFromAladin) { zenithImg = i; scheduleCert(); } })
+    .catch(() => { zenithImg = null; scheduleZenithCapture(); });
+}
+// Запасной путь для круга «зенит» в документе: снимок окуляра Aladin (его тайлы разрешены для canvas)
+let zenTimer;
+function scheduleZenithCapture() { clearTimeout(zenTimer); zenTimer = setTimeout(captureZenith, 4500); }
+async function captureZenith() {
+  if (!aladin?.getViewDataURL || !sky) return;
+  try {
+    const [ra, dec] = aladin.getRaDec(); // снимаем только если окуляр смотрит в зенит
+    if (Math.abs(((ra - sky.ra + 540) % 360) - 180) * Math.cos(sky.dec * DEG) > 0.3 || Math.abs(dec - sky.dec) > 0.3) return;
+    aladinCat?.hide?.();
+    const url = await Promise.resolve(aladin.getViewDataURL({ format: 'image/jpeg', logo: false }));
+    aladinCat?.show?.();
+    const img = await loadImg(url);
+    const s = Math.min(img.width, img.height), crop = s * Math.min(1, 0.45 / fov);
+    const c = document.createElement('canvas'); c.width = c.height = 512;
+    c.getContext('2d').drawImage(img, (img.width - crop) / 2, (img.height - crop) / 2, crop, crop, 0, 0, 512, 512);
+    zenithImg = c; zenithFromAladin = true; scheduleCert();
+    { $('cutImg').src = c.toDataURL('image/jpeg', 0.9); $('cutSurvey').textContent = 'DSS2 · ESA'; }
+  } catch { aladinCat?.show?.(); }
+}
+document.querySelectorAll('#surveys button').forEach((b) => b.addEventListener('click', () => {
+  document.querySelectorAll('#surveys button').forEach((x) => x.classList.toggle('on', x === b));
+  survey = { aladin: b.dataset.survey, hips: b.dataset.hips, label: b.textContent.trim() };
+  if (aladin) { try { aladin.setImageSurvey(survey.aladin); } catch {} }
+  updateTelescope();
+}));
+const setFov = (v) => { fov = Math.max(0.05, Math.min(60, v)); $('fovLabel').textContent = t('fov', { v: f2.format(fov) }); if (aladin) aladin.setFoV(fov); };
+$('zIn').onclick = () => setFov(fov * 0.6); $('zOut').onclick = () => setFov(fov * 1.6);
+$('zHome').onclick = () => { setFov(1.5); if (aladin) aladin.gotoRaDec(sky.ra, sky.dec); toast(t('scopeHome')); };
+
+const apodCache = {}; let apodDeb;
+function apodDate() {
+  const ds = birthLocal.slice(0, 10);
+  if (ds >= '1995-06-16') return { date: ds, label: t('apodBirth') };
+  const [, mo, d] = ds.split('-').map(Number), today = new Date();
+  let y = today.getFullYear(); const dt = (yy) => { const dd = Math.min(d, new Date(Date.UTC(yy, mo, 0)).getUTCDate()); return `${yy}-${pad(mo)}-${pad(dd)}`; };
+  if (dt(y) > today.toISOString().slice(0, 10)) y--;
+  return { date: dt(y), label: t('apodBday') };
+}
+function loadApod() {
+  clearTimeout(apodDeb);
+  // архив APOD начинается в июне 1995: для родившихся раньше 1996 года блок не показываем
+  const old = birthLocal.slice(0, 10) < '1996-01-01'; $('apodBox').hidden = old; if (old) return;
+  apodDeb = setTimeout(async () => {
+    const { date, label } = apodDate();
+    $('apodDate').textContent = `${label}, ${dateFmt(new Date(date + 'T12:00:00Z'))}`;
+    try {
+      const cached = store.get('apod_' + date);
+      apodCache[date] ||= cached ? Promise.resolve(cached) : fetch(`https://api.nasa.gov/planetary/apod?api_key=${CONFIG.NASA_API_KEY}&date=${date}&thumbs=true`).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }).then((j) => { store.set('apod_' + date, j); return j; });
+      const a = await apodCache[date];
+      const src = a.media_type === 'image' ? a.url : a.thumbnail_url;
+      $('apodImg').innerHTML = src ? `<img src="${esc(src)}" alt="${esc(a.title)}" />` : '';
+      $('apodTitle').textContent = a.title;
+      const txt = a.explanation || ''; $('apodText').textContent = (txt.length > 240 ? txt.slice(0, 240) + '…' : txt) + (a.copyright ? `  © ${a.copyright.trim()}` : '');
+      $('apodLink').href = `https://apod.nasa.gov/apod/ap${date.slice(2, 4)}${date.slice(5, 7)}${date.slice(8, 10)}.html`;
+    } catch (e) {
+      delete apodCache[date];
+      $('apodTitle').textContent = t('apodFail');
+      $('apodText').textContent = String(e.message) === '429' ? t('apod429') : t('apodDown');
+    }
+  }, 500);
+}
+
+/* =====================================================================
+   12. CERTIFICATE 1200×1500 + X CARD 1200×675
+   ===================================================================== */
+const mono = (w, s) => `${w} ${s}px Geologica, sans-serif`;
+const serifF = (w, s) => `${w} ${s}px "Cormorant Garamond", Georgia, serif`;
+let certTimer;
+let certPending = false;
+function scheduleCert() { certPending = true; clearTimeout(certTimer); certTimer = setTimeout(renderCert, 600); }
+
+function drawEmblem(g, cx, cy, r, alpha = 1, filled = false) {
+  g.save(); g.globalAlpha = alpha; g.translate(cx, cy);
+  if (filled) { g.fillStyle = '#070B24'; g.beginPath(); g.arc(0, 0, r, 0, Math.PI * 2); g.fill(); }
+  g.strokeStyle = '#CDA349'; g.lineWidth = Math.max(1, r * 0.02);
+  g.beginPath(); g.arc(0, 0, r, 0, Math.PI * 2); g.stroke();
+  g.lineWidth = Math.max(0.6, r * 0.008); g.beginPath(); g.arc(0, 0, r * 0.72, 0, Math.PI * 2); g.stroke();
+  for (let a = 0; a < 360; a += 5) { const t0 = a * DEG, L = a % 30 === 0 ? 0.07 : 0.035; g.beginPath(); g.moveTo(Math.cos(t0) * r * 0.72, Math.sin(t0) * r * 0.72); g.lineTo(Math.cos(t0) * r * (0.72 - L), Math.sin(t0) * r * (0.72 - L)); g.stroke(); }
+  g.save(); g.rotate(-0.45); g.scale(1, 0.34); g.beginPath(); g.arc(0, 0, r * 0.58, 0, Math.PI * 2); g.restore(); g.stroke();
+  g.strokeStyle = '#FF6A3D'; g.lineWidth = Math.max(1, r * 0.025); g.lineCap = 'round';
+  g.beginPath(); g.moveTo(0, 0); g.lineTo(r * 0.5, -r * 0.5); g.stroke();
+  const gl = g.createRadialGradient(0, 0, 0, 0, 0, r * 0.16); gl.addColorStop(0, 'rgba(255,220,200,1)'); gl.addColorStop(0.4, 'rgba(255,106,61,.9)'); gl.addColorStop(1, 'rgba(255,106,61,0)');
+  g.fillStyle = gl; g.beginPath(); g.arc(0, 0, r * 0.16, 0, Math.PI * 2); g.fill();
+  if (r > 40) {
+    const txt = 'STARBEAM  ·  GALACTIC PILOT CORPS  ·  ', fs = r * 0.1; g.fillStyle = '#CDA349'; g.font = fnt(600, fs, F_SANS); g.textAlign = 'center'; g.textBaseline = 'middle';
+    const n = txt.length, rr = r * 0.86;
+    for (let i = 0; i < n; i++) { g.save(); g.rotate(-Math.PI / 2 + (i / n) * Math.PI * 2); g.translate(0, -rr); g.fillText(txt[i], 0, 0); g.restore(); }
+  }
+  g.restore();
+}
+// космический фон: настоящее небо вокруг твоего зенита (из той же карты, что в 3D) + свечение
+function drawCosmicBg(g, W, H) {
+  g.fillStyle = '#04061a'; g.fillRect(0, 0, W, H);
+  const im = skyMat.map?.image;
+  if (im && im.width) {
+    const iw = im.width, ih = im.height, spanX = iw * 34 / 360, spanY = spanX * H / W;
+    const cx = (1 - (sky.ra % 360) / 360) * iw, cy = (90 - sky.dec) / 180 * ih;
+    const sy = Math.min(Math.max(0, cy - spanY / 2), ih - spanY);
+    for (const off of [-iw, 0, iw]) g.drawImage(im, cx - spanX / 2 + off, sy, spanX, spanY, 0, 0, W, H);
+  }
+  let gr = g.createRadialGradient(W * 0.5, H * 0.38, 20, W * 0.5, H * 0.38, W * 0.75);
+  gr.addColorStop(0, 'rgba(90,70,200,.28)'); gr.addColorStop(0.5, 'rgba(255,106,61,.08)'); gr.addColorStop(1, 'rgba(0,0,0,.55)');
+  g.fillStyle = gr; g.fillRect(0, 0, W, H);
+}
+// гильош — тонкие волновые линии, защитный фон документа
+function drawGuilloche(g, x0, y0, w, h) {
+  g.save(); g.beginPath(); g.rect(x0, y0, w, h); g.clip();
+  g.lineWidth = 0.7;
+  for (let i = 0; i < 26; i++) {
+    g.strokeStyle = i % 2 ? 'rgba(205,163,73,.07)' : 'rgba(169,184,255,.05)';
+    g.beginPath();
+    for (let x = x0; x <= x0 + w; x += 6) {
+      const k = (x - x0) / w, y = y0 + h * (i + 0.5) / 26 + 18 * Math.sin(k * Math.PI * 6 + i * 0.42) * Math.sin(k * Math.PI + i * 0.2);
+      x === x0 ? g.moveTo(x, y) : g.lineTo(x, y);
+    }
+    g.stroke();
+  }
+  g.restore();
+}
+
+/* --- локальное хранилище (может отсутствовать — всё в try/catch) */
+const store = {
+  get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+};
+
+/* =====================================================================
+   БОРТОВОЙ ЖУРНАЛ: регистрация первых пилотов (Supabase RPC, без своего сервера)
+   ===================================================================== */
+let pilot = store.get('sb_pilot'); // { serial, ref, callsign }
+(function captureRef() {
+  const m = /[?&]ref=([a-z0-9]{6,12})(?:&|$)/i.exec(location.search);
+  if (m && !store.get('sb_ref')) store.set('sb_ref', m[1].toLowerCase());
+})();
+const sbReady = () => /^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(CONFIG.SUPABASE_URL) && CONFIG.SUPABASE_ANON_KEY.length > 30 && !CONFIG.SUPABASE_ANON_KEY.startsWith('sb_secret_'); // секретный ключ в браузер не пускаем
+async function sbRpc(fn, body = {}) {
+  const r = await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+    method: 'POST',
+    // новые ключи sb_publishable_… — только в заголовке apikey (это не JWT); старый anon‑ключ eyJ… — ещё и в Authorization
+    headers: { apikey: CONFIG.SUPABASE_ANON_KEY, 'Content-Type': 'application/json', ...(CONFIG.SUPABASE_ANON_KEY.startsWith('sb_') ? {} : { Authorization: `Bearer ${CONFIG.SUPABASE_ANON_KEY}` }) },
+    body: JSON.stringify(body),
+  });
+  const j = await r.json().catch(() => null);
+  if (!r.ok) throw new Error(j?.message || `HTTP ${r.status}`);
+  return j;
+}
+const siteBase = () => (location.protocol.startsWith('http') ? location.origin : CONFIG.SITE_URL) + (LANG === 'ru' ? '/' : `/${LANG}`);
+const shareLink = () => siteBase() + (pilot?.ref ? `?ref=${pilot.ref}` : '');
+const CONTACT_RE = /^([^@\s]+@[^@\s]+\.[^@\s]+|@?[A-Za-z0-9_]{5,32})$/;
+
+function showRegistered() {
+  if (!pilot) return;
+  $('regForm').style.display = 'none';
+  $('regDone').classList.add('show');
+  $('regNo').textContent = String(pilot.serial).padStart(4, '0');
+  $('regBadge').textContent = pilot.serial <= 1000 ? t('first1000') : '';
+  $('refLink').value = shareLink();
+  $('callsignInput').value ||= pilot.callsign || '';
+  if (sbReady() && pilot.ref) sbRpc('referral_count', { p_ref: pilot.ref }).then((n) => {
+    if (n > 0) $('refCount').textContent = t('refCount', { n, p: plural(n) });
+  }).catch(() => {});
+}
+let pilotTotal = 0;
+function regTexts() {
+  const ready = sbReady(), btn = $('registerBtn');
+  btn.disabled = !ready; btn.textContent = t(ready ? 'regBtn' : 'regSoon');
+  $('regNote').textContent = t(ready ? 'regNote' : 'regSoonNote');
+  if (pilotTotal > 0) { $('pilotCount').textContent = t('countLine', { n: intFmt.format(pilotTotal), p: plural(pilotTotal) }); $('pilotCount').hidden = false; }
+}
+async function initRegistration() {
+  if (pilot) showRegistered();
+  if (!sbReady()) {
+    regTexts();
+    return;
+  }
+  try {
+    const n = await sbRpc('pilot_count');
+    if (n > 0) { pilotTotal = n; regTexts(); }
+  } catch {}
+}
+$('regForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const err = $('regErr'); err.style.display = 'none';
+  const fail = (m) => { err.textContent = m; err.style.display = 'block'; };
+  const callsign = $('callsignInput').value.trim(), contact = $('contactInput').value.trim(), wallet = $('walletInput').value.trim();
+  if (!callsign) return fail(t('errCall'));
+  if (!CONTACT_RE.test(contact)) return fail(t('errContact'));
+  if (wallet && !/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(wallet)) return fail(t('errWallet'));
+  const btn = $('registerBtn'); btn.disabled = true; btn.textContent = t('regBusy');
+  try {
+    const rows = await sbRpc('register_pilot', { p_callsign: callsign, p_contact: contact, p_wallet: wallet || null, p_ref: store.get('sb_ref'), p_hash: pilotHash(), p_ship: selectedStyle });
+    const row = Array.isArray(rows) ? rows[0] : rows;
+    if (!row?.pilot_no) throw new Error('empty');
+    pilot = { serial: Number(row.pilot_no), ref: row.ref, callsign: row.existing ? callsign : callsign };
+    store.set('sb_pilot', pilot);
+    showRegistered(); renderCert();
+    toast(t(row.existing ? 'toastExisting' : 'toastNew', { n: pilot.serial }));
+  } catch (ex) {
+    const m = String(ex.message || '');
+    fail(t(/bad contact/.test(m) ? 'errContactSrv' : /bad wallet/.test(m) ? 'errWalletSrv' : /bad callsign/.test(m) ? 'errCallSrv' : 'errNet'));
+  } finally { btn.disabled = false; btn.textContent = t('regBtn'); }
+});
+$('copyRefBtn').onclick = () => copyText($('refLink').value, t('linkCopied'));
+
+/* =====================================================================
+   GALACTIC PILOT ID 1200×1500 — документ‑пластинка
+   ===================================================================== */
+const F_SERIF = '"Cormorant Garamond", Georgia, serif', F_SANS = 'Geologica, system-ui, sans-serif', F_MONO = '"IBM Plex Mono", ui-monospace, monospace';
+const fnt = (w, s, f) => `${w} ${s}px ${f}`;
+let fontsReady = null;
+const ensureFonts = () => (fontsReady ||= Promise.all(['600 64px "Cormorant Garamond"', 'italic 500 30px "Cormorant Garamond"', '400 18px Geologica', '500 18px Geologica', '500 26px "IBM Plex Mono"']
+  .map((f) => document.fonts.load(f).catch(() => {}))));
+function fitFont(g, text, w, max, maxW, fam, min = 16) { let sz = max; g.font = fnt(w, sz, fam); while (g.measureText(text).width > maxW && sz > min) { sz -= 2; g.font = fnt(w, sz, fam); } return sz; }
+// стабильный «предварительный» номер из даты и места рождения (для тех, кто ещё не в журнале)
+function pilotHash() { let h = 2166136261; for (const ch of `${birthMs}|${city.lat.toFixed(3)}|${city.lon.toFixed(3)}`) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return (h >>> 0).toString(36).toUpperCase().padStart(7, '0').slice(-7); }
+const callsign = () => ($('callsignInput').value.trim().slice(0, 24) || pilot?.callsign || 'Pilot');
+const TR = { а:'A',б:'B',в:'V',г:'G',д:'D',е:'E',ё:'E',ж:'ZH',з:'Z',и:'I',й:'Y',к:'K',л:'L',м:'M',н:'N',о:'O',п:'P',р:'R',с:'S',т:'T',у:'U',ф:'F',х:'KH',ц:'TS',ч:'CH',ш:'SH',щ:'SHCH',ы:'Y',э:'E',ю:'YU',я:'YA',ь:'',ъ:'' };
+const mrzText = (t) => [...t.toLowerCase()].map((c) => TR[c] ?? c).join('').normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase().replace(/[^A-Z0-9]+/g, '<');
+function mrzLines() {
+  const l1 = ('P<STB<<' + mrzText(callsign()) + '<<').padEnd(44, '<').slice(0, 44);
+  const no = pilot ? String(pilot.serial).padStart(7, '0') : 'S' + pilotHash().slice(1);
+  const la = String(Math.round(Math.abs(city.lat))).padStart(2, '0') + (city.lat < 0 ? 'S' : 'N');
+  const lo = String(Math.round(Math.abs(city.lon))).padStart(3, '0') + (city.lon < 0 ? 'W' : 'E');
+  const de = (sky.dec < 0 ? 'M' : 'P') + String(Math.round(Math.abs(sky.dec))).padStart(2, '0');
+  const l2 = `${no}<<${birthLocal.slice(0, 10).replace(/-/g, '')}<<${la}${lo}<<RA${String(Math.round(sky.ra) % 360).padStart(3, '0')}${de}`.padEnd(44, '<').slice(0, 44);
+  return [l1, l2];
+}
+function drawQr(g, text, x, y, size) {
+  if (!window.qrcode) return false;
+  const qr = qrcode(0, 'M'); qr.addData(text); qr.make();
+  const n = qr.getModuleCount(), pad = 8, cell = (size - pad * 2) / n;
+  g.fillStyle = '#EEF0FF'; g.fillRect(x, y, size, size);
+  g.fillStyle = '#000';
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.isDark(r, c)) g.fillRect(x + pad + c * cell, y + pad + r * cell, Math.ceil(cell), Math.ceil(cell));
+  return true;
+}
+// круглый кадр зенита с гравированным кольцом (используется и в карточке для X)
+function drawZenithDisc(g, x, y, r) {
+  g.save(); g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.clip();
+  if (zenithImg) g.drawImage(zenithImg, x - r, y - r, r * 2, r * 2);
+  else { const gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, '#121a44'); gr.addColorStop(1, '#03040c'); g.fillStyle = gr; g.fillRect(x - r, y - r, r * 2, r * 2); }
+  g.restore();
+  g.strokeStyle = 'rgba(205,163,73,.9)'; g.lineWidth = 1.5; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.stroke();
+  const R = r + 9;
+  g.beginPath(); g.arc(x, y, R, 0, Math.PI * 2); g.strokeStyle = 'rgba(205,163,73,.45)'; g.lineWidth = 1; g.stroke();
+  for (let a = 0; a < 360; a += 5) {
+    const L = a % 30 === 0 ? 10 : 5, t = a * DEG;
+    g.strokeStyle = `rgba(205,163,73,${a % 30 === 0 ? .9 : .45})`; g.lineWidth = a % 30 === 0 ? 1.4 : .8;
+    g.beginPath(); g.moveTo(x + R * Math.cos(t), y + R * Math.sin(t)); g.lineTo(x + (R + L) * Math.cos(t), y + (R + L) * Math.sin(t)); g.stroke();
+  }
+  g.strokeStyle = 'rgba(255,106,61,.85)'; g.lineWidth = 1.2; g.beginPath();
+  g.moveTo(x - r * 0.62, y); g.lineTo(x - r * 0.2, y); g.moveTo(x + r * 0.2, y); g.lineTo(x + r * 0.62, y);
+  g.moveTo(x, y - r * 0.62); g.lineTo(x, y - r * 0.2); g.moveTo(x, y + r * 0.2); g.lineTo(x, y + r * 0.62); g.stroke();
+  g.beginPath(); g.arc(x, y, r * 0.12, 0, Math.PI * 2); g.stroke();
+}
+// «карта света»: из точки зенита расходятся линии к звёздам, до которых уже дошёл свет.
+// угол — прямое восхождение звезды, длина — логарифм расстояния (идея — пульсарная карта «Вояджеров», данные — свои)
+function drawLightMap(g, x, y, r0, r1, tm) {
+  const lmin = Math.log10(4), lmax = Math.log10(160);
+  for (const s of STARS) {
+    const reached = s.ly <= tm.ly, t = -s.ra * DEG;
+    const k = (Math.log10(s.ly) - lmin) / (lmax - lmin), len = r0 + (r1 - r0) * Math.max(0.08, k);
+    g.strokeStyle = reached ? 'rgba(255,106,61,.75)' : 'rgba(205,163,73,.22)'; g.lineWidth = reached ? 1.3 : 0.8;
+    g.setLineDash(reached ? [] : [3, 5]);
+    g.beginPath(); g.moveTo(x + r0 * Math.cos(t), y + r0 * Math.sin(t)); g.lineTo(x + len * Math.cos(t), y + len * Math.sin(t)); g.stroke();
+    g.setLineDash([]);
+    if (reached) { g.fillStyle = '#FF8A5C'; g.beginPath(); g.arc(x + len * Math.cos(t), y + len * Math.sin(t), 2.6, 0, Math.PI * 2); g.fill(); }
+  }
+}
+
+/* =====================================================================
+   GALACTIC PILOT ID — пластиковая карточка формата ID‑1 (85,6×54 мм, как права).
+   Рисуем в единицах 0,1 мм: 856×540, холст 2054×1296 px (~610 dpi) — хватает для печати.
+   ===================================================================== */
+const CARD_W = 856, CARD_H = 540, CARD_K = 2.4;
+function cardCanvas(id) { const c = $(id); c.width = Math.round(CARD_W * CARD_K); c.height = Math.round(CARD_H * CARD_K); const g = c.getContext('2d'); g.setTransform(CARD_K, 0, 0, CARD_K, 0, 0); return g; }
+function cardShape(g) { g.beginPath(); g.roundRect(0, 0, CARD_W, CARD_H, 31.8); }
+function cardEdge(g) { g.strokeStyle = 'rgba(205,163,73,.6)'; g.lineWidth = 1.2; g.beginPath(); g.roundRect(14, 14, CARD_W - 28, CARD_H - 28, 20); g.stroke(); }
+function microLine(g, x, y, w, fs = 7) {
+  g.save(); g.fillStyle = 'rgba(205,163,73,.6)'; g.font = fnt(500, fs, F_SANS); let mt = '';
+  while (g.measureText(mt).width < w) mt += 'STARBEAM GALACTIC PILOT ' + (pilot ? pilot.serial : pilotHash()) + '  ';
+  g.beginPath(); g.rect(x, y - fs, w, fs * 1.5); g.clip(); g.fillText(mt, x, y); g.restore();
+}
+function drawCardFront(g, tm) {
+  g.save(); cardShape(g); g.clip(); g.textAlign = 'left'; g.letterSpacing = '0px';
+  g.drawImage(snapshot3D(Math.round(CARD_W * CARD_K), Math.round(CARD_H * CARD_K)), 0, 0, CARD_W, CARD_H);
+  const gr = g.createLinearGradient(0, 0, CARD_W, 0); gr.addColorStop(0, 'rgba(2,3,12,.95)'); gr.addColorStop(0.55, 'rgba(2,3,12,.8)'); gr.addColorStop(1, 'rgba(2,3,12,.2)');
+  g.fillStyle = gr; g.fillRect(0, 0, CARD_W, CARD_H);
+  drawGuilloche(g, 0, 0, CARD_W, CARD_H); cardEdge(g);
+  // шапка
+  g.fillStyle = '#CDA349'; g.font = fnt(600, 30, F_SERIF); g.letterSpacing = '4px'; g.fillText('STARBEAM', 40, 66); g.letterSpacing = '0px';
+  g.fillStyle = 'rgba(238,240,255,.65)'; g.font = fnt(400, 13, F_SANS); g.fillText('Galactic Pilot Corps, planet Earth', 40, 88);
+  g.textAlign = 'right'; g.fillStyle = '#EEF0FF'; g.font = fnt('italic 500', 30, F_SERIF); g.fillText('Galactic Pilot ID', CARD_W - 40, 66);
+  g.fillStyle = '#FF8A5C'; g.font = fnt(500, 15, F_SANS); g.fillText(pilot ? `No. ${String(pilot.serial).padStart(4, '0')}` : `S‑${pilotHash()}`, CARD_W - 40, 88);
+  g.textAlign = 'left';
+  // окно, где в правах фото: небо твоего зенита и эмблема корпуса
+  const px = 40, py = 112, pw = 210, ph = 280;
+  g.save(); g.beginPath(); g.rect(px, py, pw, ph); g.clip(); g.translate(px, py); drawCosmicBg(g, pw, ph); drawEmblem(g, pw / 2, ph * 0.45, pw * 0.4); g.restore();
+  g.strokeStyle = '#CDA349'; g.lineWidth = 1.4; g.strokeRect(px - 4, py - 4, pw + 8, ph + 8);
+  g.strokeStyle = 'rgba(205,163,73,.45)'; g.lineWidth = 0.8; g.strokeRect(px + 0.5, py + 0.5, pw - 1, ph - 1);
+  microLine(g, px - 4, py + ph + 20, pw + 8);
+  // поля с номерами, как в правах
+  const X = 285, W2 = CARD_W - 40 - X;
+  const field = (n, label, value, x, y, w, size = 24, fam = F_SANS, weight = 500, color = '#EEF0FF') => {
+    g.fillStyle = '#CDA349'; g.font = fnt(600, 13.5, F_SANS); g.fillText(n, x, y);
+    g.fillStyle = '#9AA3C7'; g.font = fnt(400, 13.5, F_SANS); g.fillText(label, x + 15, y);
+    g.fillStyle = color; fitFont(g, value, weight, size, w - 10, fam, 11); g.fillText(value, x, y + size + 4);
+  };
+  const [yy, mo, dd] = birthLocal.slice(0, 10).split('-');
+  field('1', 'Callsign', callsign(), X, 128, W2, 46, F_SERIF, 600, '#FFFFFF');
+  field('2', 'Born', `${dd}.${mo}.${yy}, ${birthLocal.slice(11, 16)}`, X, 212, W2 / 2);
+  field('3', 'Launch site', cityName(city.name).split(',')[0], X + W2 / 2, 212, W2 / 2);
+  field('4', 'Zenith, J2000', `α ${sky.ra.toFixed(2)}°  δ ${fmtDec(sky.dec, 2)}`, X, 272, W2 / 2);
+  field('5', 'Ship', selectedStyle === 'star_trek' ? 'Aether' : 'Vanguard', X + W2 / 2, 272, W2 / 2);
+  field('6', 'Light travelled', `${tm.ly.toFixed(4).replace('.', ',')} light years`, X, 332, W2, 32, F_SERIF, 600, '#FF8A5C');
+  if (pilot && pilot.serial <= 1000) {
+    g.font = fnt(500, 14, F_SANS); const bt = 'First 1000 pilots', bw = g.measureText(bt).width + 26;
+    g.strokeStyle = '#FF6A3D'; g.lineWidth = 1.2; g.beginPath(); g.roundRect(X, 400, bw, 28, 14); g.stroke(); g.fillStyle = '#FF8A5C'; g.fillText(bt, X + 13, 419);
+  }
+  if (ghostPhoto) { g.save(); g.globalAlpha = 0.5; g.drawImage(ghostPhoto, CARD_W - 215, CARD_H - 285, 195, 260); g.restore(); }
+  else drawEmblem(g, CARD_W - 104, CARD_H - 112, 66, 0.25); // «призрачная» эмблема, защитный элемент
+  g.fillStyle = 'rgba(238,240,255,.55)'; g.font = fnt(400, 11, F_SANS); g.fillText(`Issued ${new Date().toISOString().slice(0, 10)}   peaceindex.online`, 40, CARD_H - 36);
+  g.restore();
+}
+function drawCardBack(g, tm) {
+  g.save(); cardShape(g); g.clip(); g.textAlign = 'left'; g.letterSpacing = '0px';
+  drawCosmicBg(g, CARD_W, CARD_H); g.fillStyle = 'rgba(2,3,12,.6)'; g.fillRect(0, 0, CARD_W, CARD_H);
+  drawGuilloche(g, 0, 0, CARD_W, CARD_H); cardEdge(g);
+  if (ghostPhoto) { g.save(); g.globalAlpha = 0.34; g.drawImage(ghostPhoto, CARD_W - 300, 30, 270, 360); g.restore(); } // подложка под телеметрией
+  // зенит и карта света
+  const zx = 172, zy = 210, zr = 72;
+  drawLightMap(g, zx, zy, zr + 20, 148, tm); drawZenithDisc(g, zx, zy, zr);
+  g.textAlign = 'center'; g.fillStyle = '#9AA3C7'; g.font = fnt(400, 12, F_SANS); g.fillText('Zenith at birth and the stars your light has reached', zx, 386); g.textAlign = 'left';
+  // телеметрия
+  const X = 360, CW = CARD_W - 40 - X;
+  g.fillStyle = '#9AA3C7'; g.font = fnt(400, 13, F_SANS); g.fillText('Light travelled since birth', X, 60);
+  const km = intFmt.format(Math.floor(tm.km)) + ' km'; g.fillStyle = '#FFFFFF'; fitFont(g, km, 600, 40, CW, F_SERIF, 20); g.fillText(km, X, 100);
+  const starsN = STARS.filter((s) => s.ly <= tm.ly).length, exoN = exoplanets.filter((p) => p.ly <= tm.ly).length;
+  [[tm.ly.toFixed(4).replace('.', ','), 'light years', '#FF6A3D'], [String(starsN), 'stars reached', '#FFFFFF'], [String(exoN), 'exoplanets', '#FFFFFF']].forEach(([v, l, c], i) => {
+    const xx = X + i * (CW / 3); g.fillStyle = c; g.font = fnt(600, 28, F_SERIF); g.fillText(v, xx, 146); g.fillStyle = '#9AA3C7'; g.font = fnt(400, 12, F_SANS); g.fillText(l, xx, 164);
+  });
+  g.strokeStyle = 'rgba(205,163,73,.35)'; g.lineWidth = 1; g.beginPath(); g.moveTo(X, 184); g.lineTo(CARD_W - 40, 184); g.stroke();
+  const row = (y, label, value, x, w) => { g.fillStyle = '#9AA3C7'; g.font = fnt(400, 13.5, F_SANS); g.fillText(label, x, y); g.fillStyle = '#EEF0FF'; fitFont(g, value, 500, 18, w - 10, F_SANS, 10); g.fillText(value, x, y + 22); };
+  row(210, 'Passed Voyager 1', tm.ratio >= 1 ? dateFmt(tm.overtake) : 'in a few hours', X, CW / 2);
+  row(210, 'Constellation', '≈ ' + constName(constellationOf(sky.ra, sky.dec)), X + CW / 2, CW / 2);
+  row(262, 'Birth sky', `Moon ${Math.round(sky.moon.illum * 100)}%, Sun ${sky.sun.alt >= 0 ? '+' : '−'}${Math.abs(sky.sun.alt).toFixed(0)}°`, X, CW / 2);
+  row(262, 'Logbook', pilot ? `pilot No. ${pilot.serial}` : 'not yet registered', X + CW / 2, CW / 2);
+  const q = 96; drawQr(g, shareLink(), CARD_W - 40 - q, 300, q);
+  g.fillStyle = '#9AA3C7'; g.font = fnt(400, 13.5, F_SANS); g.fillText('Scan to see where', X, 330); g.fillText('your light is right now', X, 349);
+  // машиночитаемая зона
+  microLine(g, 40, 412, CARD_W - 80);
+  const [m1, m2] = mrzLines(); g.fillStyle = 'rgba(205,163,73,.9)'; fitFont(g, m1, 500, 22, CARD_W - 80, F_MONO, 12); g.fillText(m1, 40, 452); g.fillText(m2, 40, 484);
+  g.restore();
+}
+async function renderCert() {
+  await ensureFonts();
+  const tm = telemetry(Date.now()); setShip(selectedStyle);
+  drawCardFront(cardCanvas('passportCanvas'), tm);
+  drawCardBack(cardCanvas('passportBack'), tm);
+  certPending = false;
+}
+// PNG для соцсетей: обе стороны одной картинкой
+function cardSheet() {
+  const f = $('passportCanvas'), b = $('passportBack'), pad = 60, c = document.createElement('canvas');
+  c.width = f.width + pad * 2; c.height = f.height * 2 + pad * 3; const g = c.getContext('2d');
+  g.fillStyle = '#05060f'; g.fillRect(0, 0, c.width, c.height); g.drawImage(f, pad, pad); g.drawImage(b, pad, pad * 2 + f.height); return c;
+}
+// PDF A4 в реальном размере: лицевая сторона, под ней оборот вверх ногами — вырезать по меткам, согнуть по пунктиру
+async function cardPdf() {
+  const jpeg = (src, flip) => new Promise((res) => {
+    const c = document.createElement('canvas'); c.width = src.width; c.height = src.height; const g = c.getContext('2d');
+    g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); if (flip) { g.translate(c.width, c.height); g.rotate(Math.PI); } g.drawImage(src, 0, 0);
+    c.toBlob((bl) => bl.arrayBuffer().then((a) => res({ w: c.width, h: c.height, d: new Uint8Array(a) })), 'image/jpeg', 0.93);
+  });
+  const [F, B] = await Promise.all([jpeg($('passportCanvas'), false), jpeg($('passportBack'), true)]);
+  const mm = (v) => v * 72 / 25.4, PW = 595.28, PH = 841.89, cw = mm(85.6), ch = mm(54), x = (PW - cw) / 2, yF = PH - mm(40) - ch, yB = yF - ch, n2 = (v) => v.toFixed(2);
+  let s = `q ${n2(cw)} 0 0 ${n2(ch)} ${n2(x)} ${n2(yF)} cm /F Do Q\nq ${n2(cw)} 0 0 ${n2(ch)} ${n2(x)} ${n2(yB)} cm /B Do Q\n0.5 G 0.5 w\n`;
+  const L = mm(6), o = mm(2), x2 = x + cw, yT = yF + ch;
+  for (const [cx, cy] of [[x, yT], [x2, yT], [x, yB], [x2, yB]]) {
+    const sx = cx === x ? -1 : 1, sy = cy === yT ? 1 : -1;
+    s += `${n2(cx + sx * o)} ${n2(cy)} m ${n2(cx + sx * (o + L))} ${n2(cy)} l S ${n2(cx)} ${n2(cy + sy * o)} m ${n2(cx)} ${n2(cy + sy * (o + L))} l S\n`;
+  }
+  s += `[3 2] 0 d ${n2(x - o - L)} ${n2(yF)} m ${n2(x - o)} ${n2(yF)} l S ${n2(x2 + o)} ${n2(yF)} m ${n2(x2 + o + L)} ${n2(yF)} l S [] 0 d\n`;
+  const txt = (y, size, str) => `BT /H ${size} Tf ${n2(x)} ${n2(y)} Td (${str}) Tj ET\n`;
+  s += txt(yT + mm(10), 11, 'STARBEAM  Galactic Pilot ID');
+  s += txt(yB - mm(13), 8, 'Print at 100% \\(actual size\\). Cut along the corner marks, fold on the dashed line, glue or laminate.');
+  s += txt(yB - mm(18), 8, 'Card size 85.6 x 54 mm, the same as a driving licence. peaceindex.online');
+  const enc = new TextEncoder(), parts = [], offs = []; let len = 0;
+  const put = (p) => { const u = typeof p === 'string' ? enc.encode(p) : p; parts.push(u); len += u.length; };
+  const obj = (i, body, stream) => { offs[i] = len; put(`${i} 0 obj\n${body}\n`); if (stream) { put('stream\n'); put(stream); put('\nendstream\n'); } put('endobj\n'); };
+  const img = (I) => `<< /Type /XObject /Subtype /Image /Width ${I.w} /Height ${I.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${I.d.length} >>`;
+  const cs = enc.encode(s);
+  put('%PDF-1.4\n');
+  obj(1, '<< /Type /Catalog /Pages 2 0 R >>');
+  obj(2, '<< /Type /Pages /Kids [3 0 R] /Count 1 >>');
+  obj(3, `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PW} ${PH}] /Resources << /XObject << /F 5 0 R /B 6 0 R >> /Font << /H 7 0 R >> >> /Contents 4 0 R >>`);
+  obj(4, `<< /Length ${cs.length} >>`, cs);
+  obj(5, img(F), F.d); obj(6, img(B), B.d);
+  obj(7, '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
+  const xref = len; put(`xref\n0 8\n0000000000 65535 f \n${offs.slice(1).map((v) => String(v).padStart(10, '0') + ' 00000 n \n').join('')}trailer\n<< /Size 8 /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
+  return new Blob(parts, { type: 'application/pdf' });
+}
+
+/* --- фото пилота: только «призрачная» золотая подложка на карточке; живёт в памяти страницы, не отправляется и не сохраняется */
+let ghostPhoto = null;
+async function loadPhoto(file) {
+  if (file.size > 40e6) throw new Error('size');
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+    const PW = 600, PH = 800, ar = PW / PH; let sw = img.naturalWidth, sh = img.naturalHeight, sx = 0, sy = 0;
+    if (!sw || !sh) throw new Error('decode');
+    if (sw / sh > ar) { const nw = sh * ar; sx = (sw - nw) / 2; sw = nw; } else { const nh = sw / ar; sy = (sh - nh) * 0.3; sh = nh; }
+    const c = document.createElement('canvas'); c.width = PW; c.height = PH; c.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, PW, PH); return c;
+  } finally { URL.revokeObjectURL(url); }
+}
+/* --- вырезание фона: MediaPipe в браузере, модель лежит в /models (фото никуда не уходит) */
+const MPS = 'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation@0.1.1675465747';
+let segP = null;
+function getSegmenter() {
+  return (segP ||= (async () => {
+    if (!window.SelfieSegmentation) await new Promise((res, rej) => { const el = document.createElement('script'); el.src = `${MPS}/selfie_segmentation.js`; el.crossOrigin = 'anonymous'; el.onload = res; el.onerror = rej; document.head.appendChild(el); });
+    const ss = new window.SelfieSegmentation({ locateFile: (f) => `${MPS}/${f}` });
+    ss.setOptions({ modelSelection: 0, selfieMode: false });
+    await ss.initialize();
+    return ss;
+  })().catch((e) => { segP = null; throw e; }));
+}
+// маска человека: непрозрачно там, где человек (готовый canvas того же размера, что и фото)
+async function personMask(src) {
+  const ss = await getSegmenter();
+  return new Promise((res, rej) => {
+    const to = setTimeout(() => rej(new Error('timeout')), 20000);
+    ss.onResults((r) => {
+      clearTimeout(to);
+      const c = document.createElement('canvas'); c.width = src.width; c.height = src.height;
+      c.getContext('2d').drawImage(r.segmentationMask, 0, 0, c.width, c.height); res(c);
+    });
+    ss.send({ image: src }).catch((e) => { clearTimeout(to); rej(e); });
+  });
+}
+// «призрачная» копия как на EU‑правах: силуэт без фона, золотой монохром, мягкий край, растр тонкими линиями
+function goldGhost(src, mask) {
+  const W = 300, H = 400, gc = document.createElement('canvas'); gc.width = W; gc.height = H; const gg = gc.getContext('2d');
+  gg.drawImage(src, 0, 0, W, H);
+  const d = gg.getImageData(0, 0, W, H), px = d.data;
+  for (let i = 0; i < px.length; i += 4) {
+    let y = (0.3 * px[i] + 0.59 * px[i + 1] + 0.11 * px[i + 2]) / 255; y = Math.min(1, Math.max(0, (y - 0.08) * 1.25)); y = Math.pow(y, 0.85) * 255;
+    px[i] = y; px[i + 1] = y * 0.8; px[i + 2] = y * 0.45;
+    if (((i / 4 / W) | 0) % 3 === 2) px[i + 3] = 150; // тонкие горизонтальные линии растра
+  }
+  gg.putImageData(d, 0, 0);
+  gg.globalCompositeOperation = 'destination-in';
+  if (mask) { gg.filter = 'blur(4px)'; gg.drawImage(mask, 0, 0, W, H); gg.filter = 'none'; }
+  // мягкий край: силуэт растворяется к низу и по бокам
+  const gr = gg.createRadialGradient(W / 2, H * 0.42, W * (mask ? 0.32 : 0.2), W / 2, H * 0.5, W * (mask ? 0.78 : 0.66));
+  gr.addColorStop(0, 'rgba(0,0,0,1)'); gr.addColorStop(1, 'rgba(0,0,0,0)'); gg.fillStyle = gr; gg.fillRect(0, 0, W, H);
+  const lg = gg.createLinearGradient(0, H * 0.62, 0, H); lg.addColorStop(0, 'rgba(0,0,0,1)'); lg.addColorStop(1, 'rgba(0,0,0,0)'); gg.fillStyle = lg; gg.fillRect(0, 0, W, H);
+  return gc;
+}
+function photoUI() {
+  const has = !!ghostPhoto; $('photoPrev').hidden = !has; $('photoPh').hidden = has; $('photoRemove').hidden = !has;
+  $('photoBtnTxt').textContent = t(has ? 'photoChange' : 'photoAdd');
+  if (has) { const pc = $('photoPrev'), pg = pc.getContext('2d'); pg.fillStyle = '#05060f'; pg.fillRect(0, 0, pc.width, pc.height); pg.drawImage(ghostPhoto, 0, 0, pc.width, pc.height); }
+}
+$('photoInput').addEventListener('change', async (e) => {
+  const f = e.target.files?.[0]; e.target.value = ''; if (!f) return;
+  let src; try { src = await loadPhoto(f); } catch { toast(t('photoFail')); return; }
+  $('photoState').textContent = t('photoBgWork'); let mask = null;
+  try { mask = await personMask(src); $('photoState').textContent = ''; } catch { $('photoState').textContent = t('photoBgFail'); }
+  ghostPhoto = goldGhost(src, mask);
+  photoUI(); await renderCert(); toast(t('photoAdded'));
+});
+$('photoRemove').onclick = () => { ghostPhoto = null; $('photoState').textContent = ''; photoUI(); renderCert(); };
+window.addEventListener('pageshow', (e) => { if (e.persisted && ghostPhoto) { ghostPhoto = null; photoUI(); renderCert(); } });
+$('callsignInput').addEventListener('input', scheduleCert);
+// холсты уже отрисованы заранее — сохраняем сразу, чтобы iPhone не потерял «жест пользователя» для меню «Поделиться»
+$('downloadCertBtn').onclick = async () => { if (certPending) await renderCert(); if (await download(cardSheet(), `starbeam_pilot_${pilot ? pilot.serial : pilotHash()}.png`)) toast(t('idDownloaded')); };
+$('printCertBtn').onclick = async () => { if (certPending) await renderCert(); if (await saveBlob(await cardPdf(), `starbeam_pilot_${pilot ? pilot.serial : pilotHash()}_print.pdf`)) toast(t('pdfReady')); };
+
+$('copyPostBtn').onclick = $('copyPostBtn2').onclick = () => {
+  const tm = telemetry(Date.now()), sr = STARS.filter((s) => s.ly <= tm.ly).length, er = exoplanets.filter((p) => p.ly <= tm.ly).length;
+  copyText(t('post', { km: intFmt.format(Math.floor(tm.km)), ly: numFmt(tm.ly, 4), x: intFmt.format(Math.round(tm.ratio)), s: sr, e: er, link: shareLink() }), t('postCopied'));
+};
+$('shareCardBtn').onclick = () => {
+  const tm = telemetry(Date.now()), c = document.createElement('canvas'); c.width = 1200; c.height = 675; const g = c.getContext('2d');
+  g.drawImage(snapshot3D(1200, 675), 0, 0);
+  const gr = g.createLinearGradient(0, 0, 820, 0); gr.addColorStop(0, 'rgba(0,0,0,.9)'); gr.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = gr; g.fillRect(0, 0, 820, 675);
+  g.fillStyle = '#CDA349'; g.font = serifF(600, 30); g.fillText('STARBEAM', 56, 84);
+  g.fillStyle = '#CBD5E1'; g.font = '300 24px Geologica, sans-serif'; g.fillText(t('cardLead'), 56, 170);
+  g.fillStyle = '#FFF'; g.font = serifF(600, 60); g.fillText(intFmt.format(Math.floor(tm.km)) + ' ' + t('km'), 56, 240);
+  g.fillStyle = '#FF6A3D'; g.font = mono(500, 24); g.fillText(t('cardLy', { ly: numFmt(tm.ly, 4) }), 56, 284);
+  g.fillStyle = '#CDA349'; g.font = mono(500, 22); g.fillText(t('cardVoy', { x: intFmt.format(Math.round(tm.ratio)) }), 56, 360);
+  g.fillStyle = '#CBD5E1'; g.font = '400 19px Geologica, sans-serif';
+  g.fillText(t('cardZen', { city: cityName(city.name).split(',')[0], ra: sky.ra.toFixed(2), dec: fmtDec(sky.dec) }), 56, 410);
+  g.fillText(t('cardSphere', { s: STARS.filter((s) => s.ly <= tm.ly).length, e: exoplanets.filter((p) => p.ly <= tm.ly).length }), 56, 444);
+  g.fillStyle = '#8A97A8'; g.font = mono(600, 14); g.fillText('Earth: NASA Blue Marble. Stars: Hipparcos. Zenith: CDS', 56, 620);
+  drawZenithDisc(g, 1030, 500, 112);
+  download(c, `starbeam_x_${Date.now()}.png`).then((ok) => ok && toast(t('cardDone')));
+};
+
+/* =====================================================================
+   13. ВЫБОР КОРАБЛЯ
+   ===================================================================== */
+document.querySelectorAll('.ship').forEach((b) => b.addEventListener('click', () => {
+  selectedStyle = b.dataset.style; document.querySelectorAll('.ship').forEach((x) => x.classList.toggle('on', x === b));
+  setShip(selectedStyle); scheduleCert();
+}));
+
+/* =====================================================================
+   13b. ЯЗЫК
+   ===================================================================== */
+function localizeData() {
+  const k = LANG === 'en' ? 0 : 1;
+  for (const o of [...STARS, ...SOLAR]) { o.ru ??= o.name; o.name = LANG === 'ru' ? o.ru : NAMES[o.id][k]; }
+  for (const o of SOLAR) o.note = t('note_' + o.id);
+  for (const p of PROBES) { p.ru ??= p.name; p.name = LANG === 'ru' ? p.ru : p.ru.replace('Вояджер‑', 'Voyager '); }
+}
+function setLang(l) {
+  LANG = l; document.documentElement.lang = l; document.title = t('title');
+  try { localStorage.setItem('sb_lang', l); } catch {}
+  intFmt = new Intl.NumberFormat(LOC[l], { maximumFractionDigits: 0 });
+  f2 = new Intl.NumberFormat(LOC[l], { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const apply = (sel, attr, get, set) => document.querySelectorAll(`[${sel}]`).forEach((el) => {
+    const key = el.getAttribute(sel), ruKey = 'ru' + attr; if (el.dataset[ruKey] === undefined) el.dataset[ruKey] = get(el);
+    set(el, l === 'ru' ? el.dataset[ruKey] : (L[l][key] ?? el.dataset[ruKey]));
+  });
+  apply('data-i18n', 'Html', (e) => e.innerHTML, (e, v) => { e.innerHTML = v; });
+  apply('data-i18n-ph', 'Ph', (e) => e.placeholder, (e, v) => { e.placeholder = v; });
+  apply('data-i18n-aria', 'Aria', (e) => e.getAttribute('aria-label'), (e, v) => e.setAttribute('aria-label', v));
+  apply('data-i18n-alt', 'Alt', (e) => e.alt, (e, v) => { e.alt = v; });
+  document.querySelectorAll('#langs button').forEach((b) => b.classList.toggle('on', b.dataset.lang === l));
+  localizeData(); renderCityPresets(); regTexts(); photoUI(); if (typeof birthMs === 'number') navLinks(); 
+  if (document.activeElement !== cityInput) cityInput.value = cityName(city.name);
+  $('aladinStatus').textContent = t(aladinOk ? 'aladinOk' : 'aladinConn'); setFov(fov);
+  if (!$('apodImg').innerHTML) { $('apodTitle').textContent = t('apodTitle0'); $('apodText').textContent = t('apodLoading'); }
+  if (pilot) showRegistered();
+  if (sky) {
+    $('routeGrid').querySelectorAll('.stop').forEach((el) => { const o = [...SOLAR, ...STARS].find((x) => x.id === el.dataset.id); el.querySelector('h3').textContent = o.name;
+      el.querySelector('.rnote').textContent = o.solar ? o.note : numFmt(o.ly) + ' ' + t('lyLong'); });
+    buildLadder(); recompute();
+  }
+}
+document.querySelectorAll('#langs button').forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));
+
+/* =====================================================================
+   14. INIT
+   ===================================================================== */
+birthInput.max = utcToLocalStr(Date.now(), city);
+birthInput.value = birthLocal; cityInput.value = city.name;
+setLang(pickLang()); cityInput.value = cityName(city.name);
+resize(); buildLadder(); recompute(); setCam('earth');
+if (NO3D) finishBoot();
+loadExoplanets(); initRegistration();
+// телескоп (Aladin, ~1 МБ) грузим, когда до него осталось ~1 экран прокрутки
+function loadScript(src) { return new Promise((res, rej) => { const el = document.createElement('script'); el.src = src; el.onload = res; el.onerror = rej; document.head.appendChild(el); }); }
+new IntersectionObserver((entries, obs) => {
+  if (!entries.some((e) => e.isIntersecting)) return; obs.disconnect();
+  import('https://cdn.jsdelivr.net/npm/aladin-lite@3.9.4/dist/aladin.js').then(initAladin).catch(() => { $('aladinStatus').textContent = t('aladinFail'); });
+}, { rootMargin: '900px 0px' }).observe($('telescope'));
+if (PAGE === 'home') new IntersectionObserver((en) => en.forEach((e) => {
+  if (!e.isIntersecting) return; const id = e.target.id === 'passport';
+  document.querySelector('.console [data-go="home"]').classList.toggle('on', !id); document.querySelector('.console [data-go="id"]').classList.toggle('on', id);
+}), { threshold: 0.45 }).observe($('passport')), new IntersectionObserver((en) => en.forEach((e) => {
+  if (e.isIntersecting) { document.querySelector('.console [data-go="home"]').classList.add('on'); document.querySelector('.console [data-go="id"]').classList.remove('on'); }
+}), { threshold: 0.45 }).observe($('top'));
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
