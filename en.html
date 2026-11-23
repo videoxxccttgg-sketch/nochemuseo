@@ -1632,10 +1632,9 @@ function renderRoute(tm) {
 async function loadExoplanets() {
   const q = 'select pl_name,hostname,sy_dist,ra,dec,disc_year from pscomppars where sy_dist < 34';
   try {
-    const r = await fetch(`https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=${encodeURIComponent(q)}&format=json`);
+    const r = await fetch('/exo.json'); // полный каталог NASA, сохранённый на сайте
     if (!r.ok) throw 0;
-    const rows = await r.json();
-    exoplanets = rows.filter((p) => p.sy_dist && p.ra != null).map((p) => ({ name: p.pl_name, host: p.hostname, ly: p.sy_dist * 3.26156, ra: p.ra, dec: p.dec, year: p.disc_year })).sort((a, b) => a.ly - b.ly);
+    exoplanets = (await r.json()).map(([name, ly, ra, dec, year]) => ({ name, ly, ra, dec, year })).sort((a, b) => a.ly - b.ly);
     exoSource = 'exoLive';
   } catch { exoplanets = EXO_FALLBACK.slice().sort((a, b) => a.ly - b.ly); exoSource = 'exoFallback'; }
   if (sky) renderExo(telemetry(Date.now()));

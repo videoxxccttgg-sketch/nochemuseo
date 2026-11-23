@@ -62,18 +62,17 @@ const PHOTOS = {
   epsindab: 'https://www.esa.int/ESA_Multimedia/Images/2024/07/Exoplanet_Epsilon_Indi_Ab_MIRI_image',
   aflepb: 'https://eso.org/public/images/potw2308a/',
   '51erib': 'https://science.nasa.gov/asset/webb/exoplanet-51-eridani-b-gemini',
+  betpicb: 'https://www.eso.org/public/images/eso1024c/',
+  twa7b: 'https://www.esa.int/ESA_Multimedia/Images/2025/06/High-contrast_coronograph_image_of_TWA_7b',
 };
 const key = (n) => n.toLowerCase().replace(/[^a-z0-9]/g, '');
 const eyes = (n) => 'https://eyes.nasa.gov/apps/exo/#/planet/' + encodeURIComponent(n.replace(/ /g, '_'));
 const esc = (x) => String(x).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const loc = { ru: 'ru-RU', en: 'en-US', es: 'es-AR' }[LANG], nf = new Intl.NumberFormat(loc, { maximumFractionDigits: 1 });
+// полный каталог NASA Exoplanet Archive (≤ 110 св. лет) лежит на сайте: архив не отдаёт данные браузерам с других сайтов
 async function load() {
-  try {
-    const q = 'select pl_name,sy_dist,disc_year from pscomppars where sy_dist < 34';
-    const r = await fetch(`https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=${encodeURIComponent(q)}&format=json`, { signal: AbortSignal.timeout(9000) });
-    if (!r.ok) throw 0;
-    return (await r.json()).filter((p) => p.sy_dist).map((p) => ({ name: p.pl_name, ly: p.sy_dist * 3.26156, year: p.disc_year }));
-  } catch { return EXO_FALLBACK.slice(); }
+  try { const r = await fetch('/exo.json'); if (!r.ok) throw 0; return (await r.json()).map(([name, ly, , , year]) => ({ name, ly, year })); }
+  catch { return EXO_FALLBACK.slice(); }
 }
 (async () => {
   const list = document.getElementById('list');
