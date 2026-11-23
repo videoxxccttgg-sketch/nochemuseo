@@ -45,7 +45,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{background:var(--void);scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
-body{font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.55;color:var(--star);background:var(--void);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{font-family:var(--sans);font-weight:300;font-size:16.8px;line-height:1.55;color:var(--star);background:var(--void);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 a{color:inherit}
 button,input{font:inherit;color:inherit}
 button{cursor:pointer;background:none;border:0}
@@ -63,11 +63,11 @@ button{cursor:pointer;background:none;border:0}
   linear-gradient(270deg,rgba(0,0,0,.6) 0%,transparent 26%),
   linear-gradient(0deg,rgba(0,0,0,.85) 0%,transparent 34%)}
 #labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.lbl{position:absolute;transform:translate(12px,-50%);font-size:11.5px;white-space:nowrap;color:var(--haze);text-shadow:0 0 6px #000,0 0 2px #000;font-weight:400}
+.lbl{position:absolute;transform:translate(12px,-50%);font-size:12.9px;white-space:nowrap;color:var(--haze);text-shadow:0 0 6px #000,0 0 2px #000;font-weight:400}
 .lbl::before{content:"";position:absolute;left:-16px;top:50%;width:7px;height:7px;margin-top:-4px;border:1px solid currentColor;border-radius:50%}
 .lbl.reached{color:#FFB79C}
 .lbl.voy{color:var(--gold)}
-.lbl.zen{color:#fff;font-family:var(--serif);font-size:17px;font-style:italic}
+.lbl.zen{color:#fff;font-family:var(--serif);font-size:19px;font-style:italic}
 .lbl.zen::before{width:13px;height:13px;margin-top:-7px;left:-20px;border-color:var(--beam);box-shadow:0 0 14px var(--beam)}
 .lbl em{font-style:normal;color:var(--dim);margin-left:4px}
 
@@ -81,10 +81,10 @@ button{cursor:pointer;background:none;border:0}
   background:repeating-linear-gradient(180deg,var(--gold-soft) 0 1px,transparent 1px calc(100%/12)),
              repeating-linear-gradient(180deg,var(--gold-faint) 0 1px,transparent 1px calc(100%/36));
   background-size:12px 100%,6px 100%;background-repeat:no-repeat}
-.ra-num,.dec-num{position:absolute;font-size:10px;color:var(--dim);font-variant-numeric:tabular-nums}
+.ra-num,.dec-num{position:absolute;font-size:11.2px;color:var(--dim);font-variant-numeric:tabular-nums}
 .ra-num{top:14px;transform:translateX(-50%)}
 .dec-num{left:16px;transform:translateY(-50%)}
-.mark{position:absolute;color:var(--gold);font-size:11px;font-weight:500;white-space:nowrap;transition:left .8s cubic-bezier(.2,.8,.2,1),top .8s cubic-bezier(.2,.8,.2,1)}
+.mark{position:absolute;color:var(--gold);font-size:12.3px;font-weight:500;white-space:nowrap;transition:left .8s cubic-bezier(.2,.8,.2,1),top .8s cubic-bezier(.2,.8,.2,1)}
 .mark-ra{top:-1px;transform:translateX(-50%);padding-top:16px}
 .mark-ra::before{content:"";position:absolute;top:0;left:50%;margin-left:-5px;border:5px solid transparent;border-top:9px solid var(--gold)}
 .mark-dec{left:-1px;transform:translateY(-50%);padding-left:18px}
@@ -92,66 +92,67 @@ button{cursor:pointer;background:none;border:0}
 
 /* верхняя строка */
 .topline{position:absolute;top:50px;left:44px;right:34px;display:flex;align-items:center;justify-content:space-between;gap:16px;z-index:5}
-.wordmark{font-family:var(--serif);font-size:24px;font-weight:600;letter-spacing:.04em;text-decoration:none;display:flex;align-items:baseline;gap:10px}
-.wordmark small{font-family:var(--sans);font-size:12px;font-weight:400;letter-spacing:0;color:var(--gold)}
-.menu{display:flex;gap:26px;font-size:13.5px}
+.wordmark{font-family:var(--serif);font-size:26.9px;font-weight:600;letter-spacing:.04em;text-decoration:none;display:flex;align-items:baseline;gap:10px}
+.wordmark small{font-family:var(--sans);font-size:13.4px;font-weight:400;letter-spacing:0;color:var(--gold)}
+.menu{display:flex;gap:26px;font-size:15.1px}
 .menu a{text-decoration:none;color:var(--haze);transition:color .2s}
 .menu a:hover{color:var(--star)}
 .tools{display:flex;gap:10px;align-items:center}
-.ca{font-size:12px;color:var(--haze);border-bottom:1px dashed var(--gold-soft);padding-bottom:1px}
+.ca{font-size:13.4px;color:var(--haze);border-bottom:1px dashed var(--gold-soft);padding-bottom:1px}
 .ca:hover{color:var(--star)}
 .tools{display:flex;gap:10px;align-items:center}
 .toggle{display:inline-flex;border:1px solid var(--gold-soft);border-radius:20px;padding:2px}
-.toggle button{font-size:12px;padding:5px 12px;border-radius:16px;color:var(--haze)}
+.toggle button{font-size:13.4px;padding:5px 12px;border-radius:16px;color:var(--haze)}
 .toggle button.on{background:var(--gold);color:#120d02;font-weight:500}
 
 /* основной блок слева */
 .reading{position:absolute;left:44px;bottom:118px;width:min(560px,46vw);z-index:5;display:flex;flex-direction:column;gap:22px}
-.reading h1{font-family:var(--serif);font-weight:500;font-size:clamp(30px,3.3vw,46px);line-height:1.05;letter-spacing:-.01em;max-width:15em}
-.distance{font-family:var(--serif);font-weight:600;font-size:clamp(34px,3.6vw,56px);white-space:nowrap;line-height:.95;letter-spacing:-.015em;font-variant-numeric:lining-nums tabular-nums;color:#fff;word-break:break-word}
-.distance-sub{display:flex;gap:26px;flex-wrap:wrap;margin-top:10px;font-size:13px;color:var(--haze)}
-.distance-sub b{display:block;font-family:var(--serif);font-size:24px;font-weight:600;color:var(--star);font-variant-numeric:lining-nums tabular-nums}
+.reading h1{font-family:var(--serif);font-weight:500;font-size:clamp(33.6px,3.7vw,51.52px);line-height:1.05;letter-spacing:-.01em;max-width:15em}
+.distance{font-family:var(--serif);font-weight:600;font-size:clamp(38.08px,4.03vw,62.72px);white-space:nowrap;line-height:.95;letter-spacing:-.015em;font-variant-numeric:lining-nums tabular-nums;color:#fff;word-break:break-word}
+.distance-sub{display:flex;gap:26px;flex-wrap:wrap;margin-top:10px;font-size:14.6px;color:var(--haze)}
+.distance-sub b{display:block;font-family:var(--serif);font-size:26.9px;font-weight:600;color:var(--star);font-variant-numeric:lining-nums tabular-nums}
 .distance-sub .hot b{color:var(--beam)}
 .log{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;padding:16px;background:rgba(7,11,36,.82);border:1px solid var(--gold-soft);backdrop-filter:blur(6px)}
 .f{display:flex;flex-direction:column;gap:5px;position:relative}
-.f label{font-size:12px;color:var(--haze);display:flex;justify-content:space-between;gap:8px}
-.f label > span:last-child:not(:first-child){color:var(--dim);font-size:11px}
-.in{height:40px;padding:0 12px;background:rgba(0,0,0,.55);border:1px solid rgba(154,163,199,.28);border-radius:3px;outline:none;font-size:14px;width:100%;transition:border-color .2s}
+.f label{font-size:13.4px;color:var(--haze);display:flex;justify-content:space-between;gap:8px}
+.f label > span:last-child:not(:first-child){color:var(--dim);font-size:12.3px}
+.in{min-width:0;max-width:100%;box-sizing:border-box;-webkit-appearance:none;appearance:none;display:block;text-align:left;height:40px;padding:0 12px;background:rgba(0,0,0,.55);border:1px solid rgba(154,163,199,.28);border-radius:3px;outline:none;font-size:15.7px;width:100%;transition:border-color .2s}
 .in:focus{border-color:var(--gold)}
+input[type=datetime-local]::-webkit-date-and-time-value{text-align:left}
 input[type=datetime-local]::-webkit-calendar-picker-indicator{filter:invert(.8) sepia(1) saturate(2) hue-rotate(5deg);cursor:pointer}
-.err{font-size:12px;color:var(--rose);display:none}
-.quick{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--dim);align-items:baseline}
+.err{font-size:13.4px;color:var(--rose);display:none}
+.quick{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;color:var(--dim);align-items:baseline}
 .quick button{color:var(--haze);border-bottom:1px solid transparent;padding:1px 0}
 .quick button:hover{color:var(--star);border-bottom-color:var(--gold-soft)}
 .quick .q-gold{color:var(--gold)}
 .dropdown{position:absolute;top:68px;left:0;right:0;z-index:30;background:var(--plate);border:1px solid var(--gold-soft);display:none;box-shadow:0 24px 60px rgba(0,0,0,.7)}
-.dropdown button{width:100%;text-align:left;padding:10px 12px;font-size:13px;display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid rgba(154,163,199,.12)}
+.dropdown button{width:100%;text-align:left;padding:10px 12px;font-size:14.6px;display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid rgba(154,163,199,.12)}
 .dropdown button:hover{background:var(--plate-2)}
 .dropdown small{color:var(--dim);white-space:nowrap}
 
 /* легенда справа */
 .legend{position:absolute;right:34px;bottom:118px;width:310px;z-index:5;display:flex;flex-direction:column;gap:14px}
-.legend h2{font-family:var(--serif);font-size:22px;font-weight:600;border-top:1px solid var(--gold-soft);padding-top:10px}
-.legend dl{display:grid;grid-template-columns:auto 1fr;gap:7px 14px;font-size:13px}
+.legend h2{font-family:var(--serif);font-size:24.6px;font-weight:600;border-top:1px solid var(--gold-soft);padding-top:10px}
+.legend dl{display:grid;grid-template-columns:auto 1fr;gap:7px 14px;font-size:14.6px}
 .legend dt{color:var(--haze)}
 .legend dd{text-align:right;font-variant-numeric:tabular-nums}
 .moonline{display:flex;gap:12px;align-items:center}
 #moonPhaseCanvas{width:50px;height:50px;flex:none}
-.voy{font-size:13px;line-height:1.5;color:var(--haze);padding-left:12px;border-left:2px solid var(--gold)}
+.voy{font-size:14.6px;line-height:1.5;color:var(--haze);padding-left:12px;border-left:2px solid var(--gold)}
 .voy b{color:var(--star);font-weight:500}
 .views{display:flex;gap:4px;flex-wrap:wrap}
-.views button{font-size:12.5px;padding:6px 11px;border:1px solid rgba(154,163,199,.25);border-radius:20px;color:var(--haze);background:rgba(0,0,0,.4)}
+.views button{font-size:14px;padding:6px 11px;border:1px solid rgba(154,163,199,.25);border-radius:20px;color:var(--haze);background:rgba(0,0,0,.4)}
 .views button.on{border-color:var(--beam);color:#fff;background:var(--beam-soft)}
 
 /* шкала расстояний внизу пластинки */
 .dist-scale{position:absolute;left:44px;right:34px;bottom:34px;z-index:5}
-.dist-head{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:var(--haze);margin-bottom:6px}
+.dist-head{display:flex;justify-content:space-between;gap:12px;font-size:13.4px;color:var(--haze);margin-bottom:6px}
 .dist-head b{color:var(--beam);font-weight:500}
 .track{position:relative;height:42px}
 .track-rail{position:absolute;left:0;right:0;top:12px;height:1px;background:var(--gold-soft)}
-.track-fill{position:absolute;left:0;top:11px;height:3px;background:var(--beam);box-shadow:0 0 12px var(--beam)}
+.track-fill{position:absolute;left:0;top:10.5px;height:3.5px;background:var(--beam);box-shadow:0 0 10px var(--beam),0 0 26px rgba(255,106,61,.5)}
 .track-head{position:absolute;top:6px;width:13px;height:13px;margin-left:-6.5px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px var(--beam-soft),0 0 16px var(--beam)}
-.tick{position:absolute;top:4px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;font-size:11px;color:var(--dim);white-space:nowrap}
+.tick{position:absolute;top:4px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;font-size:12.3px;color:var(--dim);white-space:nowrap}
 .tick i{width:1px;height:17px;background:currentColor}
 .tick span{margin-top:3px}
 .tick.on{color:#FFB79C}
@@ -164,18 +165,18 @@ input[type=datetime-local]::-webkit-calendar-picker-indicator{filter:invert(.8) 
 .boot-scan{transform-origin:60px 60px;animation:spin 2.4s cubic-bezier(.6,.1,.4,.9) infinite}
 .boot-arc{transition:stroke-dashoffset .5s ease}
 @keyframes spin{to{transform:rotate(360deg)}}
-.boot-word{font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:.32em;color:var(--gold);margin-right:-.32em}
-.boot-text{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--haze);min-height:1.4em}
-.boot-pct{font-size:12px;color:var(--dim);letter-spacing:.08em}
+.boot-word{font-family:var(--serif);font-weight:600;font-size:24.6px;letter-spacing:.32em;color:var(--gold);margin-right:-.32em}
+.boot-text{font-family:var(--serif);font-style:italic;font-size:20.2px;color:var(--haze);min-height:1.4em}
+.boot-pct{font-size:13.4px;color:var(--dim);letter-spacing:.08em}
 @media (max-width:900px){.boot{position:fixed}}
 
 /* ---------------- СТРАНИЦА ---------------- */
 .page{max-width:1240px;margin:0 auto;padding:0 28px}
 .chapter{padding:110px 0 10px;scroll-margin-top:20px}
 .chapter-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:end;margin-bottom:34px}
-.chapter h2{font-family:var(--serif);font-weight:500;font-size:clamp(32px,4vw,52px);line-height:1.02;letter-spacing:-.01em}
-.chapter-head p{color:var(--haze);font-size:15px;max-width:34em}
-.lead{font-family:var(--serif);font-size:clamp(24px,2.6vw,34px);line-height:1.25;font-weight:500;max-width:30em;margin-bottom:34px}
+.chapter h2{font-family:var(--serif);font-weight:500;font-size:clamp(35.84px,4.48vw,58.24px);line-height:1.02;letter-spacing:-.01em}
+.chapter-head p{color:var(--haze);font-size:16.8px;max-width:34em}
+.lead{font-family:var(--serif);font-size:clamp(26.88px,2.91vw,38.08px);line-height:1.25;font-weight:500;max-width:30em;margin-bottom:34px}
 .lead b{font-weight:700;color:#fff}
 .lead .hot{color:var(--beam)}
 
@@ -183,7 +184,7 @@ input[type=datetime-local]::-webkit-calendar-picker-indicator{filter:invert(.8) 
 .rail{position:relative;display:flex;gap:26px;overflow-x:auto;scroll-snap-type:x proximity;padding:8px 2px 26px;scrollbar-color:var(--gold-soft) transparent}
 .rail::-webkit-scrollbar{height:4px}.rail::-webkit-scrollbar-thumb{background:var(--gold-soft)}
 .stop{flex:0 0 176px;scroll-snap-align:start;position:relative}
-.stop .yr{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--dim);height:28px;font-variant-numeric:lining-nums}
+.stop .yr{font-family:var(--serif);font-size:22.4px;font-weight:600;color:var(--dim);height:28px;font-variant-numeric:lining-nums}
 .stop.reached .yr{color:var(--beam)}
 .stop .line{position:relative;height:20px;margin:0 -13px}
 .stop .line::before{content:"";position:absolute;left:0;right:0;top:9px;height:1px;background:var(--gold-soft)}
@@ -194,19 +195,19 @@ input[type=datetime-local]::-webkit-calendar-picker-indicator{filter:invert(.8) 
 .disc img{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s}
 .disc img.ok{opacity:1}
 .stop:not(.reached) .disc img{filter:grayscale(.6) brightness(.7)}
-.disc .src{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-size:9.5px;color:rgba(238,240,255,.7);text-shadow:0 0 4px #000}
-.stop h3{font-family:var(--serif);font-size:20px;font-weight:600;margin-top:16px;line-height:1.1}
-.stop p{font-size:12.5px;color:var(--haze);margin-top:3px}
+.disc .src{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-size:10.6px;color:rgba(238,240,255,.7);text-shadow:0 0 4px #000}
+.stop h3{font-family:var(--serif);font-size:22.4px;font-weight:600;margin-top:16px;line-height:1.1}
+.stop p{font-size:14px;color:var(--haze);margin-top:3px}
 .stop .when{color:var(--star)}
 
-.atlas-table{width:100%;border-collapse:collapse;font-size:13.5px}
-.atlas-table th{font-weight:400;color:var(--dim);font-size:12px;text-align:left;padding:10px 12px;border-bottom:1px solid var(--gold-soft)}
+.atlas-table{width:100%;border-collapse:collapse;font-size:15.1px}
+.atlas-table th{font-weight:400;color:var(--dim);font-size:13.4px;text-align:left;padding:10px 12px;border-bottom:1px solid var(--gold-soft)}
 .atlas-table td{padding:11px 12px;border-bottom:1px solid rgba(154,163,199,.1);font-variant-numeric:tabular-nums}
 .atlas-table tr:hover td{background:rgba(205,163,73,.04)}
 .exo{display:grid;grid-template-columns:340px 1fr;gap:40px;margin-top:70px;padding-top:30px;border-top:1px solid var(--gold-soft)}
-.exo h3{font-family:var(--serif);font-size:30px;font-weight:500;line-height:1.1;margin-bottom:12px}
+.exo h3{font-family:var(--serif);font-size:33.6px;font-weight:500;line-height:1.1;margin-bottom:12px}
 .exo-scroll{max-height:380px;overflow:auto}
-.tabs{display:flex;gap:18px;margin-top:20px;font-size:13.5px}
+.tabs{display:flex;gap:18px;margin-top:20px;font-size:15.1px}
 .tabs button{color:var(--haze);padding-bottom:4px;border-bottom:1px solid transparent}
 .tabs button.on{color:var(--star);border-bottom-color:var(--beam)}
 
@@ -218,25 +219,26 @@ input[type=datetime-local]::-webkit-calendar-picker-indicator{filter:invert(.8) 
 #aladin-lite-div .aladin-logo-container{opacity:.35}
 .ring{position:absolute;inset:0;pointer-events:none}
 .scope-ctl{position:absolute;right:2%;bottom:6%;display:flex;flex-direction:column;gap:8px;z-index:5}
-.scope-ctl button{width:40px;height:40px;border-radius:50%;background:rgba(7,11,36,.85);border:1px solid var(--gold-soft);font-size:18px;color:var(--gold)}
-.scope-status{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12.5px;color:var(--haze);margin-top:10px}
+.scope-ctl button{width:40px;height:40px;border-radius:50%;background:rgba(7,11,36,.85);border:1px solid var(--gold-soft);font-size:20.2px;color:var(--gold)}
+.scope-status{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:14px;color:var(--haze);margin-top:10px}
 .surveys{display:flex;flex-wrap:wrap;gap:6px}
-.surveys button{font-size:13px;padding:7px 13px;border-radius:20px;border:1px solid rgba(154,163,199,.25);color:var(--haze)}
+.surveys button{font-size:14.6px;padding:7px 13px;border-radius:20px;border:1px solid rgba(154,163,199,.25);color:var(--haze)}
 .surveys button.on{border-color:var(--gold);color:var(--gold)}
 .side{display:flex;flex-direction:column;gap:26px}
+[hidden]{display:none!important}
 .apod-img{aspect-ratio:4/3;background:var(--deep);overflow:hidden}
 .apod-img img{width:100%;height:100%;object-fit:cover;display:block}
-.apod-meta{font-size:12.5px;color:var(--gold);margin-top:12px}
-.side h3{font-family:var(--serif);font-size:24px;font-weight:600;line-height:1.15;margin-top:4px}
-.side p{font-size:13px;color:var(--haze);margin-top:8px}
-.side a{font-size:13px;color:var(--blue)}
+.apod-meta{font-size:14px;color:var(--gold);margin-top:12px}
+.side h3{font-family:var(--serif);font-size:26.9px;font-weight:600;line-height:1.15;margin-top:4px}
+.side p{font-size:14.6px;color:var(--haze);margin-top:8px}
+.side a{font-size:14.6px;color:var(--blue)}
 .cut{display:flex;gap:16px;align-items:center;padding-top:20px;border-top:1px solid var(--gold-soft)}
 .cut-img{width:120px;height:120px;border-radius:50%;overflow:hidden;flex:none;box-shadow:0 0 0 1px var(--gold),0 0 0 5px #000,0 0 0 6px var(--gold-faint)}
 .cut-img img{width:100%;height:100%;object-fit:cover}
 .share{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
 
 /* кнопки */
-.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:30px;font-size:14px;font-weight:500;transition:background .2s,color .2s,border-color .2s}
+.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:30px;font-size:15.7px;font-weight:500;transition:background .2s,color .2s,border-color .2s}
 .btn-hot{background:var(--beam);color:#1a0600}
 .btn-hot:hover{background:#FF8358}
 .btn-line{border:1px solid var(--gold-soft);color:var(--star)}
@@ -248,69 +250,69 @@ input[type=datetime-local]::-webkit-calendar-picker-indicator{filter:invert(.8) 
 .pass{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:start}
 .split{display:grid;grid-template-columns:2fr 1fr 2fr;gap:2px;margin:6px 0 18px}
 .split div{padding:12px 0 0;border-top:3px solid}
-.split b{font-family:var(--serif);font-size:22px;font-weight:600;display:block}
-.split p{font-size:12.5px;color:var(--haze);padding-right:12px}
-.summary{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;font-size:13.5px;padding:14px 0;border-top:1px solid var(--gold-soft);border-bottom:1px solid var(--gold-soft)}
+.split b{font-family:var(--serif);font-size:24.6px;font-weight:600;display:block}
+.split p{font-size:14px;color:var(--haze);padding-right:12px}
+.summary{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;font-size:15.1px;padding:14px 0;border-top:1px solid var(--gold-soft);border-bottom:1px solid var(--gold-soft)}
 .summary dt{color:var(--haze)}
 .summary dd{text-align:right;font-variant-numeric:tabular-nums}
 .ships{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
 .ship{text-align:left;padding:16px;border:1px solid rgba(154,163,199,.22);border-radius:4px;background:rgba(12,18,50,.5);transition:border-color .2s}
 .ship.on{border-color:var(--gold);background:rgba(205,163,73,.07)}
-.ship b{display:block;font-family:var(--serif);font-size:21px;font-weight:600;line-height:1.1}
-.ship p{font-size:12.5px;color:var(--haze);margin-top:6px}
-.ship .sel{font-size:11.5px;color:var(--gold);margin-top:10px;display:none}
+.ship b{display:block;font-family:var(--serif);font-size:23.5px;font-weight:600;line-height:1.1}
+.ship p{font-size:14px;color:var(--haze);margin-top:6px}
+.ship .sel{font-size:12.9px;color:var(--gold);margin-top:10px;display:none}
 .ship.on .sel{display:block}
 .checkout{display:none;flex-direction:column;gap:14px;margin-top:18px;padding:18px;border:1px solid var(--gold-soft);background:var(--deep)}
 .qr-row{display:flex;gap:16px;align-items:center}
 #qrCanvas{width:140px;height:140px;background:#fff;flex:none;border-radius:4px}
-.uri{font-size:11.5px;padding:8px 10px;background:#000;border:1px solid rgba(154,163,199,.2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--haze)}
+.uri{font-size:12.9px;padding:8px 10px;background:#000;border:1px solid rgba(154,163,199,.2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--haze)}
 .steps{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;counter-reset:s}
-.step{font-size:12px;color:var(--dim);padding-top:8px;border-top:2px solid rgba(154,163,199,.18)}
+.step{font-size:13.4px;color:var(--dim);padding-top:8px;border-top:2px solid rgba(154,163,199,.18)}
 .step b{display:block;font-weight:500}
 .step.done{color:var(--haze);border-top-color:var(--gold)}
 .step.act{color:var(--star);border-top-color:var(--beam)}
 .cert{display:grid;gap:14px}
 .cert canvas{width:100%;height:auto;display:block;filter:drop-shadow(0 10px 24px rgba(0,0,0,.6))}
-.status{font-size:12.5px;color:var(--gold)}
+.status{font-size:14px;color:var(--gold)}
 
 /* выплаты */
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--gold-soft);border-bottom:1px solid var(--gold-soft);margin-bottom:26px}
 .kpis>div{padding:18px 16px;border-right:1px solid rgba(205,163,73,.15)}
 .kpis>div:last-child{border-right:0}
-.kpis dt{font-size:12.5px;color:var(--haze)}
-.kpis dd{font-family:var(--serif);font-size:30px;font-weight:600;line-height:1.1;margin-top:4px;font-variant-numeric:lining-nums tabular-nums}
-.kpis small{font-size:12px;color:var(--dim)}
-.demo{font-size:12px;color:var(--gold);border:1px solid var(--gold-soft);border-radius:20px;padding:3px 10px}
+.kpis dt{font-size:14px;color:var(--haze)}
+.kpis dd{font-family:var(--serif);font-size:33.6px;font-weight:600;line-height:1.1;margin-top:4px;font-variant-numeric:lining-nums tabular-nums}
+.kpis small{font-size:13.4px;color:var(--dim)}
+.demo{font-size:13.4px;color:var(--gold);border:1px solid var(--gold-soft);border-radius:20px;padding:3px 10px}
 
 /* регистрация пилота */
-.count{font-size:13.5px;color:var(--gold);display:flex;gap:8px;align-items:center}
+.count{font-size:15.1px;color:var(--gold);display:flex;gap:8px;align-items:center}
 .count::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--beam);box-shadow:0 0 10px var(--beam)}
 .reg{display:grid;gap:14px;margin-top:6px}
 .reg-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.fine{font-size:12.5px;color:var(--dim);line-height:1.5}
+.fine{font-size:14px;color:var(--dim);line-height:1.5}
 .reg-done{display:none;padding:18px;border:1px solid var(--gold);background:rgba(205,163,73,.06)}
 .reg-done.show{display:block}
-.reg-done .no{font-family:var(--serif);font-size:44px;font-weight:600;line-height:1;color:#fff;font-variant-numeric:lining-nums}
-.reg-done .no small{font-family:var(--sans);font-size:13px;font-weight:400;color:var(--gold);margin-left:10px;vertical-align:middle}
+.reg-done .no{font-family:var(--serif);font-size:49.3px;font-weight:600;line-height:1;color:#fff;font-variant-numeric:lining-nums}
+.reg-done .no small{font-family:var(--sans);font-size:14.6px;font-weight:400;color:var(--gold);margin-left:10px;vertical-align:middle}
 .reflink{display:flex;gap:8px;margin-top:12px}
 .reflink input{flex:1;min-width:0}
 .photo-row{display:flex;gap:16px;align-items:center;padding:14px;border:1px dashed var(--gold-soft);border-radius:4px;margin-bottom:6px}
 #photoPrev{width:72px;height:96px;border-radius:3px;box-shadow:0 0 0 1px var(--gold);flex:none}
-.photo-ph{width:72px;height:96px;border-radius:3px;border:1px solid rgba(154,163,199,.25);flex:none;display:grid;place-items:center;color:var(--dim);font-size:26px;font-family:var(--serif)}
-.bgrow{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--star);cursor:pointer}
+.photo-ph{width:72px;height:96px;border-radius:3px;border:1px solid rgba(154,163,199,.25);flex:none;display:grid;place-items:center;color:var(--dim);font-size:29.1px;font-family:var(--serif)}
+.bgrow{display:flex;gap:8px;align-items:center;font-size:14.6px;color:var(--star);cursor:pointer}
 .bgrow input{accent-color:var(--beam);width:16px;height:16px}
-.bgrow em{font-style:normal;color:var(--dim);font-size:12px}
+.bgrow em{font-style:normal;color:var(--dim);font-size:13.4px}
 .photo-btns{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.photo-btn{padding:9px 16px;font-size:13px;cursor:pointer}
+.photo-btn{padding:9px 16px;font-size:14.6px;cursor:pointer}
 .vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;clip:rect(0 0 0 0)}
-.linkbtn{font-size:13px;color:var(--haze);text-decoration:underline;text-underline-offset:3px}
+.linkbtn{font-size:14.6px;color:var(--haze);text-decoration:underline;text-underline-offset:3px}
 .cert-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 @media (max-width:560px){.reg-row{grid-template-columns:1fr}}
-footer{margin-top:110px;padding:34px 0 50px;border-top:1px solid var(--gold-soft);font-size:12.5px;color:var(--dim);line-height:1.7}
+footer{margin-top:110px;padding:34px 0 50px;border-top:1px solid var(--gold-soft);font-size:14px;color:var(--dim);line-height:1.7}
 footer p{max-width:80em}
 footer p+p{margin-top:10px}
 footer a{color:var(--haze)}
-.toast{position:fixed;right:20px;bottom:20px;z-index:90;padding:12px 18px;background:var(--plate);border:1px solid var(--gold);font-size:13px;color:var(--star);box-shadow:0 20px 50px rgba(0,0,0,.7);transform:translateY(160%);transition:transform .35s}
+.toast{position:fixed;right:20px;bottom:20px;z-index:90;padding:12px 18px;background:var(--plate);border:1px solid var(--gold);font-size:14.6px;color:var(--star);box-shadow:0 20px 50px rgba(0,0,0,.7);transform:translateY(160%);transition:transform .35s}
 .toast.show{transform:none}
 
 @media (max-width:1100px){
@@ -324,7 +326,7 @@ footer a{color:var(--haze)}
   .plate-hero{height:auto;min-height:0;display:flex;flex-direction:column}
   #scene{position:relative;height:64svh}
   #labels,.shade,.frame{height:64svh;bottom:auto}
-  .frame{inset:10px 10px auto 10px;height:calc(64svh - 20px)}
+  .frame{inset:10px 10px auto 10px;height:calc(64svh - 20px);border-bottom:0}
   .topline{top:22px;left:26px;right:22px}
   .top-cta{display:none}
   .reading,.legend,.dist-scale{position:relative;left:auto;right:auto;bottom:auto;width:auto;margin:0 18px}
@@ -337,7 +339,7 @@ footer a{color:var(--haze)}
   .ra-num,.dec-num,.mark{display:none}
   .distance{white-space:normal}
   .distance-sub{gap:18px}
-  .distance-sub b{font-size:20px}
+  .distance-sub b{font-size:22.4px}
 }
 @media (max-width:560px){
   .log{grid-template-columns:1fr}
@@ -381,7 +383,7 @@ footer a{color:var(--haze)}
     </nav>
     <div class="tools">
       <div class="toggle" role="group" aria-label="Language" id="langs"><button data-lang="ru">RU</button><button data-lang="en">EN</button><button data-lang="es">ES</button></div>
-      <a class="btn btn-line top-cta" style="padding:8px 16px;font-size:13px" href="#passport" data-i18n="getId">Получить Galactic ID</a>
+      <a class="btn btn-line top-cta" style="padding:8px 16px;font-size:14.6px" href="#passport" data-i18n="getId">Получить Galactic ID</a>
     </div>
   </div>
 
@@ -428,7 +430,7 @@ footer a{color:var(--haze)}
     </dl>
     <div class="moonline">
       <canvas id="moonPhaseCanvas" width="100" height="100"></canvas>
-      <div><div id="fMoon" style="font-family:var(--serif);font-size:19px;font-weight:600">—</div><div class="muted" style="font-size:12px" id="fMoonD">—</div></div>
+      <div><div id="fMoon" style="font-family:var(--serif);font-size:21.3px;font-weight:600">—</div><div class="muted" style="font-size:13.4px" id="fMoonD">—</div></div>
     </div>
     <div class="voy"><span data-i18n="voyA">«Вояджер‑1» сейчас в</span> <b id="voyKm" class="num">—</b> <span data-i18n="voyB">от Земли.</span> <span id="voyStory"></span></div>
     <div class="views" id="cams" role="group" aria-label="Камера" data-i18n-aria="aCams">
@@ -437,7 +439,7 @@ footer a{color:var(--haze)}
   </aside>
 
   <div class="dist-scale">
-    <div class="dist-head"><span data-i18n="scaleH">Шкала расстояний, от световой секунды до 110 лет</span><b id="ladderNext"></b></div>
+    <div class="dist-head"><span id="scaleTxt">Шкала: от световой секунды до 2145 года</span><b id="ladderNext"></b></div>
     <div class="track" id="track"><div class="track-rail"></div><div class="track-fill" id="trackFill"></div><div class="track-head" id="trackHead"></div></div>
   </div>
 </section>
@@ -446,7 +448,7 @@ footer a{color:var(--haze)}
   <section class="chapter" id="route">
     <div class="chapter-head">
       <h2 data-i18n="routeH">Хроника света</h2>
-      <p data-i18n="routeP">Свет расходится во все стороны, поэтому каждая звезда ближе твоего возраста в световых годах уже получила вспышку твоего рождения. Звёзды сняты обзором DSS2 точно по их координатам, объекты Солнечной системы взяты из архива NASA.</p>
+      <p data-i18n="routeP">Свет идёт во все стороны: каждая звезда ближе твоего возраста в световых годах уже получила вспышку твоего рождения. Звёзды — снимки обзора DSS2 по точным координатам, Солнечная система — из архива NASA.</p>
     </div>
     <p class="lead"><span data-i18n="ld1">Твой свет уже коснулся</span> <b id="sStars">—</b> <span data-i18n="ld2">из</span> <span id="sStarsTot">—</span> <span data-i18n="ld3">ближайших звёзд и</span> <b class="hot" id="sExo">—</b> <span data-i18n="ld4">экзопланет. Следующая на пути —</span> <b id="sNext">—</b>, <span id="sNextEta">—</span>. <span data-i18n="ld5">Радиопузырь Земли сейчас около</span> <span id="sRadio">—</span>.</p>
     <div class="rail" id="routeGrid"></div>
@@ -454,8 +456,8 @@ footer a{color:var(--haze)}
     <div class="exo">
       <div>
         <h3 data-i18n="exoH">Миры, до которых дошёл твой свет</h3>
-        <p class="muted" style="font-size:14px" data-i18n="exoP">Подтверждённые экзопланеты из NASA Exoplanet Archive в пределах 110 световых лет. На небе в 3D они отмечены точками: оранжевые уже внутри твоей световой сферы.</p>
-        <p class="muted" style="font-size:12px;margin-top:10px" id="sExoSrc"></p>
+        <p class="muted" style="font-size:15.7px" data-i18n="exoP">Подтверждённые экзопланеты NASA Exoplanet Archive в пределах 110 световых лет. В 3D это точки на небе: оранжевые уже внутри твоей световой сферы.</p>
+        <p class="muted" style="font-size:13.4px;margin-top:10px" id="sExoSrc"></p>
         <div class="tabs" id="exoFilter"><button data-f="reached" class="on" data-i18n="tabReached">Достигнутые</button><button data-f="next" data-i18n="tabNext">Следующие</button></div>
       </div>
       <div class="exo-scroll" id="exoList"><p class="muted">Загружаем архив…</p></div>
@@ -488,7 +490,7 @@ footer a{color:var(--haze)}
         </div>
       </div>
       <div class="side">
-        <div>
+        <div id="apodBox">
           <div class="apod-img" id="apodImg"></div>
           <div class="apod-meta" id="apodDate">NASA APOD</div>
           <h3 id="apodTitle">Снимок дня NASA в твой день рождения</h3>
@@ -497,7 +499,7 @@ footer a{color:var(--haze)}
         </div>
         <div class="cut">
           <div class="cut-img"><img id="cutImg" alt="Снимок неба в точке зенита" data-i18n-alt="aCut" /></div>
-          <div><h3 style="font-size:20px" data-i18n="cutH">Кадр зенита</h3><p><span data-i18n="cut1">Поле 0,45°, обзор</span> <span id="cutSurvey">DSS2</span>. <span data-i18n="cut2">Этот кадр попадёт в твой Galactic ID.</span></p></div>
+          <div><h3 style="font-size:22.4px" data-i18n="cutH">Кадр зенита</h3><p><span data-i18n="cut1">Поле 0,45°, обзор</span> <span id="cutSurvey">DSS2</span>. <span data-i18n="cut2">Этот кадр попадёт в твой Galactic ID.</span></p></div>
         </div>
       </div>
     </div>
@@ -506,7 +508,7 @@ footer a{color:var(--haze)}
   <section class="chapter" id="passport">
     <div class="chapter-head">
       <h2>Galactic Pilot ID</h2>
-      <p data-i18n="passP">Именной документ пилота: твоя Земля в минуту рождения, кадр неба в зените и карта звёзд, до которых уже долетел твой свет. Зарегистрируйся в бортовом журнале — получишь номер по порядку и свою ссылку для друзей.</p>
+      <p data-i18n="passP">Именной документ пилота: Земля в минуту рождения, небо в зените и звёзды, до которых долетел твой свет. Запишись в бортовой журнал — получишь номер по порядку и ссылку для друзей.</p>
     </div>
     <div class="pass">
       <div>
@@ -517,10 +519,23 @@ footer a{color:var(--haze)}
           <dt data-i18n="dtVoy">Против «Вояджера‑1»</dt><dd id="oVoy">—</dd>
         </dl>
         <div class="ships">
-          <button class="ship on" data-style="star_wars"><b>Vanguard</b><p data-i18n="shipV">Дельтакрылый перехватчик с передним оперением и парой ионных двигателей.</p><span class="sel" data-i18n="shipSel">Выбран, летит в сцене</span></button>
-          <button class="ship" data-style="star_trek"><b>Aether</b><p data-i18n="shipA">Дальний разведчик с двумя варп‑кольцами, по мотивам концепта NASA IXS.</p><span class="sel" data-i18n="shipSel">Выбран, летит в сцене</span></button>
+          <button class="ship on" data-style="star_wars"><b>Vanguard</b><p data-i18n="shipV">Пилотируемый корабль: капсула в духе Orion и сервисный модуль с крестом солнечных крыльев.</p><span class="sel" data-i18n="shipSel">Выбран, летит в сцене</span></button>
+          <button class="ship" data-style="star_trek"><b>Aether</b><p data-i18n="shipA">Беспилотный разведчик: антенна «Вояджера», ферма с радиаторами в духе JIMO и ядерно‑электрическая тяга.</p><span class="sel" data-i18n="shipSel">Выбран, летит в сцене</span></button>
         </div>
 
+        <div class="photo-row">
+          <div class="photo-ph" id="photoPh" aria-hidden="true">☺</div>
+          <canvas id="photoPrev" width="144" height="192" hidden></canvas>
+          <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+            <span style="font-size:13.4px;color:var(--haze)" data-i18n="photoLabel">Фото пилота, необязательно</span>
+            <div class="photo-btns">
+              <label class="btn btn-line photo-btn" for="photoInput"><span id="photoBtnTxt">Добавить фото</span></label>
+              <input class="vh" type="file" id="photoInput" accept="image/*" />
+              <button type="button" class="linkbtn" id="photoRemove" hidden data-i18n="photoRemove">Убрать фото</button>
+            </div>
+            <p class="fine" data-i18n="photoNote">Фото станет золотой полупрозрачной подложкой, как защита на правах. Оно не уходит на сервер и исчезает при обновлении страницы.</p>
+          </div>
+        </div>
         <form class="reg" id="regForm" novalidate>
           <div class="f">
             <label for="callsignInput" data-i18n="lCall">Позывной пилота <span>до 24 символов, будет на документе</span></label>
@@ -538,13 +553,13 @@ footer a{color:var(--haze)}
           </div>
           <div class="err" id="regErr" role="alert"></div>
           <button class="btn btn-hot wide" id="registerBtn" type="submit">Записаться в бортовой журнал</button>
-          <p class="fine" id="regNote">Номера выдаются по порядку: чем раньше запишешься, тем меньше номер. Кошелёк пригодится, если мы будем что‑то раздавать первым пилотам. Храним только позывной, контакт и кошелёк, удалим по запросу.</p>
+          <p class="fine" id="regNote">Номера идут по порядку: раньше запишешься — меньше номер. Кошелёк пригодится, если будем что‑то раздавать первым пилотам. Храним только позывной, контакт и кошелёк, удалим по запросу.</p>
         </form>
 
         <div class="reg-done" id="regDone" aria-live="polite">
           <div class="no"><span data-i18n="noSign">№</span> <span id="regNo">—</span><small id="regBadge"></small></div>
-          <p class="muted" style="margin-top:8px;font-size:13.5px"><span data-i18n="regDoneP">Ты в бортовом журнале. Отправь эту ссылку друзьям — по ней видно, кого привёл ты.</span> <span id="refCount"></span></p>
-          <div class="reflink"><input class="in num" id="refLink" readonly /><button class="btn btn-line" type="button" id="copyRefBtn" style="padding:9px 16px;font-size:13px" data-i18n="copy">Скопировать</button></div>
+          <p class="muted" style="margin-top:8px;font-size:15.1px"><span data-i18n="regDoneP">Ты в бортовом журнале. Отправь эту ссылку друзьям — по ней видно, кого привёл ты.</span> <span id="refCount"></span></p>
+          <div class="reflink"><input class="in num" id="refLink" readonly /><button class="btn btn-line" type="button" id="copyRefBtn" style="padding:9px 16px;font-size:14.6px" data-i18n="copy">Скопировать</button></div>
         </div>
       </div>
       <div>
@@ -554,7 +569,7 @@ footer a{color:var(--haze)}
           <button class="btn btn-line" id="downloadCertBtn" data-i18n="dlId">Скачать PNG</button>
           <button class="btn btn-line" id="copyPostBtn2" data-i18n="copyPost2">Скопировать пост со ссылкой</button>
         </div>
-        <p class="fine" style="margin-top:10px" data-i18n="certFine">Карточка размером с водительские права, 85,6×54 мм. PDF на листе A4: печатай в масштабе 100 %, вырежи по меткам, согни по пунктиру и заламинируй — готовый подарок. PNG с обеими сторонами удобно отправить в мессенджер. QR‑код ведёт на сайт по твоей ссылке.</p>
+        <p class="fine" style="margin-top:10px" data-i18n="certFine">Карточка размером с права, 85,6×54 мм. PDF на A4: печатай в масштабе 100 %, вырежи по меткам, согни по пунктиру, заламинируй — и подарок готов. PNG с обеими сторонами — для мессенджеров. QR ведёт на сайт по твоей ссылке.</p>
       </div>
     </div>
   </section>
@@ -671,7 +686,7 @@ const L = {
   ru: {
     title: 'STARBEAM — куда долетел свет твоего рождения',
     photoBgWork: 'убираем фон…', photoBgFail: 'фон убрать не удалось, оставили исходное фото',
-    photoAdd: 'Добавить фото', photoChange: 'Заменить фото', photoAdded: 'Фото добавлено на документ', photoFail: 'Не удалось открыть фото. Попробуй JPG или PNG.',
+    photoAdd: 'Добавить фото', photoChange: 'Заменить фото', photoAdded: 'Фото добавлено защитной подложкой', scaleH: 'Шкала: от световой секунды до {y} года ({n} св. лет)', photoFail: 'Не удалось открыть фото. Попробуй JPG или PNG.',
     km: 'км', lyS: 'св. л.', lyLong: 'световых лет', sec: 'с', min: 'мин', h: 'ч',
     zen: 'твой луч', front: 'фронт твоего света', copyFail: 'Не удалось скопировать', pngFail: 'Не удалось собрать PNG',
     mNew: 'Новолуние', mFull: 'Полнолуние', mWaxC: 'Растущий серп', mFirst: 'Первая четверть', mWaxG: 'Растущая Луна', mWanC: 'Убывающий серп', mLast: 'Последняя четверть', mWanG: 'Убывающая Луна',
@@ -696,7 +711,7 @@ const L = {
     pilots: ['пилот', 'пилота', 'пилотов'], first1000: 'из первой тысячи', refCount: 'По твоей ссылке уже {n} {p}.', countLine: 'В бортовом журнале {n} {p}',
     regBtn: 'Записаться в бортовой журнал', regBusy: 'Записываем…', regSoon: 'Бортовой журнал скоро откроется',
     regSoonNote: 'Регистрация первых пилотов откроется в ближайшие дни. Документ можно скачать уже сейчас.',
-    regNote: 'Номера выдаются по порядку: чем раньше запишешься, тем меньше номер. Кошелёк пригодится, если мы будем что‑то раздавать первым пилотам. Храним только позывной, контакт и кошелёк, удалим по запросу.',
+    regNote: 'Номера идут по порядку: раньше запишешься — меньше номер. Кошелёк пригодится, если будем что‑то раздавать первым пилотам. Храним только позывной, контакт и кошелёк, удалим по запросу.',
     errCall: 'Впиши позывной — он будет на документе.', errContact: 'Нужен email (name@mail.com) или ник в Telegram (@nick, от 5 символов).',
     errWallet: 'Адрес Solana — 32–44 символа без 0, O, I и l. Или оставь поле пустым.', errContactSrv: 'Проверь email или Telegram.', errWalletSrv: 'Проверь адрес кошелька Solana.',
     errCallSrv: 'Позывной: от 1 до 24 символов.', errNet: 'Журнал сейчас не отвечает. Попробуй ещё раз через минуту — документ можно скачать и без записи.',
@@ -707,8 +722,8 @@ const L = {
   en: {
     title: 'STARBEAM — where the light of your birth is now',
     photoBgWork: 'removing background…', photoBgFail: 'could not remove the background, kept the original', photoBg: 'Space background and emblem',
-    photoAdd: 'Add a photo', photoChange: 'Change photo', photoAdded: 'Photo added to your ID', photoFail: 'Could not open the photo. Try a JPG or PNG.',
-    photoLabel: 'Pilot photo, optional', photoRemove: 'Remove photo', photoNote: 'Your photo never leaves this device and is not saved anywhere: the background is removed right in your browser, and the photo disappears when you reload the page.',
+    photoAdd: 'Add a photo', photoChange: 'Change photo', photoAdded: 'Photo added as a security layer', photoFail: 'Could not open the photo. Try a JPG or PNG.',
+    photoLabel: 'Pilot photo, optional', photoRemove: 'Remove photo', photoNote: 'Your photo becomes a translucent gold security layer, like on a driving licence. It never leaves this device and disappears when you reload the page.',
     km: 'km', lyS: 'ly', lyLong: 'light years', sec: 's', min: 'min', h: 'h',
     zen: 'your beam', front: 'front of your light', copyFail: 'Could not copy', pngFail: 'Could not build the PNG',
     mNew: 'New Moon', mFull: 'Full Moon', mWaxC: 'Waxing crescent', mFirst: 'First quarter', mWaxG: 'Waxing gibbous', mWanC: 'Waning crescent', mLast: 'Last quarter', mWanG: 'Waning gibbous',
@@ -733,7 +748,7 @@ const L = {
     pilots: ['pilot', 'pilots'], first1000: 'one of the first 1000', refCount: '{n} {p} joined through your link.', countLine: '{n} {p} in the logbook',
     regBtn: 'Join the logbook', regBusy: 'Logging you in…', regSoon: 'The logbook opens soon',
     regSoonNote: 'Registration for the first pilots opens in the coming days. You can download your ID right now.',
-    regNote: 'Numbers go in order: the earlier you join, the lower your number. A wallet helps if we ever hand out something to the first pilots. We keep only your call sign, contact and wallet, and delete them on request.',
+    regNote: 'Numbers go in order: join earlier, get a lower number. A wallet helps if we hand out something to the first pilots. We keep only your call sign, contact and wallet, and delete them on request.',
     errCall: 'Enter a call sign — it goes on your ID.', errContact: 'Use an email (name@mail.com) or a Telegram handle (@nick, 5+ characters).',
     errWallet: 'A Solana address is 32–44 characters without 0, O, I or l. Or leave it empty.', errContactSrv: 'Check your email or Telegram.', errWalletSrv: 'Check your Solana address.',
     errCallSrv: 'Call sign: 1 to 24 characters.', errNet: 'The logbook is not responding. Try again in a minute — you can download your ID without joining.',
@@ -746,29 +761,29 @@ const L = {
     lWhen: 'When you were born', lWhere: 'Where', phCity: 'Start typing a city', dates: 'Dates:', p1920: '1 January 1920', pVoy: 'Voyager 1 launch', pBtc: 'Bitcoin genesis block',
     skyH: 'The sky at your birth', dtZen: 'Zenith, J2000', dtLst: 'Sidereal time', dtConst: 'Constellation', dtSun: 'Sun',
     voyA: 'Voyager 1 is now', voyB: 'from Earth.', aCams: 'Camera', camEarth: 'Earth', camShip: 'Ship', camBeam: 'Along the beam', camMoon: 'Moon',
-    scaleH: 'Distance scale, from one light second to 110 years',
-    routeH: 'Light chronicle', routeP: 'Light spreads in every direction, so every star closer than your age in light years has already received the flash of your birth. Stars are shown in DSS2 survey frames at their exact coordinates; Solar System objects come from the NASA archive.',
+    scaleH: 'Scale: from one light second to the year {y} ({n} ly)',
+    routeH: 'Light chronicle', routeP: 'Light spreads in every direction: every star closer than your age in light years has already received the flash of your birth. Stars are DSS2 survey frames at exact coordinates; Solar System objects come from the NASA archive.',
     ld1: 'Your light has already reached', ld2: 'of the', ld3: 'nearest stars and', ld4: 'exoplanets. Next on its way:', ld5: 'Earth’s radio bubble is now about',
     exoH: 'Worlds your light has reached', exoP: 'Confirmed exoplanets from the NASA Exoplanet Archive within 110 light years. In the 3D sky they are dots: orange ones are already inside your light sphere.',
     tabReached: 'Reached', tabNext: 'Next',
     scopeH: 'An eyepiece pointed at your zenith', sc1: 'Real sky surveys at', sc2: 'Rotate and zoom, switch between optical, infrared 2MASS or NASA WISE.',
     aZin: 'Zoom in', aZout: 'Zoom out', aZhome: 'Back to zenith', copyPost: 'Copy a post for X', shareCard: 'Download 1200×675 card', apodOpen: 'Open on apod.nasa.gov',
     aCut: 'Sky frame at your zenith', cutH: 'Zenith frame', cut1: '0.45° field, survey', cut2: 'This frame goes on your Galactic ID.',
-    passP: 'Your pilot document: Earth at the minute you were born, the sky frame at your zenith and a map of the stars your light has already reached. Join the logbook to get a number in order and your own link for friends.',
+    passP: 'Your pilot document: Earth at the minute you were born, the sky at your zenith and the stars your light has reached. Join the logbook to get a number in order and a link for friends.',
     dtStart: 'Beam start, UTC', dtCity: 'City', dtVoy: 'Versus Voyager 1',
-    shipV: 'Delta‑wing interceptor with forward canards and twin ion engines.', shipA: 'Long‑range scout with two warp rings, inspired by the NASA IXS concept.', shipSel: 'Selected, flying in the scene',
+    shipV: 'Crewed ship: an Orion‑style capsule and a service module with an X of solar wings.', shipA: 'Robotic scout: a Voyager dish, a JIMO‑style truss with radiators and nuclear‑electric drive.', shipSel: 'Selected, flying in the scene',
     lCall: 'Pilot call sign <span>up to 24 characters, printed on your ID</span>', phCall: 'For example, Rustam or Orion‑7', lContact: 'Email or Telegram', phContact: 'you@mail.com or @nick',
     lWallet: 'Solana wallet <span>optional</span>', phWallet: 'Wallet address',
     noSign: 'No.', regDoneP: 'You are in the logbook. Send this link to friends — it shows who you brought in.', copy: 'Copy',
-    dlId: 'Download PNG', printId: 'Printable card, PDF', pdfReady: 'PDF ready: print at 100%', copyPost2: 'Copy a post with your link', certFine: 'A card the size of a driving licence, 85.6×54 mm. The PDF is an A4 sheet: print at 100%, cut along the marks, fold on the dashed line and laminate it for a ready gift. The PNG shows both sides and is easy to send in a chat. The QR code opens the site with your link.',
+    dlId: 'Download PNG', printId: 'Printable card, PDF', pdfReady: 'PDF ready: print at 100%', copyPost2: 'Copy a post with your link', certFine: 'A card the size of a driving licence, 85.6×54 mm. The PDF is an A4 sheet: print at 100%, cut along the marks, fold on the dashed line and laminate for a ready gift. The PNG with both sides is for chats. The QR opens the site with your link.',
     footer1: 'Earth and Moon: textures based on NASA Blue Marble and Earth at Night (via three.js). Sky map: 112,000 stars from the Hipparcos catalogue (ESA, d3-celestial data) and a Milky Way model. Eyepiece surveys: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Picture of the day: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanets: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archive: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Cities: Open‑Meteo.',
     footer2: 'Calculations: sidereal time IAU 1982, IAU 1976 precession to J2000, Sun and Moon by simplified Meeus formulas (0.1–0.5°). Voyager positions are approximate. NASA is not affiliated with this project and does not endorse it.',
   },
   es: {
     title: 'STARBEAM — hasta dónde llegó la luz de tu nacimiento',
     photoBgWork: 'quitando el fondo…', photoBgFail: 'no se pudo quitar el fondo, dejamos la foto original', photoBg: 'Fondo espacial y emblema',
-    photoAdd: 'Agregar foto', photoChange: 'Cambiar foto', photoAdded: 'Foto agregada al documento', photoFail: 'No se pudo abrir la foto. Probá con JPG o PNG.',
-    photoLabel: 'Foto del piloto, opcional', photoRemove: 'Quitar foto', photoNote: 'Tu foto no sale de este dispositivo ni se guarda en ningún lado: el fondo se quita en tu propio navegador y la foto desaparece al recargar la página.',
+    photoAdd: 'Agregar foto', photoChange: 'Cambiar foto', photoAdded: 'Foto agregada como fondo de seguridad', photoFail: 'No se pudo abrir la foto. Probá con JPG o PNG.',
+    photoLabel: 'Foto del piloto, opcional', photoRemove: 'Quitar foto', photoNote: 'Tu foto pasa a ser un fondo dorado translúcido de seguridad, como en un registro de conducir. No sale de este dispositivo y desaparece al recargar la página.',
     km: 'km', lyS: 'a. l.', lyLong: 'años luz', sec: 's', min: 'min', h: 'h',
     zen: 'tu rayo', front: 'frente de tu luz', copyFail: 'No se pudo copiar', pngFail: 'No se pudo generar el PNG',
     mNew: 'Luna nueva', mFull: 'Luna llena', mWaxC: 'Luna creciente', mFirst: 'Cuarto creciente', mWaxG: 'Gibosa creciente', mWanC: 'Luna menguante', mLast: 'Cuarto menguante', mWanG: 'Gibosa menguante',
@@ -793,7 +808,7 @@ const L = {
     pilots: ['piloto', 'pilotos'], first1000: 'de los primeros 1000', refCount: 'Ya llegaron {n} {p} por tu enlace.', countLine: '{n} {p} en la bitácora',
     regBtn: 'Anotarme en la bitácora', regBusy: 'Anotando…', regSoon: 'La bitácora abre pronto',
     regSoonNote: 'El registro de los primeros pilotos abre en los próximos días. Ya podés descargar tu documento.',
-    regNote: 'Los números van en orden: cuanto antes te anotes, más bajo es tu número. La billetera sirve por si algún día repartimos algo a los primeros pilotos. Guardamos solo tu nombre de piloto, contacto y billetera, y los borramos si lo pedís.',
+    regNote: 'Los números van en orden: cuanto antes te anotes, más bajo el número. La billetera sirve si repartimos algo a los primeros pilotos. Guardamos solo tu nombre de piloto, contacto y billetera, y los borramos si lo pedís.',
     errCall: 'Escribí un nombre de piloto: va en tu documento.', errContact: 'Usá un email (nombre@mail.com) o un usuario de Telegram (@nick, 5 caracteres o más).',
     errWallet: 'Una dirección de Solana tiene 32–44 caracteres sin 0, O, I ni l. O dejá el campo vacío.', errContactSrv: 'Revisá el email o Telegram.', errWalletSrv: 'Revisá la dirección de Solana.',
     errCallSrv: 'Nombre de piloto: de 1 a 24 caracteres.', errNet: 'La bitácora no responde. Probá de nuevo en un minuto: podés descargar el documento sin anotarte.',
@@ -805,21 +820,21 @@ const L = {
     lWhen: 'Cuándo naciste', lWhere: 'Dónde', phCity: 'Empezá a escribir una ciudad', dates: 'Fechas:', p1920: '1 de enero de 1920', pVoy: 'lanzamiento de la Voyager 1', pBtc: 'bloque génesis de Bitcoin',
     skyH: 'El cielo cuando naciste', dtZen: 'Cenit, J2000', dtLst: 'Hora sidérea', dtConst: 'Constelación', dtSun: 'Sol',
     voyA: 'La Voyager 1 está ahora a', voyB: 'de la Tierra.', aCams: 'Cámara', camEarth: 'Tierra', camShip: 'Nave', camBeam: 'Por el rayo', camMoon: 'Luna',
-    scaleH: 'Escala de distancias, de un segundo luz a 110 años',
-    routeH: 'Crónica de la luz', routeP: 'La luz se expande en todas direcciones: cada estrella más cercana que tu edad en años luz ya recibió el destello de tu nacimiento. Las estrellas se ven en tomas del relevamiento DSS2 en sus coordenadas exactas; los objetos del Sistema Solar vienen del archivo de la NASA.',
+    scaleH: 'Escala: de un segundo luz al año {y} ({n} a. l.)',
+    routeH: 'Crónica de la luz', routeP: 'La luz va en todas direcciones: cada estrella más cercana que tu edad en años luz ya recibió el destello de tu nacimiento. Las estrellas son tomas del relevamiento DSS2 en coordenadas exactas; el Sistema Solar viene del archivo de la NASA.',
     ld1: 'Tu luz ya alcanzó', ld2: 'de las', ld3: 'estrellas más cercanas y', ld4: 'exoplanetas. La próxima en el camino:', ld5: 'La burbuja de radio de la Tierra mide hoy unos',
     exoH: 'Mundos a los que llegó tu luz', exoP: 'Exoplanetas confirmados del NASA Exoplanet Archive a menos de 110 años luz. En el cielo 3D son puntos: los naranjas ya están dentro de tu esfera de luz.',
     tabReached: 'Alcanzados', tabNext: 'Próximos',
     scopeH: 'Un ocular apuntado a tu cenit', sc1: 'Relevamientos reales del cielo en', sc2: 'Girá y acercá, cambiá entre óptico, infrarrojo 2MASS o NASA WISE.',
     aZin: 'Acercar', aZout: 'Alejar', aZhome: 'Volver al cenit', copyPost: 'Copiar publicación para X', shareCard: 'Descargar tarjeta 1200×675', apodOpen: 'Abrir en apod.nasa.gov',
     aCut: 'Toma del cielo en tu cenit', cutH: 'Toma del cenit', cut1: 'Campo de 0,45°, relevamiento', cut2: 'Esta toma va en tu Galactic ID.',
-    passP: 'Tu documento de piloto: la Tierra en el minuto en que naciste, la toma del cielo en tu cenit y un mapa de las estrellas a las que ya llegó tu luz. Anotate en la bitácora para tener un número en orden y tu propio enlace para amigos.',
+    passP: 'Tu documento de piloto: la Tierra en el minuto en que naciste, el cielo en tu cenit y las estrellas a las que llegó tu luz. Anotate en la bitácora para tener un número en orden y un enlace para amigos.',
     dtStart: 'Inicio del rayo, UTC', dtCity: 'Ciudad', dtVoy: 'Frente a la Voyager 1',
-    shipV: 'Interceptor de ala delta con canards delanteros y dos motores iónicos.', shipA: 'Explorador de largo alcance con dos anillos warp, inspirado en el concepto IXS de la NASA.', shipSel: 'Elegida, vuela en la escena',
+    shipV: 'Nave tripulada: cápsula estilo Orion y módulo de servicio con alas solares en X.', shipA: 'Sonda robótica: antena del Voyager, armazón con radiadores estilo JIMO y propulsión nuclear eléctrica.', shipSel: 'Elegida, vuela en la escena',
     lCall: 'Nombre de piloto <span>hasta 24 caracteres, va en el documento</span>', phCall: 'Por ejemplo, Rustam u Orión‑7', lContact: 'Email o Telegram', phContact: 'vos@mail.com o @nick',
     lWallet: 'Billetera Solana <span>opcional</span>', phWallet: 'Dirección de la billetera',
     noSign: 'N.º', regDoneP: 'Estás en la bitácora. Mandá este enlace a tus amigos: muestra a quién trajiste vos.', copy: 'Copiar',
-    dlId: 'Descargar PNG', printId: 'Tarjeta para imprimir, PDF', pdfReady: 'PDF listo: imprimí al 100 %', copyPost2: 'Copiar publicación con tu enlace', certFine: 'Una tarjeta del tamaño de un registro de conducir, 85,6×54 mm. El PDF es una hoja A4: imprimí al 100 %, recortá por las marcas, doblá por la línea punteada y plastificala para regalar. El PNG muestra los dos lados y es fácil de mandar por chat. El código QR abre el sitio con tu enlace.',
+    dlId: 'Descargar PNG', printId: 'Tarjeta para imprimir, PDF', pdfReady: 'PDF listo: imprimí al 100 %', copyPost2: 'Copiar publicación con tu enlace', certFine: 'Una tarjeta del tamaño de un registro, 85,6×54 mm. El PDF es una hoja A4: imprimí al 100 %, recortá por las marcas, doblá por la línea punteada y plastificala para regalar. El PNG con los dos lados es para chats. El QR abre el sitio con tu enlace.',
     footer1: 'Tierra y Luna: texturas basadas en NASA Blue Marble y Earth at Night (vía three.js). Mapa del cielo: 112.000 estrellas del catálogo Hipparcos (ESA, datos de d3-celestial) y un modelo de la Vía Láctea. Relevamientos del ocular: <a href="https://aladin.cds.unistra.fr/" target="_blank" rel="noopener">CDS Aladin Lite</a> — DSS2 (STScI), 2MASS (IPAC/NASA), AllWISE (NASA/JPL‑Caltech). Foto del día: <a href="https://apod.nasa.gov/" target="_blank" rel="noopener">NASA APOD</a>. Exoplanetas: <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener">NASA Exoplanet Archive</a>. Archivo: <a href="https://images.nasa.gov/" target="_blank" rel="noopener">NASA Image and Video Library</a>. Ciudades: Open‑Meteo.',
     footer2: 'Cálculos: hora sidérea IAU 1982, precesión IAU 1976 a J2000, Sol y Luna con fórmulas simplificadas de Meeus (0,1–0,5°). Las posiciones de las Voyager son aproximadas. La NASA no está vinculada a este proyecto ni lo respalda.',
   },
@@ -1149,9 +1164,11 @@ cityGlow.scale.setScalar(0.12); scene.add(cityGlow);
 const beamGroup = new THREE.Group(); scene.add(beamGroup);
 const FRONT_D = 6; // где рисуем «фронт света» (в радиусах Земли): условно, настоящий фронт — в десятках световых лет
 const BEAM_LEN = FRONT_D;
-const beamCore = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 1, 8, 1, true), new THREE.MeshBasicMaterial({ color: 0xFFE2D4, transparent: true, opacity: 0.95, blending: THREE.AdditiveBlending, depthWrite: false }));
-const beamHalo = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 1, 12, 1, true), new THREE.MeshBasicMaterial({ color: 0xFF6A3D, transparent: true, opacity: 0.22, blending: THREE.AdditiveBlending, depthWrite: false }));
-[beamCore, beamHalo].forEach((m) => { m.geometry.translate(0, 0.5, 0); m.scale.y = BEAM_LEN; beamGroup.add(m); });
+const beamCore = new THREE.Mesh(new THREE.CylinderGeometry(0.0046, 0.0046, 1, 8, 1, true), new THREE.MeshBasicMaterial({ color: 0xFFE2D4, transparent: true, opacity: 0.95, blending: THREE.AdditiveBlending, depthWrite: false }));
+const beamHalo = new THREE.Mesh(new THREE.CylinderGeometry(0.0205, 0.0205, 1, 12, 1, true), new THREE.MeshBasicMaterial({ color: 0xFF6A3D, transparent: true, opacity: 0.24, blending: THREE.AdditiveBlending, depthWrite: false }));
+const beamGlow = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 1, 16, 1, true), new THREE.MeshBasicMaterial({ color: 0xFF7A4A, transparent: true, opacity: 0.07, blending: THREE.AdditiveBlending, depthWrite: false }));
+const setBeamWidth = (k) => [beamCore, beamHalo, beamGlow].forEach((m) => { m.scale.x = m.scale.z = k; });
+[beamCore, beamHalo, beamGlow].forEach((m) => { m.geometry.translate(0, 0.5, 0); m.scale.y = BEAM_LEN; beamGroup.add(m); });
 const pulses = Array.from({ length: 4 }, () => { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,255,255,1)', 'rgba(255,106,61,.6)'), blending: THREE.AdditiveBlending, depthWrite: false })); scene.add(s); return s; });
 const targetGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,230,215,.9)', 'rgba(255,106,61,.35)'), blending: THREE.AdditiveBlending, depthWrite: false }));
 targetGlow.scale.setScalar(160); scene.add(targetGlow);
@@ -1172,63 +1189,91 @@ function setPoints(points, list, colorFn, r) {
 }
 
 /* =====================================================================
-   6. КОРАБЛИ — оригинальные процедурные модели (нос по +Z)
+   6. КОРАБЛИ — процедурные модели по мотивам настоящей техники (нос по +Z)
+   Vanguard: капсула Orion/Dragon + сервисный модуль ESM с крестом солнечных панелей.
+   Aether: беспилотник — антенна «Вояджера», ферма и радиаторы JIMO, ядерно‑электрическая тяга.
    ===================================================================== */
+function panelTex(bg, line, step) {
+  const c = document.createElement('canvas'); c.width = 256; c.height = 128; const g = c.getContext('2d');
+  g.fillStyle = bg; g.fillRect(0, 0, 256, 128); g.strokeStyle = line; g.lineWidth = 1;
+  for (let x = 0; x <= 256; x += step) { g.beginPath(); g.moveTo(x + 0.5, 0); g.lineTo(x + 0.5, 128); g.stroke(); }
+  for (let y = 0; y <= 128; y += step) { g.beginPath(); g.moveTo(0, y + 0.5); g.lineTo(256, y + 0.5); g.stroke(); }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t;
+}
 const M = {
-  hull: new THREE.MeshStandardMaterial({ color: 0xd9dee8, metalness: 0.8, roughness: 0.3, envMap: envTex, envMapIntensity: 0.45 }),
-  dark: new THREE.MeshStandardMaterial({ color: 0x2c3247, metalness: 0.7, roughness: 0.42, envMap: envTex, envMapIntensity: 0.35 }),
-  glass: new THREE.MeshStandardMaterial({ color: 0x0b1030, metalness: 1, roughness: 0.05, envMap: envTex, envMapIntensity: 0.9, emissive: 0x141a55, emissiveIntensity: 0.4 }),
-  beam: new THREE.MeshStandardMaterial({ color: 0xFF6A3D, emissive: 0xFF6A3D, emissiveIntensity: 1.8, roughness: 0.4 }),
-  gold: new THREE.MeshStandardMaterial({ color: 0xd2a243, metalness: 1, roughness: 0.28, envMap: envTex, envMapIntensity: 0.6 }),
-  ring: new THREE.MeshStandardMaterial({ color: 0xb8c2d8, metalness: 0.9, roughness: 0.22, envMap: envTex, envMapIntensity: 0.5, emissive: 0x6d7cff, emissiveIntensity: 0.35 }),
+  hull: new THREE.MeshStandardMaterial({ color: 0xcfd4dc, metalness: 0.92, roughness: 0.24, envMap: envTex, envMapIntensity: 0.55 }),
+  white: new THREE.MeshStandardMaterial({ color: 0xeceef2, metalness: 0.1, roughness: 0.55, envMap: envTex, envMapIntensity: 0.35 }),
+  dark: new THREE.MeshStandardMaterial({ color: 0x2a2f3c, metalness: 0.6, roughness: 0.5, envMap: envTex, envMapIntensity: 0.3 }),
+  shield: new THREE.MeshStandardMaterial({ color: 0x3b2f29, metalness: 0.1, roughness: 0.9 }),
+  gold: new THREE.MeshStandardMaterial({ color: 0xd4a440, metalness: 1, roughness: 0.38, envMap: envTex, envMapIntensity: 0.7 }),
+  bell: new THREE.MeshStandardMaterial({ color: 0x5b4a40, metalness: 0.85, roughness: 0.35, envMap: envTex, envMapIntensity: 0.5, side: THREE.DoubleSide }),
+  glass: new THREE.MeshStandardMaterial({ color: 0x0b1030, metalness: 1, roughness: 0.05, envMap: envTex, envMapIntensity: 0.9 }),
+  cell: new THREE.MeshStandardMaterial({ map: panelTex('#0e1a4a', 'rgba(150,175,255,.45)', 16), metalness: 0.55, roughness: 0.22, envMap: envTex, envMapIntensity: 0.9, side: THREE.DoubleSide }),
+  radiator: new THREE.MeshStandardMaterial({ map: panelTex('#d9dde4', 'rgba(120,128,145,.55)', 32), metalness: 0.25, roughness: 0.45, envMap: envTex, envMapIntensity: 0.4, side: THREE.DoubleSide }),
   nozzle: new THREE.MeshBasicMaterial({ color: 0xbff4ff }),
 };
-function flat(pts, t, mat) {
-  const s = new THREE.Shape(); pts.forEach(([x, z], i) => (i ? s.lineTo(x, -z) : s.moveTo(x, -z)));
-  const g = new THREE.ExtrudeGeometry(s, { depth: t, bevelEnabled: true, bevelSize: t * 0.4, bevelThickness: t * 0.4, bevelSegments: 1 });
-  g.rotateX(-Math.PI / 2); g.translate(0, -t / 2, 0); return new THREE.Mesh(g, mat);
+const alongZ = (geo) => geo.rotateX(Math.PI / 2); // ось цилиндра Y → Z, «верх» цилиндра смотрит в нос
+function rod(g, a, b, r, mat) {
+  const A = new THREE.Vector3(...a), d = new THREE.Vector3(...b).sub(A), L = d.length();
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, L, 6), mat); m.position.copy(A).addScaledVector(d, 0.5);
+  m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.normalize()); g.add(m); return m;
 }
 function exhaust(group, x, y, z, r, color) {
   const n = new THREE.Mesh(new THREE.CircleGeometry(r * 0.8, 20), M.nozzle); n.position.set(x, y, z - 0.001); n.rotation.y = Math.PI; group.add(n);
-  const cone = new THREE.Mesh(new THREE.ConeGeometry(r * 0.75, r * 9, 16, 1, true), new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.35, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
+  const cone = new THREE.Mesh(new THREE.ConeGeometry(r * 0.75, r * 9, 16, 1, true), new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.32, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
   cone.rotation.x = Math.PI / 2; cone.position.set(x, y, z - r * 4.5); group.add(cone);
   const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(255,255,255,1)', color === 0x8fa4ff ? 'rgba(143,164,255,.6)' : 'rgba(255,150,110,.6)'), blending: THREE.AdditiveBlending, depthWrite: false }));
   glow.scale.setScalar(r * 7); glow.position.set(x, y, z - r * 0.5); group.add(glow);
 }
 function buildVanguard() {
-  const g = new THREE.Group();
-  const body = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.04, 0.34, 16), M.hull); body.rotation.x = Math.PI / 2; g.add(body);
-  const nose = new THREE.Mesh(new THREE.ConeGeometry(0.03, 0.16, 16), M.hull); nose.rotation.x = Math.PI / 2; nose.position.z = 0.25; g.add(nose);
-  const canopy = new THREE.Mesh(new THREE.SphereGeometry(0.024, 20, 12), M.glass); canopy.scale.set(1, 0.7, 2.6); canopy.position.set(0, 0.026, 0.11); g.add(canopy);
-  const wR = [[0.03, 0.07], [0.24, -0.12], [0.235, -0.165], [0.03, -0.16]];
-  g.add(flat(wR, 0.006, M.hull)); g.add(flat(wR.map(([x, z]) => [-x, z]).reverse(), 0.006, M.hull));
-  const sR = [[0.11, -0.04], [0.2, -0.105], [0.198, -0.12], [0.11, -0.065]];
-  const s1 = flat(sR, 0.0075, M.beam); s1.position.y = 0.002; g.add(s1);
-  const s2 = flat(sR.map(([x, z]) => [-x, z]).reverse(), 0.0075, M.beam); s2.position.y = 0.002; g.add(s2);
-  const cR = [[0.025, 0.17], [0.085, 0.12], [0.083, 0.105], [0.025, 0.11]];
-  g.add(flat(cR, 0.004, M.dark)); g.add(flat(cR.map(([x, z]) => [-x, z]).reverse(), 0.004, M.dark));
-  for (const sx of [-1, 1]) {
-    const fin = flat([[0, -0.03], [0.085, -0.15], [0.085, -0.18], [0, -0.17]], 0.004, M.dark);
-    fin.rotation.z = sx * (Math.PI / 2 - 0.35); fin.position.set(sx * 0.03, 0.02, 0); g.add(fin);
-    const pod = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.026, 0.12, 16), M.dark); pod.rotation.x = Math.PI / 2; pod.position.set(sx * 0.05, -0.004, -0.13); g.add(pod);
-    exhaust(g, sx * 0.05, -0.004, -0.19, 0.02, 0xff9a6e);
+  const g = new THREE.Group(), add = (geo, mat, z) => { const m = new THREE.Mesh(geo, mat); m.position.z = z; g.add(m); return m; };
+  // капсула экипажа: усечённый конус, стыковочный узел, окна, теплозащитный экран
+  add(alongZ(new THREE.CylinderGeometry(0.034, 0.078, 0.09, 40)), M.white, 0.17);
+  add(alongZ(new THREE.CylinderGeometry(0.022, 0.026, 0.024, 24)), M.hull, 0.226);
+  add(new THREE.TorusGeometry(0.023, 0.003, 8, 32), M.dark, 0.239);
+  for (let k = 0; k < 4; k++) { const a = k * Math.PI / 2 + Math.PI / 4, w = new THREE.Mesh(new THREE.BoxGeometry(0.013, 0.009, 0.003), M.glass); w.position.set(Math.cos(a) * 0.05, Math.sin(a) * 0.05, 0.19); w.lookAt(Math.cos(a) * 0.2, Math.sin(a) * 0.2, 0.27); g.add(w); }
+  add(alongZ(new THREE.CylinderGeometry(0.08, 0.08, 0.008, 40)), M.shield, 0.122);
+  // переходник и сервисный модуль: металл и золотая экранно‑вакуумная изоляция
+  add(alongZ(new THREE.CylinderGeometry(0.074, 0.072, 0.02, 40)), M.dark, 0.107);
+  add(alongZ(new THREE.CylinderGeometry(0.072, 0.072, 0.13, 40)), M.hull, 0.03);
+  add(alongZ(new THREE.CylinderGeometry(0.0735, 0.0735, 0.045, 40)), M.gold, 0.035);
+  for (let k = 0; k < 4; k++) { const a = k * Math.PI / 2, q = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.012, 0.012), M.dark); q.position.set(Math.cos(a) * 0.078, Math.sin(a) * 0.078, 0.075); g.add(q); }
+  // четыре крыла солнечных батарей крестом, как у Orion ESM
+  for (let k = 0; k < 4; k++) {
+    const arm = new THREE.Group(); arm.rotation.z = Math.PI / 4 + k * Math.PI / 2; arm.position.z = 0.0;
+    rod(arm, [0.07, 0, 0], [0.105, 0, 0], 0.003, M.hull);
+    for (let p = 0; p < 3; p++) { const pn = new THREE.Mesh(new THREE.BoxGeometry(0.074, 0.056, 0.0025), M.cell); pn.position.x = 0.145 + p * 0.077; pn.rotation.x = 0.35; arm.add(pn); }
+    g.add(arm);
   }
+  // корма: переходник, маршевое сопло и восемь вспомогательных
+  add(alongZ(new THREE.CylinderGeometry(0.072, 0.05, 0.03, 40)), M.dark, -0.05);
+  add(alongZ(new THREE.CylinderGeometry(0.016, 0.042, 0.075, 32, 1, true)), M.bell, -0.1);
+  for (let k = 0; k < 8; k++) { const a = k * Math.PI / 4 + Math.PI / 8, b = new THREE.Mesh(alongZ(new THREE.CylinderGeometry(0.004, 0.008, 0.016, 12, 1, true)), M.bell); b.position.set(Math.cos(a) * 0.058, Math.sin(a) * 0.058, -0.072); g.add(b); }
+  exhaust(g, 0, 0, -0.138, 0.034, 0xff9a6e);
   return g;
 }
 function buildAether() {
-  const g = new THREE.Group();
-  const spine = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.52, 12), M.dark); spine.rotation.x = Math.PI / 2; g.add(spine);
-  const crew = new THREE.Mesh(new THREE.CapsuleGeometry(0.036, 0.12, 8, 20), M.hull); crew.rotation.x = Math.PI / 2; crew.position.z = 0.2; g.add(crew);
-  const win = new THREE.Mesh(new THREE.TorusGeometry(0.037, 0.004, 8, 32), M.glass); win.position.z = 0.25; g.add(win);
-  const dish = new THREE.Mesh(new THREE.SphereGeometry(0.05, 24, 12, 0, Math.PI * 2, 0, Math.PI / 3.2), M.gold); dish.rotation.x = -Math.PI / 2; dish.position.z = 0.34; g.add(dish);
-  for (const z of [0.02, -0.12]) {
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.17, 0.011, 14, 96), M.ring); ring.position.z = z; g.add(ring);
-    const inner = new THREE.Mesh(new THREE.TorusGeometry(0.17, 0.004, 8, 96), M.beam); inner.position.z = z; inner.scale.setScalar(0.985); g.add(inner);
-    for (let k = 0; k < 4; k++) { const st = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.16, 6), M.hull); st.position.z = z; st.rotation.z = k * Math.PI / 2 + Math.PI / 4; st.translateY(0.09); g.add(st); }
-  }
-  for (const sx of [-1, 1]) { const p = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.003, 0.07), M.gold); p.position.set(sx * 0.07, 0, -0.21); g.add(p); }
-  const eng = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.04, 0.06, 16), M.dark); eng.rotation.x = Math.PI / 2; eng.position.z = -0.27; g.add(eng);
-  exhaust(g, 0, 0, -0.3, 0.03, 0x8fa4ff);
+  const g = new THREE.Group(), add = (geo, mat, x, y, z) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); g.add(m); return m; };
+  // приборный отсек: десятигранник в золотой изоляции
+  add(alongZ(new THREE.CylinderGeometry(0.055, 0.055, 0.05, 10)), M.gold, 0, 0, 0.2);
+  // остронаправленная антенна, как у «Вояджера»: смотрит назад, на Землю
+  const dish = add(new THREE.SphereGeometry(0.2, 48, 10, 0, Math.PI * 2, 0, 0.62), M.white, 0, 0, 0); dish.rotation.x = Math.PI / 2; dish.position.z = 0.17 - 0.2;
+  add(alongZ(new THREE.CylinderGeometry(0.006, 0.01, 0.03, 12)), M.dark, 0, 0, 0.095);
+  for (let k = 0; k < 3; k++) { const a = k * 2 * Math.PI / 3; rod(g, [Math.cos(a) * 0.11, Math.sin(a) * 0.11, 0.135], [0, 0, 0.08], 0.0018, M.hull); }
+  // штанга РИТЭГов и штанга магнитометра
+  rod(g, [-0.05, 0, 0.21], [-0.2, 0, 0.21], 0.003, M.hull);
+  for (let k = 0; k < 3; k++) { const r = add(new THREE.CylinderGeometry(0.012, 0.012, 0.03, 12), M.dark, -0.12 - k * 0.032, 0, 0.21); r.rotation.z = Math.PI / 2; add(new THREE.BoxGeometry(0.03, 0.036, 0.002), M.dark, -0.12 - k * 0.032, 0, 0.21); }
+  rod(g, [0.05, 0, 0.21], [0.36, 0, 0.21], 0.0015, M.hull);
+  // ферма: четыре лонжерона и раскосы
+  const w = 0.016, z0 = 0.08, z1 = -0.36, corners = [[w, w], [-w, w], [-w, -w], [w, -w]];
+  corners.forEach(([x, y]) => rod(g, [x, y, z0], [x, y, z1], 0.0022, M.hull));
+  for (let i = 0, n = 10; i < n; i++) { const za = z0 + (z1 - z0) * i / n, zb = z0 + (z1 - z0) * (i + 1) / n; for (let c = 0; c < 4; c++) { const [x1, y1] = corners[c], [x2, y2] = corners[(c + 1) % 4]; rod(g, [x1, y1, za], [x2, y2, zb], 0.0012, M.hull); } }
+  // радиаторы по бокам фермы
+  for (const sx of [-1, 1]) { const r = add(new THREE.BoxGeometry(0.1, 0.002, 0.26), M.radiator, sx * (w + 0.055), 0, -0.17); r.rotation.z = sx * 0.12; }
+  // реактор за теневой защитой и три ионных двигателя
+  add(alongZ(new THREE.CylinderGeometry(0.03, 0.06, 0.04, 24)), M.dark, 0, 0, -0.38);
+  add(alongZ(new THREE.CylinderGeometry(0.022, 0.022, 0.04, 20)), M.hull, 0, 0, -0.42);
+  for (let k = 0; k < 3; k++) { const a = k * 2 * Math.PI / 3 + Math.PI / 2, x = Math.cos(a) * 0.05, y = Math.sin(a) * 0.05; add(alongZ(new THREE.CylinderGeometry(0.016, 0.016, 0.02, 20)), M.dark, x, y, -0.41); exhaust(g, x, y, -0.421, 0.013, 0x8fa4ff); }
   return g;
 }
 const ships = { star_wars: buildVanguard(), star_trek: buildAether() };
@@ -1310,7 +1355,7 @@ let blockers = [];
 function measureBlockers() {
   const hero = canvas3d.getBoundingClientRect();
   blockers = ['.reading', '.legend', '.topline', '.dist-scale'].map((q) => document.querySelector(q)?.getBoundingClientRect()).filter(Boolean)
-    .map((b) => ({ l: b.left - hero.left - 30, t: b.top - hero.top - 12, r: b.right - hero.left + 150, b: b.bottom - hero.top + 12 }));
+    .map((b) => ({ l: b.left - hero.left - 200, t: b.top - hero.top - 12, r: b.right - hero.left + 150, b: b.bottom - hero.top + 12 }));
 }
 const blocked = (x, y) => blockers.some((k) => x > k.l && x < k.r && y > k.t && y < k.b);
 function updateLabels() {
@@ -1343,7 +1388,7 @@ function snapshot3D(w, h) {
   cam.position.copy(S).add(beamDir.clone().multiplyScalar(0.8)).add(perp.clone().multiplyScalar(0.55)).add(rt.clone().multiplyScalar(0.2));
   cam.up.copy(rt); cam.lookAt(S.clone().add(beamDir.clone().multiplyScalar(-0.2)));
   const size = renderer.getSize(new THREE.Vector2()), pr = renderer.getPixelRatio();
-  labelsHidden = true;
+  labelsHidden = true; setBeamWidth(1.6);
   renderer.setPixelRatio(1); renderer.setSize(w, h, false); renderer.render(scene, cam);
   const out = document.createElement('canvas'); out.width = w; out.height = h; out.getContext('2d').drawImage(renderer.domElement, 0, 0, w, h);
   renderer.setPixelRatio(pr); renderer.setSize(size.x, size.y, false); labelsHidden = false;
@@ -1376,6 +1421,7 @@ function frame(now) {
     if (tween.t >= 1) { tween = null; makeControls(); }
   } else if (camMode === 'ship') { const s = camShot('ship'); camera.position.lerp(s.pos, 0.08); controls.target.lerp(s.tgt, 0.08); }
   if (camMode === 'ship' || tween) camera.lookAt(controls.target); else controls.update();
+  setBeamWidth(Math.max(1, camera.position.distanceTo(controls.target) / 3.2));
   if (LITE) renderer.render(scene, camera); else composer.render();
   if (!labelsHidden) updateLabels();
 
@@ -1393,16 +1439,17 @@ function frame(now) {
 /* =====================================================================
    8. UI: ladder, facts, Voyager story
    ===================================================================== */
-const LMIN = Math.log10(1 / SEC_YR), LMAX = Math.log10(110);
+const LMIN = Math.log10(1 / SEC_YR), END_YEAR = 2145; let LMAX = Math.log10(110), END_LY = 110;
 const lpos = (ly) => Math.max(0, Math.min(100, (Math.log10(ly) - LMIN) / (LMAX - LMIN) * 100));
 const LADDER = [
   ...SOLAR.map((s) => ({ id: s.id, ly: s.sec / SEC_YR, gold: s.gold })),
-  { id: 'proxima', short: ['Проксима', 'Proxima', 'Próxima'], ly: 4.246 }, { id: 'vega', ly: 25.04 }, { id: 'aldebaran', ly: 65.3 },
+  { id: 'proxima', short: ['Проксима', 'Proxima', 'Próxima'], ly: 4.246 }, { id: 'vega', ly: 25.04 },
 ];
+const ladderAll = () => [...LADDER, { short: [String(END_YEAR), String(END_YEAR), String(END_YEAR)], ly: END_LY * 0.999, gold: true }];
 function buildLadder() {
   const tr = $('track');
   tr.querySelectorAll('.tick').forEach((e) => e.remove());
-  LADDER.forEach((m, i) => { const el = document.createElement('div'); el.className = 'tick' + (m.gold ? ' gold' : ''); el.style.left = lpos(m.ly) + '%'; el.innerHTML = '<i></i><span>' + esc(m.short ? m.short[['ru', 'en', 'es'].indexOf(LANG)] : [...SOLAR, ...STARS].find((x) => x.id === m.id).name) + '</span>'; el.dataset.ly = m.ly; tr.appendChild(el); });
+  ladderAll().forEach((m, i) => { const el = document.createElement('div'); el.className = 'tick' + (m.gold ? ' gold' : ''); el.style.left = lpos(m.ly) + '%'; el.innerHTML = '<i></i><span>' + esc(m.short ? m.short[['ru', 'en', 'es'].indexOf(LANG)] : [...SOLAR, ...STARS].find((x) => x.id === m.id).name) + '</span>'; el.dataset.ly = m.ly; tr.appendChild(el); });
 }
 function slowUpdate(tm) {
   measureBlockers();
@@ -1434,6 +1481,8 @@ function drawMoonPhase(m) {
 function recompute() {
   birthMs = localToUtc(birthLocal, city);
   sky = computeSky(birthMs, city);
+  END_LY = Math.max(5, (Date.UTC(END_YEAR, 0, 1) - birthMs) / (SEC_YR * 1000)); LMAX = Math.log10(END_LY);
+  $('scaleTxt').textContent = t('scaleH', { y: END_YEAR, n: intFmt.format(Math.round(END_LY)) }); buildLadder();
   placeScene();
   buildLabels();
   if (!tween && camMode === 'earth') setCam('earth');
@@ -1488,7 +1537,7 @@ cityInput.addEventListener('input', () => {
     try {
       const r = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=6&language=${LANG}`);
       const res = (await r.json()).results || [];
-      dd.innerHTML = res.length ? res.map((it, i) => `<button data-i="${i}"><span>${esc([it.name, it.admin1, it.country].filter(Boolean).join(', '))}</span><small>${(+it.latitude).toFixed(2)}°, ${(+it.longitude).toFixed(2)}°</small></button>`).join('') : `<div class="muted" style="padding:12px;font-size:13px">${esc(t('cityNone'))}</div>`;
+      dd.innerHTML = res.length ? res.map((it, i) => `<button data-i="${i}"><span>${esc([it.name, it.admin1, it.country].filter(Boolean).join(', '))}</span><small>${(+it.latitude).toFixed(2)}°, ${(+it.longitude).toFixed(2)}°</small></button>`).join('') : `<div class="muted" style="padding:12px;font-size:14.6px">${esc(t('cityNone'))}</div>`;
       dd.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { const it = res[+b.dataset.i];
         setCity({ name: [it.name, it.admin1, it.country].filter(Boolean).join(', '), lat: +it.latitude, lon: +it.longitude, tz: it.timezone }); }));
       dd.style.display = 'block';
@@ -1653,6 +1702,8 @@ function apodDate() {
 }
 function loadApod() {
   clearTimeout(apodDeb);
+  // архив APOD начинается в июне 1995: для родившихся раньше 1996 года блок не показываем
+  const old = birthLocal.slice(0, 10) < '1996-01-01'; $('apodBox').hidden = old; if (old) return;
   apodDeb = setTimeout(async () => {
     const { date, label } = apodDate();
     $('apodDate').textContent = `${label}, ${dateFmt(new Date(date + 'T12:00:00Z'))}`;
@@ -1914,9 +1965,9 @@ function drawCardFront(g, tm) {
   microLine(g, px - 4, py + ph + 20, pw + 8);
   // поля с номерами, как в правах
   const X = 285, W2 = CARD_W - 40 - X;
-  const field = (n, label, value, x, y, w, size = 22, fam = F_SANS, weight = 500, color = '#EEF0FF') => {
-    g.fillStyle = '#CDA349'; g.font = fnt(600, 12, F_SANS); g.fillText(n, x, y);
-    g.fillStyle = '#9AA3C7'; g.font = fnt(400, 12, F_SANS); g.fillText(label, x + 14, y);
+  const field = (n, label, value, x, y, w, size = 24, fam = F_SANS, weight = 500, color = '#EEF0FF') => {
+    g.fillStyle = '#CDA349'; g.font = fnt(600, 13.5, F_SANS); g.fillText(n, x, y);
+    g.fillStyle = '#9AA3C7'; g.font = fnt(400, 13.5, F_SANS); g.fillText(label, x + 15, y);
     g.fillStyle = color; fitFont(g, value, weight, size, w - 10, fam, 11); g.fillText(value, x, y + size + 4);
   };
   const [yy, mo, dd] = birthLocal.slice(0, 10).split('-');
@@ -1930,7 +1981,8 @@ function drawCardFront(g, tm) {
     g.font = fnt(500, 14, F_SANS); const bt = 'First 1000 pilots', bw = g.measureText(bt).width + 26;
     g.strokeStyle = '#FF6A3D'; g.lineWidth = 1.2; g.beginPath(); g.roundRect(X, 400, bw, 28, 14); g.stroke(); g.fillStyle = '#FF8A5C'; g.fillText(bt, X + 13, 419);
   }
-  drawEmblem(g, CARD_W - 104, CARD_H - 112, 66, 0.25); // «призрачная» эмблема, защитный элемент
+  if (ghostPhoto) { g.save(); g.globalAlpha = 0.34; g.drawImage(ghostPhoto, CARD_W - 190, CARD_H - 250, 165, 220); g.restore(); }
+  else drawEmblem(g, CARD_W - 104, CARD_H - 112, 66, 0.25); // «призрачная» эмблема, защитный элемент
   g.fillStyle = 'rgba(238,240,255,.55)'; g.font = fnt(400, 11, F_SANS); g.fillText(`Issued ${new Date().toISOString().slice(0, 10)}   peaceindex.online`, 40, CARD_H - 36);
   g.restore();
 }
@@ -1938,6 +1990,7 @@ function drawCardBack(g, tm) {
   g.save(); cardShape(g); g.clip(); g.textAlign = 'left'; g.letterSpacing = '0px';
   drawCosmicBg(g, CARD_W, CARD_H); g.fillStyle = 'rgba(2,3,12,.6)'; g.fillRect(0, 0, CARD_W, CARD_H);
   drawGuilloche(g, 0, 0, CARD_W, CARD_H); cardEdge(g);
+  if (ghostPhoto) { g.save(); g.globalAlpha = 0.26; g.drawImage(ghostPhoto, CARD_W - 300, 30, 270, 360); g.restore(); } // подложка под телеметрией
   // зенит и карта света
   const zx = 172, zy = 210, zr = 72;
   drawLightMap(g, zx, zy, zr + 20, 148, tm); drawZenithDisc(g, zx, zy, zr);
@@ -1951,13 +2004,13 @@ function drawCardBack(g, tm) {
     const xx = X + i * (CW / 3); g.fillStyle = c; g.font = fnt(600, 28, F_SERIF); g.fillText(v, xx, 146); g.fillStyle = '#9AA3C7'; g.font = fnt(400, 12, F_SANS); g.fillText(l, xx, 164);
   });
   g.strokeStyle = 'rgba(205,163,73,.35)'; g.lineWidth = 1; g.beginPath(); g.moveTo(X, 184); g.lineTo(CARD_W - 40, 184); g.stroke();
-  const row = (y, label, value, x, w) => { g.fillStyle = '#9AA3C7'; g.font = fnt(400, 12, F_SANS); g.fillText(label, x, y); g.fillStyle = '#EEF0FF'; fitFont(g, value, 500, 16, w - 10, F_SANS, 10); g.fillText(value, x, y + 21); };
+  const row = (y, label, value, x, w) => { g.fillStyle = '#9AA3C7'; g.font = fnt(400, 13.5, F_SANS); g.fillText(label, x, y); g.fillStyle = '#EEF0FF'; fitFont(g, value, 500, 18, w - 10, F_SANS, 10); g.fillText(value, x, y + 22); };
   row(210, 'Passed Voyager 1', tm.ratio >= 1 ? dateFmt(tm.overtake) : 'in a few hours', X, CW / 2);
   row(210, 'Constellation', '≈ ' + constName(constellationOf(sky.ra, sky.dec)), X + CW / 2, CW / 2);
   row(262, 'Birth sky', `Moon ${Math.round(sky.moon.illum * 100)}%, Sun ${sky.sun.alt >= 0 ? '+' : '−'}${Math.abs(sky.sun.alt).toFixed(0)}°`, X, CW / 2);
   row(262, 'Logbook', pilot ? `pilot No. ${pilot.serial}` : 'not yet registered', X + CW / 2, CW / 2);
   const q = 96; drawQr(g, shareLink(), CARD_W - 40 - q, 300, q);
-  g.fillStyle = '#9AA3C7'; g.font = fnt(400, 12, F_SANS); g.fillText('Scan to see where', X, 330); g.fillText('your light is right now', X, 348);
+  g.fillStyle = '#9AA3C7'; g.font = fnt(400, 13.5, F_SANS); g.fillText('Scan to see where', X, 330); g.fillText('your light is right now', X, 349);
   // машиночитаемая зона
   microLine(g, 40, 412, CARD_W - 80);
   const [m1, m2] = mrzLines(); g.fillStyle = 'rgba(205,163,73,.9)'; fitFont(g, m1, 500, 22, CARD_W - 80, F_MONO, 12); g.fillText(m1, 40, 452); g.fillText(m2, 40, 484);
@@ -2011,6 +2064,41 @@ async function cardPdf() {
   const xref = len; put(`xref\n0 8\n0000000000 65535 f \n${offs.slice(1).map((v) => String(v).padStart(10, '0') + ' 00000 n \n').join('')}trailer\n<< /Size 8 /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
   return new Blob(parts, { type: 'application/pdf' });
 }
+
+/* --- фото пилота: только «призрачная» золотая подложка на карточке; живёт в памяти страницы, не отправляется и не сохраняется */
+let ghostPhoto = null;
+async function loadPhoto(file) {
+  if (file.size > 40e6) throw new Error('size');
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+    const PW = 600, PH = 800, ar = PW / PH; let sw = img.naturalWidth, sh = img.naturalHeight, sx = 0, sy = 0;
+    if (!sw || !sh) throw new Error('decode');
+    if (sw / sh > ar) { const nw = sh * ar; sx = (sw - nw) / 2; sw = nw; } else { const nh = sw / ar; sy = (sh - nh) * 0.3; sh = nh; }
+    const c = document.createElement('canvas'); c.width = PW; c.height = PH; c.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, PW, PH); return c;
+  } finally { URL.revokeObjectURL(url); }
+}
+// золотистый монохром с мягким краем
+function goldGhost(src) {
+  const gc = document.createElement('canvas'); gc.width = 300; gc.height = 400; const gg = gc.getContext('2d'); gg.drawImage(src, 0, 0, 300, 400);
+  const d = gg.getImageData(0, 0, 300, 400), px = d.data;
+  for (let i = 0; i < px.length; i += 4) { const y = 0.3 * px[i] + 0.59 * px[i + 1] + 0.11 * px[i + 2]; px[i] = y; px[i + 1] = y * 0.8; px[i + 2] = y * 0.45; }
+  gg.putImageData(d, 0, 0); gg.globalCompositeOperation = 'destination-in';
+  const gr = gg.createRadialGradient(150, 180, 60, 150, 200, 200); gr.addColorStop(0, 'rgba(0,0,0,1)'); gr.addColorStop(1, 'rgba(0,0,0,0)');
+  gg.fillStyle = gr; gg.fillRect(0, 0, 300, 400); return gc;
+}
+function photoUI() {
+  const has = !!ghostPhoto; $('photoPrev').hidden = !has; $('photoPh').hidden = has; $('photoRemove').hidden = !has;
+  $('photoBtnTxt').textContent = t(has ? 'photoChange' : 'photoAdd');
+  if (has) { const pc = $('photoPrev'), pg = pc.getContext('2d'); pg.fillStyle = '#05060f'; pg.fillRect(0, 0, pc.width, pc.height); pg.drawImage(ghostPhoto, 0, 0, pc.width, pc.height); }
+}
+$('photoInput').addEventListener('change', async (e) => {
+  const f = e.target.files?.[0]; e.target.value = ''; if (!f) return;
+  try { ghostPhoto = goldGhost(await loadPhoto(f)); } catch { toast(t('photoFail')); return; }
+  photoUI(); await renderCert(); toast(t('photoAdded'));
+});
+$('photoRemove').onclick = () => { ghostPhoto = null; photoUI(); renderCert(); };
+window.addEventListener('pageshow', (e) => { if (e.persisted && ghostPhoto) { ghostPhoto = null; photoUI(); renderCert(); } });
 $('callsignInput').addEventListener('input', scheduleCert);
 // холсты уже отрисованы заранее — сохраняем сразу, чтобы iPhone не потерял «жест пользователя» для меню «Поделиться»
 $('downloadCertBtn').onclick = async () => { if (certPending) await renderCert(); if (await download(cardSheet(), `starbeam_pilot_${pilot ? pilot.serial : pilotHash()}.png`)) toast(t('idDownloaded')); };
@@ -2068,7 +2156,7 @@ function setLang(l) {
   apply('data-i18n-aria', 'Aria', (e) => e.getAttribute('aria-label'), (e, v) => e.setAttribute('aria-label', v));
   apply('data-i18n-alt', 'Alt', (e) => e.alt, (e, v) => { e.alt = v; });
   document.querySelectorAll('#langs button').forEach((b) => b.classList.toggle('on', b.dataset.lang === l));
-  localizeData(); renderCityPresets(); regTexts(); 
+  localizeData(); renderCityPresets(); regTexts(); photoUI(); 
   if (document.activeElement !== cityInput) cityInput.value = cityName(city.name);
   $('aladinStatus').textContent = t(aladinOk ? 'aladinOk' : 'aladinConn'); setFov(fov);
   if (!$('apodImg').innerHTML) { $('apodTitle').textContent = t('apodTitle0'); $('apodText').textContent = t('apodLoading'); }
