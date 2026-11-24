@@ -412,15 +412,6 @@ html[data-page="home"]{scroll-snap-type:y proximity}
 .console .sep{display:none}
 @media (min-width:901px){
   .reading{left:72px;top:clamp(118px,15vh,160px);bottom:auto;width:min(590px,45vw);gap:16px}
-  .reading h1{font-family:var(--sans);font-size:17px;font-weight:400;line-height:1.4;letter-spacing:0;color:var(--haze);max-width:none}
-  .reading .count{margin-top:6px}
-  .reading>div:nth-child(2){display:flex;flex-direction:column;gap:12px}
-  .distance-sub{order:-1;margin:0}
-  .distance-sub>div:not(.hot){display:none}
-  .distance-sub .hot{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px}
-  .distance-sub .hot b{font-size:clamp(60px,6.3vw,96px);line-height:.9;font-weight:500;color:#fff;letter-spacing:-.02em;text-shadow:0 0 40px rgba(3,4,12,.9)}
-  .distance-sub .hot span{font-family:var(--serif);font-size:clamp(24px,2.3vw,34px);color:#FF8A5C}
-  .distance{font-family:inherit;font-weight:400;font-size:17px;color:#C9CEEA;letter-spacing:0;line-height:1.4}
   .log{grid-template-columns:1.25fr 1fr;gap:0;padding:0;margin-top:14px;border-color:rgba(205,163,73,.42);border-radius:14px;background:rgba(6,9,26,.8)}
   .log:focus-within{border-color:var(--gold)}
   .log .f{padding:12px 16px;gap:4px}
@@ -452,10 +443,122 @@ html[data-page="home"]{scroll-snap-type:y proximity}
   .console a.on{background:rgba(255,106,61,.12)}
   .console .sep{display:block;width:1px;height:30px;background:rgba(205,163,73,.3);margin:0 4px}
 }
+
+/* ===== Экраны 2–5 + путешествие ===== */
+.reading h1{font-family:var(--sans);font-size:17px;font-weight:400;line-height:1.4;letter-spacing:0;color:var(--haze);max-width:none}
+.reading .count{margin-top:6px}
+.reading>div:nth-child(2){display:flex;flex-direction:column;gap:10px}
+.distance-sub{order:-1;margin:0}
+.distance-sub>div:not(.hot){display:none}
+.distance-sub .hot{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.distance-sub .hot b{font-size:clamp(56px,6.3vw,96px);line-height:.9;font-weight:500;color:#fff;letter-spacing:-.02em;text-shadow:0 0 40px rgba(3,4,12,.9)}
+.distance-sub .hot span{font-family:var(--serif);font-size:clamp(24px,2.3vw,34px);color:#FF8A5C}
+.distance{font-family:inherit;font-weight:400;font-size:17px;color:#C9CEEA;letter-spacing:0;line-height:1.4;white-space:normal}
+.start-btn{display:none}
+.views .trip-cam{color:#E9D6A8}
+/* путешествие */
+.trip{position:absolute;right:34px;bottom:176px;width:min(420px,calc(100% - 24px));z-index:6;padding:14px 16px;border:1px solid rgba(205,163,73,.42);border-radius:16px;background:rgba(6,9,26,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);display:flex;flex-direction:column;gap:12px}
+.trip[hidden]{display:none}
+.trip-top{display:flex;align-items:center;gap:14px}
+.trip-play{width:44px;height:44px;flex:none;border-radius:50%;border:1px solid var(--beam);background:var(--beam-soft);color:#fff;display:grid;place-items:center}
+.trip-play svg{width:20px;height:20px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round}
+.trip-play .i-play{fill:currentColor;stroke:none}.trip .i-pause{display:none}.trip.playing .i-pause{display:block}.trip.playing .i-play{display:none}
+.trip-read{display:flex;flex-direction:column;min-width:0;flex:1}
+.trip-read b{font-family:var(--serif);font-size:28px;font-weight:600;line-height:1.05;color:#fff;font-variant-numeric:lining-nums tabular-nums}
+.trip-read span{font-size:13.5px;color:var(--haze)}
+.trip-x{width:34px;height:34px;flex:none;border-radius:50%;border:1px solid var(--gold-soft);color:var(--haze);font-size:18px}
+#tripRange{width:100%;accent-color:var(--beam);height:28px}
+.trip-near{align-self:flex-start;font-size:13.5px;color:#E9D6A8;padding:6px 12px;border:1px solid var(--gold-soft);border-radius:999px;background:rgba(205,163,73,.08)}
+.trip-near:hover{border-color:var(--gold)}
+/* карточка объекта */
+.info-grab{display:none}
+#info dl{display:flex;flex-direction:column;gap:7px}
+#info .r{display:flex;justify-content:space-between;gap:14px}
+#info .r.hot dd{color:#FFB79C}
+.info-nav{display:flex;justify-content:space-between;gap:10px;margin-top:16px}
+.info-nav:empty{display:none}
+.info-nav button{font-size:13.5px;color:#E9D6A8;padding:9px 12px;border:1px solid var(--gold-soft);border-radius:10px;background:rgba(205,163,73,.06);max-width:48%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.info-nav button:hover{border-color:var(--gold)}
+/* Galactic ID */
+.cert{display:block;perspective:1800px}
+.cert-in{position:relative;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.cert .face{-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.cert .back{position:absolute;inset:0}
+.cert .back{transform:rotateY(180deg)}
+.cert.flipped .cert-in{transform:rotateY(180deg)}
+.pass-card .summary{margin-top:22px}
+.idsteps{list-style:none;margin:0;padding:0}
+.idstep{position:relative;padding:0 0 30px 56px}
+.idstep::before{content:'';position:absolute;left:18px;top:40px;bottom:4px;width:1px;background:var(--gold-soft)}
+.idstep:last-child::before{display:none}
+.step-h{display:flex;align-items:center;gap:14px;width:calc(100% + 56px);margin-left:-56px;text-align:left;cursor:default}
+.step-n{width:37px;height:37px;flex:none;border-radius:50%;border:1px solid var(--gold);display:grid;place-items:center;color:var(--gold);font-family:var(--serif);font-size:20px;font-weight:600;background:var(--void);transition:background .2s,color .2s}
+.idstep.done .step-n{background:var(--gold);color:#120d02}
+.step-t{font-family:var(--serif);font-size:24px;font-weight:600;line-height:1.1;color:#fff}
+.step-t{flex:1 1 auto;min-width:0}
+.step-v{display:none;margin-left:auto;flex:0 0 auto;font-size:14px;color:var(--gold);max-width:42%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.step-b{margin-top:14px}
+.idstep .ships{margin:0}
+.idstep .photo-row{margin-bottom:0}
+#step1 label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.console .explore{display:none}
+@media (min-width:901px){
+  .pass{grid-template-columns:minmax(0,1.2fr) minmax(0,.85fr);gap:64px}
+  .cert-in{transform:rotateX(5deg) rotateY(-9deg)}
+  .cert:hover .cert-in{transform:rotateX(0) rotateY(0)}
+  .cert.flipped .cert-in{transform:rotateX(5deg) rotateY(171deg)}
+  .cert.flipped:hover .cert-in{transform:rotateY(180deg)}
+  .cert-actions{align-items:center}
+}
+@media (max-width:900px){
+  .reading>div:nth-child(2){gap:6px}
+  .distance{font-size:15px}
+  .start-btn{display:flex;order:2;align-items:center;justify-content:space-between;gap:12px;margin:18px 18px 0;padding:13px 16px;border:1px solid rgba(205,163,73,.42);border-radius:14px;background:rgba(6,9,26,.8);text-align:left}
+  .start-btn>span{display:flex;flex-direction:column;min-width:0}
+  .start-btn small{font-size:12.5px;color:var(--haze)}
+  .start-btn b{font-weight:400;font-size:16px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .start-btn em{font-style:normal;font-size:14px;color:var(--gold);flex:none}
+  .start-btn[aria-expanded="true"] em{color:var(--haze)}
+  .log{order:2;display:none!important;margin-top:10px!important;border-radius:14px}
+  .log.open{display:grid!important}
+  .trip{left:12px;right:12px;width:auto;top:calc(64svh - 132px);bottom:auto;padding:12px 14px;gap:8px}
+  .trip-read b{font-size:24px}
+  #info{left:0;right:0;bottom:0;top:auto;width:auto;max-height:84svh;border-radius:22px 22px 0 0;border-bottom:0;z-index:80;padding-bottom:env(safe-area-inset-bottom)}
+  .info-grab{display:block;position:absolute;left:50%;top:8px;width:42px;height:4px;margin-left:-21px;border-radius:2px;background:rgba(255,255,255,.35);z-index:3}
+  .info-img img{aspect-ratio:16/9;border-radius:22px 22px 0 0}
+  #info h3{font-size:34px}
+  #info dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  #info .r{grid-column:1/-1}
+  #info .r:nth-child(-n+3):not(.hot){grid-column:auto;flex-direction:column;justify-content:flex-start;gap:4px;padding:10px;border:1px solid rgba(205,163,73,.25);border-radius:12px;background:rgba(255,255,255,.025)}
+  #info .r:nth-child(-n+3):not(.hot) dt{font-size:12px}
+  #info .r:nth-child(-n+3):not(.hot) dd{text-align:left;font-size:15px}
+  #info .r.hot{align-items:center;padding:12px 14px;border:1px solid rgba(255,106,61,.4);border-radius:12px;background:rgba(255,106,61,.1)}
+  #info .r.hot dd{font-family:var(--serif);font-size:20px}
+  .info-nav button{flex:1;padding:12px}
+  .cert-actions .btn-hot{flex:1 1 100%;justify-content:center}
+  .idsteps{margin-top:8px}
+  .idstep{padding:0;margin-bottom:8px;border:1px solid var(--gold-soft);border-radius:14px;background:rgba(7,11,36,.6)}
+  .idstep::before{display:none}
+  .step-h{width:100%;margin:0;padding:14px 16px;cursor:pointer}
+  .step-n{width:30px;height:30px;font-size:17px}
+  .step-t{font-family:var(--sans);font-size:16px;font-weight:400}
+  .step-v{display:block}
+  .step-b{display:none;margin:0;padding:0 16px 16px}
+  .idstep.open .step-b{display:block}
+  .idstep.open .step-v{display:none}
+}
+@media (max-width:700px){
+  .console{flex-wrap:wrap}
+  .console a:nth-child(n+4){display:none}
+  .console .explore{display:flex;position:relative;flex-direction:column;align-items:center;gap:5px;flex:1;min-width:0;padding:9px 2px 7px;border-radius:10px;color:var(--haze);font-size:11px;letter-spacing:.03em;background:linear-gradient(#0d1233,#070a1f);border:1px solid rgba(205,163,73,.16)}
+  .console .explore.on,.console.open .explore{color:#fff;border-color:var(--beam);box-shadow:0 0 16px rgba(255,106,61,.32)}
+  .console.open a,.console.open .explore{flex:1 0 30%}
+  .console.open a:nth-child(n+4){display:flex;order:-1;flex:1 0 22%}
+}
 </style>
 </head>
 <body>
-<aside id="info" hidden aria-live="polite"><button type="button" class="info-x" aria-label="×">×</button><div class="info-img"></div><div class="info-body"><div class="info-src"></div><div class="info-type"></div><h3></h3><dl></dl><p class="info-note"></p></div></aside>
+<aside id="info" hidden aria-live="polite"><span class="info-grab" aria-hidden="true"></span><button type="button" class="info-x" aria-label="×">×</button><div class="info-img"></div><div class="info-body"><div class="info-src"></div><div class="info-type"></div><h3></h3><dl></dl><p class="info-note"></p><div class="info-nav"></div></div></aside>
 <nav class="console" aria-label="Разделы" data-i18n-aria="aNav">
   <a data-go="home"><svg viewBox="0 0 24 24"><path d="M5.5 18.5 19 5"/><circle cx="19.5" cy="4.5" r="2"/><circle cx="5" cy="19" r="3"/></svg><span data-i18n="cBeam">Луч</span></a>
   <a data-go="id"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="8.5" cy="12" r="2.2"/><path d="M13 10h5M13 14h4"/></svg><span data-i18n="cId">Мой ID</span></a>
@@ -464,6 +567,7 @@ html[data-page="home"]{scroll-snap-type:y proximity}
   <a data-go="chronicle"><svg viewBox="0 0 24 24"><path d="M2 12h20"/><circle cx="6" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2"/></svg><span data-i18n="cRoute">Хроника</span></a>
   <a data-go="worlds"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><ellipse cx="12" cy="12" rx="10.5" ry="3.6" transform="rotate(-20 12 12)"/></svg><span data-i18n="cWorlds">Миры</span></a>
   <a data-go="scope"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 2v6M12 16v6M2 12h6M16 12h6"/></svg><span data-i18n="cScope">Окуляр</span></a>
+  <button type="button" class="explore" aria-expanded="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg><span data-i18n="cExplore">Исследовать</span></button>
 </nav>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -511,7 +615,8 @@ html[data-page="home"]{scroll-snap-type:y proximity}
         <div><b id="auCounter">0</b><span data-i18n="uAu">астр. единиц</span></div>
       </div>
     </div>
-    <div class="log">
+    <button type="button" class="start-btn" id="startBtn" aria-expanded="false" aria-controls="logBox"><span><small data-i18n="yourStart">Твой старт</small><b id="startTxt">—</b></span><em data-i18n="edit">Изменить</em></button>
+    <div class="log" id="logBox">
       <div class="f">
         <label for="birthInput"><span data-i18n="lWhen">Когда ты родился</span> <span id="tzLabel"></span></label>
         <input class="in num" type="datetime-local" id="birthInput" min="1920-01-01T00:00" />
@@ -549,10 +654,18 @@ html[data-page="home"]{scroll-snap-type:y proximity}
     </div>
     <div class="voy"><span data-i18n="voyA">«Вояджер‑1» сейчас в</span> <b id="voyKm" class="num">—</b> <span data-i18n="voyB">от Земли.</span> <span id="voyStory"></span></div>
     <div class="views" id="cams" role="group" aria-label="Камера" data-i18n-aria="aCams">
-      <button data-cam="earth" class="on" data-i18n="camEarth">Земля</button><button data-cam="ship" data-i18n="camShip">Корабль</button><button data-cam="beam" data-i18n="camBeam">Вдоль луча</button><button data-cam="moon" data-i18n="camMoon">Луна</button>
+      <button data-cam="earth" class="on" data-i18n="camEarth">Земля</button><button data-cam="ship" data-i18n="camShip">Корабль</button><button data-cam="beam" data-i18n="camBeam">Вдоль луча</button><button data-cam="moon" data-i18n="camMoon">Луна</button><button data-cam="trip" class="trip-cam" data-i18n="camTrip">Пройти по лучу</button>
     </div>
   </aside>
-
+  <div class="trip" id="trip" hidden>
+    <div class="trip-top">
+      <button type="button" class="trip-play" id="tripPlay" aria-label="Пауза" data-i18n-aria="tripPause"><svg viewBox="0 0 24 24"><path class="i-pause" d="M8 5v14M16 5v14"/><path class="i-play" d="M7 4.5v15l13-7.5z"/></svg></button>
+      <div class="trip-read"><b id="tripLy">—</b><span id="tripWhen"></span></div>
+      <button type="button" class="trip-x" id="tripX" aria-label="Закрыть" data-i18n-aria="close">×</button>
+    </div>
+    <input type="range" id="tripRange" min="0" max="1000" value="0" aria-label="Пройденная дистанция" data-i18n-aria="tripAria" />
+    <button type="button" class="trip-near" id="tripNear" hidden></button>
+  </div>
 </section>
 
 <main class="page">
@@ -562,27 +675,35 @@ html[data-page="home"]{scroll-snap-type:y proximity}
       <p data-i18n="passP">Именной документ пилота. Запишись в бортовой журнал — получишь номер по порядку и ссылку для друзей.</p>
     </div>
     <div class="pass">
-      <div>
-        <div class="cert"><canvas id="passportCanvas" width="2054" height="1296" aria-label="Galactic Pilot ID, front"></canvas><canvas id="passportBack" width="2054" height="1296" aria-label="Galactic Pilot ID, back"></canvas></div>
+      <div class="pass-card">
+        <div class="cert" id="cert"><div class="cert-in"><canvas class="face" id="passportCanvas" width="2054" height="1296" aria-label="Galactic Pilot ID, front"></canvas><canvas class="face back" id="passportBack" width="2054" height="1296" aria-label="Galactic Pilot ID, back"></canvas></div></div>
         <div class="cert-actions">
           <button class="btn btn-hot" id="printCertBtn" data-i18n="printId">Получить карточку на память, PDF</button>
           <button class="btn btn-line" id="downloadCertBtn" data-i18n="dlId">Скачать PNG</button>
-          <button class="btn btn-line" id="copyPostBtn2" data-i18n="copyPost2">Скопировать пост со ссылкой</button>
+          <button class="btn btn-line" type="button" id="flipCertBtn" data-i18n="flipId">Перевернуть карточку</button>
+          <button class="linkbtn" type="button" id="copyPostBtn2" data-i18n="copyPost2">Скопировать пост со ссылкой</button>
         </div>
         <p class="fine" style="margin-top:10px" data-i18n="certFine">Карточка размером с права, 85,6×54 мм. PDF на A4: печатай в масштабе 100 %, вырежи по меткам, согни по пунктиру, заламинируй — и подарок готов. PNG с обеими сторонами — для мессенджеров. QR ведёт на сайт по твоей ссылке.</p>
-      </div>
-      <div>
         <dl class="summary">
           <dt data-i18n="dtStart">Старт луча, UTC</dt><dd id="oBirth">—</dd>
           <dt data-i18n="dtCity">Город</dt><dd id="oCity">—</dd>
           <dt data-i18n="dtZen">Зенит, J2000</dt><dd id="oCoords">—</dd>
           <dt data-i18n="dtVoy">Против «Вояджера‑1»</dt><dd id="oVoy">—</dd>
         </dl>
-        <div class="ships">
-          <button class="ship on" data-style="star_wars"><b>Vanguard</b><p data-i18n="shipV">Пилотируемый корабль: капсула в духе Orion и сервисный модуль с крестом солнечных крыльев.</p><span class="sel" data-i18n="shipSel">Выбран, летит в сцене</span></button>
-          <button class="ship" data-style="star_trek"><b>Aether</b><p data-i18n="shipA">Беспилотный разведчик: антенна «Вояджера», ферма с радиаторами в духе JIMO и ядерно‑электрическая тяга.</p><span class="sel" data-i18n="shipSel">Выбран, летит в сцене</span></button>
+      </div>
+      <ol class="idsteps">
+      <li class="idstep" id="step1">
+        <button type="button" class="step-h" aria-expanded="false"><span class="step-n">1</span><span class="step-t" data-i18n="st1">Позывной на карточке</span><span class="step-v" id="sv1"></span></button>
+        <div class="step-b">
+          <div class="f">
+            <label for="callsignInput" data-i18n="lCall">Позывной пилота <span>до 24 символов, будет на документе</span></label>
+            <input class="in" id="callsignInput" maxlength="24" autocomplete="nickname" placeholder="Ваше имя, бренд, ник в соцсетях и т. д." data-i18n-ph="phCall" spellcheck="false" />
+          </div>
         </div>
-
+      </li>
+      <li class="idstep" id="step2">
+        <button type="button" class="step-h" aria-expanded="false"><span class="step-n">2</span><span class="step-t" data-i18n="st2">Фото как защитная подложка</span><span class="step-v" id="sv2"></span></button>
+        <div class="step-b">
         <div class="photo-row">
           <div class="photo-ph" id="photoPh" aria-hidden="true">☺</div>
           <canvas id="photoPrev" width="144" height="192" hidden></canvas>
@@ -597,11 +718,21 @@ html[data-page="home"]{scroll-snap-type:y proximity}
             <p class="fine" data-i18n="photoNote">Фото станет золотой полупрозрачной подложкой, как защита на правах. Оно не уходит на сервер и исчезает при обновлении страницы.</p>
           </div>
         </div>
+        </div>
+      </li>
+      <li class="idstep" id="step3">
+        <button type="button" class="step-h" aria-expanded="false"><span class="step-n">3</span><span class="step-t" data-i18n="st3">Корабль</span><span class="step-v" id="sv3"></span></button>
+        <div class="step-b">
+        <div class="ships">
+          <button class="ship on" data-style="star_wars"><b>Vanguard</b><p data-i18n="shipV">Пилотируемый корабль: капсула в духе Orion и сервисный модуль с крестом солнечных крыльев.</p><span class="sel" data-i18n="shipSel">Выбран, летит в сцене</span></button>
+          <button class="ship" data-style="star_trek"><b>Aether</b><p data-i18n="shipA">Беспилотный разведчик: антенна «Вояджера», ферма с радиаторами в духе JIMO и ядерно‑электрическая тяга.</p><span class="sel" data-i18n="shipSel">Выбран, летит в сцене</span></button>
+        </div>
+        </div>
+      </li>
+      <li class="idstep" id="step4">
+        <button type="button" class="step-h" aria-expanded="false"><span class="step-n">4</span><span class="step-t" data-i18n="st4">Номер в бортовом журнале</span><span class="step-v" id="sv4"></span></button>
+        <div class="step-b">
         <form class="reg" id="regForm" novalidate>
-          <div class="f">
-            <label for="callsignInput" data-i18n="lCall">Позывной пилота <span>до 24 символов, будет на документе</span></label>
-            <input class="in" id="callsignInput" maxlength="24" autocomplete="nickname" placeholder="Ваше имя, бренд, ник в соцсетях и т. д." data-i18n-ph="phCall" spellcheck="false" />
-          </div>
           <div class="reg-row">
             <div class="f">
               <label for="contactInput" data-i18n="lContact">Email или Telegram</label>
@@ -616,13 +747,14 @@ html[data-page="home"]{scroll-snap-type:y proximity}
           <button class="btn btn-hot wide" id="registerBtn" type="submit">Записаться в бортовой журнал</button>
           <p class="fine" id="regNote">Номера идут по порядку: раньше запишешься — меньше номер. Кошелёк пригодится, если будем что‑то раздавать первым пилотам. Храним только позывной, контакт и кошелёк, удалим по запросу.</p>
         </form>
-
         <div class="reg-done" id="regDone" aria-live="polite">
           <div class="no"><span data-i18n="noSign">№</span> <span id="regNo">—</span><small id="regBadge"></small></div>
           <p class="muted" style="margin-top:8px;font-size:15.1px"><span data-i18n="regDoneP">Ты в бортовом журнале. Отправь эту ссылку друзьям — по ней видно, кого привёл ты.</span> <span id="refCount"></span></p>
           <div class="reflink"><input class="in num" id="refLink" readonly /><button class="btn btn-line" type="button" id="copyRefBtn" style="padding:9px 16px;font-size:14.6px" data-i18n="copy">Скопировать</button></div>
         </div>
-      </div>
+        </div>
+      </li>
+      </ol>
     </div>
   </section>
 
@@ -804,7 +936,7 @@ const L = {
     km: 'км', lyS: 'св. л.', lyLong: 'световых лет', sec: 'с', min: 'мин', h: 'ч',
     zen: 'твой луч', front: 'фронт твоего света', copyFail: 'Не удалось скопировать', pngFail: 'Не удалось собрать PNG',
     mNew: 'Новолуние', mFull: 'Полнолуние', mWaxC: 'Растущий серп', mFirst: 'Первая четверть', mWaxG: 'Растущая Луна', mWanC: 'Убывающий серп', mLast: 'Последняя четверть', mWanG: 'Убывающая Луна',
-    cId: 'Мой ID', ladderNext: 'до звезды {name} осталось {d} св. лет', beyond: 'луч за пределами каталога',
+    cId: 'Мой ID', cExplore: 'Исследовать', flipId: 'Перевернуть карточку', svAdd: 'Добавить', svAdded: 'Добавлено', svJoin: 'Записаться', camTrip: 'Пройти по лучу', tripWhen: 'свет был здесь: {d}', tripNear: 'Рядом: {n}. Подробнее', tripPlay: 'Продолжить', tripPause: 'Пауза', ladderNext: 'до звезды {name} осталось {d} св. лет', beyond: 'луч за пределами каталога',
     voyPassed: 'Твой свет обогнал его {date} и ушёл в <b class="num">{x}</b> раз дальше. Зонду понадобится <b class="num">{y}</b> лет, чтобы догнать.',
     voyAhead: 'Твой свет пройдёт его через {h} ч.',
     tzLocal: 'по местному, UTC {t}', day: 'день', twilight: 'сумерки', night: 'ночь',
@@ -841,7 +973,7 @@ const L = {
     km: 'km', lyS: 'ly', lyLong: 'light years', sec: 's', min: 'min', h: 'h',
     zen: 'your beam', front: 'front of your light', copyFail: 'Could not copy', pngFail: 'Could not build the PNG',
     mNew: 'New Moon', mFull: 'Full Moon', mWaxC: 'Waxing crescent', mFirst: 'First quarter', mWaxG: 'Waxing gibbous', mWanC: 'Waning crescent', mLast: 'Last quarter', mWanG: 'Waning gibbous',
-    cId: 'My ID', ladderNext: '{d} ly to go to {name}', beyond: 'the beam has left the catalogue',
+    cId: 'My ID', cExplore: 'Explore', flipId: 'Flip the card', st1: 'Callsign on the card', st2: 'Photo as a security layer', st3: 'Ship', st4: 'Number in the logbook', svAdd: 'Add', svAdded: 'Added', svJoin: 'Join', yourStart: 'Your start', edit: 'Change', camTrip: 'Travel the beam', tripWhen: 'your light was here: {d}', tripNear: 'Nearby: {n}. Details', tripPlay: 'Play', tripPause: 'Pause', tripAria: 'Distance travelled', close: 'Close', ladderNext: '{d} ly to go to {name}', beyond: 'the beam has left the catalogue',
     voyPassed: 'Your light passed it on {date} and is now <b class="num">{x}</b> times farther. The probe would need <b class="num">{y}</b> years to catch up.',
     voyAhead: 'Your light will pass it in {h} h.',
     tzLocal: 'local time, UTC {t}', day: 'day', twilight: 'twilight', night: 'night',
@@ -901,7 +1033,7 @@ const L = {
     km: 'km', lyS: 'a. l.', lyLong: 'años luz', sec: 's', min: 'min', h: 'h',
     zen: 'tu rayo', front: 'frente de tu luz', copyFail: 'No se pudo copiar', pngFail: 'No se pudo generar el PNG',
     mNew: 'Luna nueva', mFull: 'Luna llena', mWaxC: 'Luna creciente', mFirst: 'Cuarto creciente', mWaxG: 'Gibosa creciente', mWanC: 'Luna menguante', mLast: 'Cuarto menguante', mWanG: 'Gibosa menguante',
-    cId: 'Mi ID', ladderNext: 'faltan {d} a. l. hasta {name}', beyond: 'el rayo ya salió del catálogo',
+    cId: 'Mi ID', cExplore: 'Explorar', flipId: 'Dar vuelta la tarjeta', st1: 'Nombre en la tarjeta', st2: 'Foto como fondo de seguridad', st3: 'Nave', st4: 'Número en la bitácora', svAdd: 'Agregar', svAdded: 'Agregada', svJoin: 'Anotarme', yourStart: 'Tu partida', edit: 'Cambiar', camTrip: 'Recorrer el rayo', tripWhen: 'tu luz pasó por acá: {d}', tripNear: 'Cerca: {n}. Ver más', tripPlay: 'Seguir', tripPause: 'Pausa', tripAria: 'Distancia recorrida', close: 'Cerrar', ladderNext: 'faltan {d} a. l. hasta {name}', beyond: 'el rayo ya salió del catálogo',
     voyPassed: 'Tu luz la superó el {date} y ya está <b class="num">{x}</b> veces más lejos. A la sonda le llevaría <b class="num">{y}</b> años alcanzarla.',
     voyAhead: 'Tu luz la va a superar en {h} h.',
     tzLocal: 'hora local, UTC {t}', day: 'de día', twilight: 'crepúsculo', night: 'de noche',
@@ -1445,6 +1577,7 @@ function camShot(mode) {
   const s = shipWorldPos(performance.now() / 1000);
   const mid = cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D * 0.45));
   if (mode === 'earth') return earthShot();
+  if (mode === 'trip') { const sp = beamS(tripLy(tripP)), d = 1.4 + sp * 0.05, k = 0.55 + sp * 0.02; return { pos: cityPos.clone().addScaledVector(beamDir, Math.max(0.5, sp - d)).addScaledVector(perp, k).addScaledVector(viewN, k * 0.6), tgt: cityPos.clone().addScaledVector(beamDir, sp + 2.5) }; }
   if (mode === 'beam') return { pos: cityPos.clone().multiplyScalar(1.08).add(perp.clone().multiplyScalar(0.12)), tgt: cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D)) };
   if (mode === 'moon') { const mid = moon.position.clone().multiplyScalar(0.5); const off = new THREE.Vector3().crossVectors(moon.position, new THREE.Vector3(0, 1, 0)).normalize().multiplyScalar(48); return { pos: mid.clone().add(off).add(new THREE.Vector3(0, 14, 0)), tgt: mid }; }
   // вид с фронта назад: корабль крупно, за ним луч и Земля
@@ -1462,14 +1595,34 @@ function setCam(mode) {
   document.querySelectorAll('#cams button').forEach((b) => b.classList.toggle('on', b.dataset.cam === mode));
   const shot = camShot(mode);
   tween = { t: 0, p0: camera.position.clone(), t0: controls.target.clone(), p1: shot.pos, t1: shot.tgt, u0: camera.up.clone(), u1: camUp.clone() };
-  controls.enabled = mode !== 'ship';
+  controls.enabled = mode !== 'ship' && mode !== 'trip';
+  $('trip').hidden = mode !== 'trip';
+  if (mode === 'trip') { if (tripP >= 0.999) tripP = 0; setTripPlay(true); if (matchMedia('(max-width:900px)').matches) scrollTo({ top: 0, behavior: 'smooth' }); } else setTripPlay(false);
+  measureBlockers();
 }
+/* --- путешествие по лучу: от Луны до фронта, по уже пройденной светом дистанции */
+const TRIP_MIN = 1.282 / SEC_YR; let tripP = 0, tripOn = false, tripShown = '';
+const tripLy = (p) => { const a = Math.log10(TRIP_MIN), b = Math.log10(Math.max(TRIP_MIN * 2, telemetry(Date.now()).ly)); return Math.pow(10, a + (b - a) * p); };
+const tripPOf = (ly) => { const a = Math.log10(TRIP_MIN), b = Math.log10(telemetry(Date.now()).ly); return Math.min(1, Math.max(0, (Math.log10(ly) - a) / (b - a))); };
+function setTripPlay(on) { tripOn = on; $('trip').classList.toggle('playing', on); const b = $('tripPlay'); b.setAttribute('aria-label', t(on ? 'tripPause' : 'tripPlay')); }
+function tripUI() {
+  const ly = tripLy(tripP), r = $('tripRange'); if (document.activeElement !== r) r.value = Math.round(tripP * 1000);
+  const when = new Date(birthMs + ly * SEC_YR * 1000).toLocaleDateString(LOC[LANG], { month: 'long', year: 'numeric' });
+  const key = lyText(ly) + when; if (key === tripShown) return; tripShown = key;
+  $('tripLy').textContent = lyText(ly); $('tripWhen').textContent = t('tripWhen', { d: when });
+  const near = BEAM_SEQ.find((m) => m.key !== 'front' && Math.abs(Math.log10(ly / m.ly)) < 0.07), nb = $('tripNear');
+  nb.hidden = !near; if (near) { nb.textContent = t('tripNear', { n: near.name }); nb.dataset.key = near.key; }
+}
+$('tripPlay').onclick = () => { if (!tripOn && tripP >= 0.999) tripP = 0; setTripPlay(!tripOn); };
+$('tripX').onclick = () => setCam('earth');
+$('tripRange').addEventListener('input', (e) => { tripP = e.target.value / 1000; setTripPlay(false); });
+$('tripNear').onclick = () => { setTripPlay(false); openInfo($('tripNear').dataset.key); };
 document.querySelectorAll('#cams button').forEach((b) => b.addEventListener('click', () => setCam(b.dataset.cam)));
 // корабль идёт рядом с фронтом света, чуть сбоку от луча
 function shipWorldPos(t) { const rt = new THREE.Vector3().crossVectors(perp, beamDir).normalize(); return cityPos.clone().add(beamDir.clone().multiplyScalar(FRONT_D - 0.35 + 0.05 * Math.sin(t * 0.8))).add(rt.multiplyScalar(0.12)); }
 
 /* --- подписи (HTML поверх WebGL) */
-const labelEls = [];
+const labelEls = []; let BEAM_SEQ = [];
 function buildLabels() {
   const host = $('labels'); host.innerHTML = ''; labelEls.length = 0;
   const add = (cls, html, vec, key) => { const el = document.createElement(key ? 'button' : 'div'); el.className = 'lbl ' + cls; el.innerHTML = html; if (key) { el.type = 'button'; el.dataset.key = key; } host.appendChild(el); labelEls.push({ el, vec }); };
@@ -1496,8 +1649,9 @@ function buildLabels() {
     // впереди: до них свет ещё не дошёл
     ...[['mPlei', 444, 'plei'], ['mOrion', 1344, 'orion'], ['mGC', 26000, 'gc'], ['mAnd', 2.5e6, 'and'], ['mEdge', LY_EDGE * 0.999, 'edge']]
       .filter(([, ly]) => ly > tmL.ly).map(([k, ly, key]) => ({ name: t(k), ly, d: big(ly), ahead: true, key })),
-    ...reachedStars.map((st) => ({ name: st.name, ly: st.ly, quiet: true })),
+    ...reachedStars.map((st) => ({ name: st.name, ly: st.ly, quiet: true, key: st.id })),
   ];
+  const seen = new Set(); BEAM_SEQ = [...marks, { name: t('front'), ly: tmL.ly, key: 'front' }].filter((m) => m.key && !seen.has(m.key) && seen.add(m.key)).sort((a, c) => a.ly - c.ly);
   // подписи по разные стороны луча, чередуя соседей по расстоянию
   [...marks].filter((m) => !m.quiet).sort((a, c) => a.ly - c.ly).forEach((m, i) => { m.left = i % 2 === 1; });
   for (const m of marks) {
@@ -1516,7 +1670,7 @@ const _v = new THREE.Vector3(), _f = new THREE.Vector3();
 let blockers = [];
 function measureBlockers() {
   const hero = canvas3d.getBoundingClientRect();
-  blockers = ['.reading', '.legend', '.topline', '.dist-scale'].map((q) => document.querySelector(q)?.getBoundingClientRect()).filter(Boolean)
+  blockers = ['.reading', '.legend', '.topline', '.dist-scale', '#trip'].map((q) => document.querySelector(q)?.getBoundingClientRect()).filter(Boolean)
     .map((b) => ({ l: b.left - hero.left - 200, t: b.top - hero.top - 12, r: b.right - hero.left + 150, b: b.bottom - hero.top + 12 }));
 }
 const blocked = (x, y) => blockers.some((k) => x > k.l && x < k.r && y > k.t && y < k.b);
@@ -1592,7 +1746,8 @@ function frame(now) {
     camera.up.lerpVectors(tween.u0, tween.u1, e).normalize();
     if (tween.t >= 1) { tween = null; makeControls(); }
   } else if (camMode === 'ship') { const s = camShot('ship'); camera.position.lerp(s.pos, 0.08); controls.target.lerp(s.tgt, 0.08); }
-  if (camMode === 'ship' || tween) camera.lookAt(controls.target); else controls.update();
+  else if (camMode === 'trip') { if (tripOn) { tripP = Math.min(1, tripP + dt / 45); if (tripP >= 1) setTripPlay(false); } const s = camShot('trip'); camera.position.lerp(s.pos, 0.1); controls.target.lerp(s.tgt, 0.1); camera.up.lerp(camUp, 0.1).normalize(); tripUI(); }
+  if (camMode === 'ship' || camMode === 'trip' || tween) camera.lookAt(controls.target); else controls.update();
   setBeamWidth(camMode === 'earth' ? (LITE ? 2.4 : 1.7) : 1);
   frontGlow.scale.setScalar(Math.max(0.7, camera.position.distanceTo(frontGlow.position) * 0.03));
   if (LITE) renderer.render(scene, camera); else composer.render();
@@ -1626,6 +1781,7 @@ function buildLadder() {
 }
 function slowUpdate(tm) {
   measureBlockers();
+  $('startTxt').textContent = dateFmt(new Date(birthMs)) + ' · ' + cityName(city.name);
   const p = lpos(tm.ly); $('trackFill').style.width = p + '%'; $('trackHead').style.left = p + '%';
   document.querySelectorAll('#track .tick').forEach((el) => { if (!el.classList.contains('gold')) el.classList.toggle('on', tm.ly >= +el.dataset.ly); });
   const next = STARS.find((s) => s.ly > tm.ly);
@@ -1986,6 +2142,7 @@ const shareLink = () => siteBase() + (pilot?.ref ? `?ref=${pilot.ref}` : '');
 const CONTACT_RE = /^([^@\s]+@[^@\s]+\.[^@\s]+|@?[A-Za-z0-9_]{5,32})$/;
 
 function showRegistered() {
+  queueMicrotask(() => { try { stepVals(); } catch {} });
   if (!pilot) return;
   $('regForm').style.display = 'none';
   $('regDone').classList.add('show');
@@ -2296,6 +2453,7 @@ function goldGhost(src, mask) {
   return gc;
 }
 function photoUI() {
+  queueMicrotask(() => { try { stepVals(); } catch {} });
   const has = !!ghostPhoto; $('photoPrev').hidden = !has; $('photoPh').hidden = has; $('photoRemove').hidden = !has;
   $('photoBtnTxt').textContent = t(has ? 'photoChange' : 'photoAdd');
   if (has) { const pc = $('photoPrev'), pg = pc.getContext('2d'); pg.fillStyle = '#05060f'; pg.fillRect(0, 0, pc.width, pc.height); pg.drawImage(ghostPhoto, 0, 0, pc.width, pc.height); }
@@ -2348,7 +2506,7 @@ function lyText(ly) {
 }
 function lightRow(ly) {
   const tm = telemetry(Date.now());
-  if (ly <= tm.ly) return [t('iLightR'), dateFmt(new Date(birthMs + ly * SEC_YR * 1000))];
+  if (ly <= tm.ly) return [t('iLightR'), dateFmt(new Date(birthMs + ly * SEC_YR * 1000)), 'hot'];
   const y = new Date(birthMs + ly * SEC_YR * 1000).getFullYear();
   return [t('iLightN'), ly < 1e5 ? String(y) : t('iInYears', { n: lyText(ly - tm.ly).replace(/ .*/, '') + ' ' + (ly >= 1e9 ? t('bnYr') : ly >= 1e6 ? t('mnYr') : t('iYrs')) })];
 }
@@ -2365,7 +2523,7 @@ function openInfo(key) {
     if (o.probe) {
       const km = o.probe === 1 ? tm.voyKm : tm.voyKm * 0.83;
       rows = [[t('iDist'), intFmt.format(Math.round(km / 1e6)) + ' ' + t('mlnKm')], [t('iLight'), f1.format(km / C_KMS / 3600) + ' ' + t('lhS')], [t('iMass'), intFmt.format(o.kg) + ' ' + t('kgS')], [t('iLaunch'), o.probe === 1 ? '05.09.1977' : '20.08.1977']];
-      if (o.probe === 1) rows.push([t('iLightR'), dateFmt(tm.overtake)]);
+      if (o.probe === 1) rows.push([t('iLightR'), dateFmt(tm.overtake), 'hot']);
     } else {
       rows = [[t('iDist'), lyText(o.ly)]];
       if (o.kg) rows.push([t('iMass'), sci(o.kg) + ' ' + t('kgS')]);
@@ -2388,14 +2546,35 @@ function openInfo(key) {
   box.querySelector('.info-type').textContent = type;
   box.querySelector('h3').textContent = title;
   box.querySelector('.info-note').textContent = note;
-  box.querySelector('dl').innerHTML = rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('');
+  box.querySelector('dl').innerHTML = rows.map(([k, v, c]) => `<div class="r${c ? ' ' + c : ''}"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');
+  const i = BEAM_SEQ.findIndex((m) => m.key === key), pv = BEAM_SEQ[i - 1], nx = BEAM_SEQ[i + 1];
+  box.querySelector('.info-nav').innerHTML = i < 0 ? '' : (pv ? `<button type="button" data-k="${pv.key}">← ${esc(pv.name)}</button>` : '<span></span>') + (nx ? `<button type="button" data-k="${nx.key}">${esc(nx.name)} →</button>` : '');
   box.hidden = false; box.querySelector('.info-x').focus({ preventScroll: true });
 }
 $('info').querySelector('.info-x').onclick = () => { $('info').hidden = true; };
+$('info').querySelector('.info-nav').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; const m = BEAM_SEQ.find((x) => x.key === b.dataset.k);
+  if (camMode === 'trip' && m && m.ly <= telemetry(Date.now()).ly) { tripP = tripPOf(m.ly); setTripPlay(false); } openInfo(b.dataset.k); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') $('info').hidden = true; });
 $('labels').addEventListener('click', (e) => { const el = e.target.closest('[data-key]'); if (el) openInfo(el.dataset.key); });
 $('routeGrid').addEventListener('click', (e) => { const el = e.target.closest('.stop'); if (el) openInfo(el.dataset.id === 'voyager1' ? 'voy1' : el.dataset.id); });
 $('callsignInput').addEventListener('input', scheduleCert);
+$('callsignInput').addEventListener('input', () => stepVals());
+$('startBtn').onclick = () => { const o = $('logBox').classList.toggle('open'); $('startBtn').setAttribute('aria-expanded', o); };
+{ const c = document.querySelector('.console'), ex = c.querySelector('.explore');
+  ex.classList.toggle('on', ['sky', 'chronicle', 'scope', 'worlds'].includes(PAGE));
+  ex.onclick = (e) => { e.stopPropagation(); const o = c.classList.toggle('open'); ex.setAttribute('aria-expanded', o); };
+  document.addEventListener('click', (e) => { if (!c.contains(e.target)) { c.classList.remove('open'); ex.setAttribute('aria-expanded', false); } }); }
+$('flipCertBtn').onclick = () => $('cert').classList.toggle('flipped');
+document.querySelectorAll('.idstep .step-h').forEach((h) => h.addEventListener('click', () => {
+  if (!matchMedia('(max-width:900px)').matches) return;
+  const li = h.parentElement, o = li.classList.toggle('open'); h.setAttribute('aria-expanded', o);
+}));
+function stepVals() {
+  const cs = $('callsignInput').value.trim(), photo = !!ghostPhoto, ship = document.querySelector('.ship.on b')?.textContent || '';
+  $('sv1').textContent = cs || t('svAdd'); $('sv2').textContent = t(photo ? 'svAdded' : 'svAdd'); $('sv3').textContent = ship;
+  $('sv4').textContent = pilot ? '№ ' + $('regNo').textContent : t('svJoin');
+  [['step1', !!cs], ['step2', photo], ['step3', true], ['step4', !!pilot]].forEach(([id, d]) => $(id).classList.toggle('done', d));
+}
 // холсты уже отрисованы заранее — сохраняем сразу, чтобы iPhone не потерял «жест пользователя» для меню «Поделиться»
 $('downloadCertBtn').onclick = async () => { if (certPending) await renderCert(); if (await download(cardSheet(), `starbeam_pilot_${pilot ? pilot.serial : pilotHash()}.png`)) toast(t('idDownloaded')); };
 $('printCertBtn').onclick = async () => { if (certPending) await renderCert(); if (await saveBlob(await cardPdf(), `starbeam_pilot_${pilot ? pilot.serial : pilotHash()}_print.pdf`)) toast(t('pdfReady')); };
@@ -2425,7 +2604,7 @@ $('shareCardBtn').onclick = () => {
    13. ВЫБОР КОРАБЛЯ
    ===================================================================== */
 document.querySelectorAll('.ship').forEach((b) => b.addEventListener('click', () => {
-  selectedStyle = b.dataset.style; document.querySelectorAll('.ship').forEach((x) => x.classList.toggle('on', x === b));
+  selectedStyle = b.dataset.style; document.querySelectorAll('.ship').forEach((x) => x.classList.toggle('on', x === b)); stepVals();
   setShip(selectedStyle); scheduleCert();
 }));
 

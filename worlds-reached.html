@@ -33,6 +33,24 @@ td{padding:11px 8px;border-bottom:1px solid rgba(205,163,73,.14)}
 .console a.on{color:#fff;border-color:var(--beam);box-shadow:0 0 16px rgba(255,106,61,.32),inset 0 0 14px rgba(255,106,61,.14)}
 .console a.on::before{background:var(--beam);box-shadow:0 0 8px var(--beam)}
 body{padding-bottom:96px}
+.console .sep,.console .explore{display:none}
+@media (min-width:901px){
+  .console{align-items:center;gap:6px;padding:8px;border-radius:20px}
+  .console a{flex-direction:row;gap:9px;min-width:0;padding:11px 16px;font-size:14px;letter-spacing:.01em;white-space:nowrap}
+  .console svg{width:18px;height:18px}
+  .console a::before{display:none}
+  .console a:nth-child(n+4){background:none;border-color:transparent;padding:11px 12px}
+  .console a:nth-child(n+4):hover{border-color:var(--gold-soft)}
+  .console a.on{background:rgba(255,106,61,.12)}
+  .console .sep{display:block;width:1px;height:30px;background:rgba(205,163,73,.3);margin:0 4px}
+}
+@media (max-width:700px){
+  .console{flex-wrap:wrap}
+  .console a:nth-child(n+4){display:none}
+  .console .explore{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;min-width:0;padding:9px 2px 7px;border-radius:10px;color:#fff;font:inherit;font-size:11px;letter-spacing:.03em;background:linear-gradient(#0d1233,#070a1f);border:1px solid var(--beam);box-shadow:0 0 16px rgba(255,106,61,.32);cursor:pointer}
+  .console.open a,.console.open .explore{flex:1 0 30%}
+  .console.open a:nth-child(n+4){display:flex;order:-1;flex:1 0 22%}
+}
 @media (max-width:700px){
   .console{left:0;right:0;bottom:0;transform:none;border-radius:16px 16px 0 0;border-bottom:0;gap:4px;padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
   .console a{min-width:0;flex:1;padding:9px 2px 7px;font-size:11px}
@@ -45,10 +63,12 @@ body{padding-bottom:96px}
 <nav class="console" aria-label="Разделы" data-i18n-aria="aNav">
   <a data-go="home"><svg viewBox="0 0 24 24"><path d="M5.5 18.5 19 5"/><circle cx="19.5" cy="4.5" r="2"/><circle cx="5" cy="19" r="3"/></svg><span data-i18n="cBeam">Луч</span></a>
   <a data-go="id"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="8.5" cy="12" r="2.2"/><path d="M13 10h5M13 14h4"/></svg><span>ID</span></a>
+  <i class="sep" aria-hidden="true"></i>
   <a data-go="sky"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="1.5"/></svg><span data-i18n="cSky">Небо</span></a>
   <a data-go="chronicle"><svg viewBox="0 0 24 24"><path d="M2 12h20"/><circle cx="6" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2"/></svg><span data-i18n="cRoute">Хроника</span></a>
   <a data-go="worlds"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><ellipse cx="12" cy="12" rx="10.5" ry="3.6" transform="rotate(-20 12 12)"/></svg><span data-i18n="cWorlds">Миры</span></a>
   <a data-go="scope"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 2v6M12 16v6M2 12h6M16 12h6"/></svg><span data-i18n="cScope">Окуляр</span></a>
+  <button type="button" class="explore on" aria-expanded="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg><span>Исследовать</span></button>
 </nav>
 <div class="wrap">
   <div class="top"><a class="wordmark" id="home" href="/">STARBEAM</a><a class="back" id="back" href="/"></a></div>
@@ -78,12 +98,15 @@ const L = {
 let saved = {}; try { saved = JSON.parse(localStorage.getItem('sb_state')) || {}; } catch {}
 let savedLang = null; try { savedLang = localStorage.getItem('sb_lang'); } catch {}
 const qs = new URLSearchParams(location.search), LANG = L[qs.get('lang')] ? qs.get('lang') : L[savedLang] ? savedLang : 'ru', t = L[LANG], b = Number(qs.get('b')) || Number(saved.birthMs);
-const NAV = { ru: ['Луч', 'Небо', 'Хроника', 'Миры', 'Окуляр'], en: ['Beam', 'Sky', 'Chronicle', 'Worlds', 'Eyepiece'], es: ['Haz', 'Cielo', 'Crónica', 'Mundos', 'Ocular'] }[LANG];
+const NAV = { ru: ['Луч', 'Небо', 'Хроника', 'Миры', 'Окуляр', 'Мой ID', 'Исследовать'], en: ['Beam', 'Sky', 'Chronicle', 'Worlds', 'Eyepiece', 'My ID', 'Explore'], es: ['Haz', 'Cielo', 'Crónica', 'Mundos', 'Ocular', 'Mi ID', 'Explorar'] }[LANG];
 { const home0 = LANG === 'ru' ? '/' : '/' + LANG, q = '?lang=' + LANG;
   const go = { home: home0, id: home0 + '#passport', sky: '/sky.html' + q, chronicle: '/chronicle.html' + q, worlds: '/worlds-reached.html' + q + (b ? '&b=' + b : ''), scope: '/scope.html' + q };
-  const names = { home: NAV[0], sky: NAV[1], chronicle: NAV[2], worlds: NAV[3], scope: NAV[4] };
+  const names = { home: NAV[0], sky: NAV[1], chronicle: NAV[2], worlds: NAV[3], scope: NAV[4], id: NAV[5] };
   document.querySelectorAll('.console a').forEach((a) => { a.href = go[a.dataset.go]; a.classList.toggle('on', a.dataset.go === 'worlds'); const sp = a.querySelector('span'); if (names[a.dataset.go]) sp.textContent = names[a.dataset.go]; }); }
 document.documentElement.lang = LANG;
+{ const c = document.querySelector('.console'), ex = c.querySelector('.explore'); ex.querySelector('span').textContent = NAV[6];
+  ex.onclick = (e) => { e.stopPropagation(); ex.setAttribute('aria-expanded', c.classList.toggle('open')); };
+  document.addEventListener('click', (e) => { if (!c.contains(e.target)) c.classList.remove('open'); }); }
 const home = LANG === 'ru' ? '/' : '/' + LANG;
 document.getElementById('home').href = home; const back = document.getElementById('back'); back.href = home; back.textContent = t.back;
 const h = MODE === 'reached' ? t.reached : t.next; document.getElementById('h').textContent = h; document.title = h + ' — STARBEAM';
