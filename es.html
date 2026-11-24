@@ -408,13 +408,59 @@ html[data-page="home"]{scroll-snap-type:y proximity}
 [data-page="chronicle"] .plate-hero,[data-page="scope"] .plate-hero{height:130px;min-height:0}
 [data-page="chronicle"] #passport,[data-page="chronicle"] #telescope,[data-page="scope"] #passport,[data-page="scope"] #route{display:none!important}
 [data-page="chronicle"] .top-cta,[data-page="scope"] .top-cta,[data-page="sky"] .top-cta{display:none}
+
+/* ===== Экран 1: луч, компьютер ===== */
+.console .sep{display:none}
+@media (min-width:901px){
+  .reading{left:72px;top:clamp(118px,15vh,160px);bottom:auto;width:min(590px,45vw);gap:16px}
+  .reading h1{font-family:var(--sans);font-size:17px;font-weight:400;line-height:1.4;letter-spacing:0;color:var(--haze);max-width:none}
+  .reading .count{margin-top:6px}
+  .reading>div:nth-child(2){display:flex;flex-direction:column;gap:12px}
+  .distance-sub{order:-1;margin:0}
+  .distance-sub>div:not(.hot){display:none}
+  .distance-sub .hot{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px}
+  .distance-sub .hot b{font-size:clamp(60px,6.3vw,96px);line-height:.9;font-weight:500;color:#fff;letter-spacing:-.02em;text-shadow:0 0 40px rgba(3,4,12,.9)}
+  .distance-sub .hot span{font-family:var(--serif);font-size:clamp(24px,2.3vw,34px);color:#FF8A5C}
+  .distance{font-family:inherit;font-weight:400;font-size:17px;color:#C9CEEA;letter-spacing:0;line-height:1.4}
+  .log{grid-template-columns:1.25fr 1fr;gap:0;padding:0;margin-top:14px;border-color:rgba(205,163,73,.42);border-radius:14px;background:rgba(6,9,26,.8)}
+  .log:focus-within{border-color:var(--gold)}
+  .log .f{padding:12px 16px;gap:4px}
+  .log .f:first-child{border-right:1px solid rgba(205,163,73,.2)}
+  .log .f:focus-within{background:rgba(205,163,73,.06)}
+  .log .f:first-child:focus-within{border-radius:13px 0 0 13px}
+  .log .f:nth-child(2):focus-within{border-radius:0 13px 13px 0}
+  .log .in{height:30px;padding:0;background:none;border:0;border-radius:0;font-size:17px;color:#fff}
+  .log .quick{display:none}
+  .log .f label{flex-wrap:wrap;gap:0 10px}
+  .log .f label>span{white-space:nowrap}
+  .reading .track{height:58px}
+  .reading .track-rail{top:28px}.reading .track-fill{top:26.5px}.reading .track-head{top:22px}
+  .reading .tick{top:20px}
+  .reading .tick:nth-child(odd) span{position:absolute;bottom:100%;margin:0 0 2px}
+  .reading .dist-scale{position:relative;left:auto;right:auto;bottom:auto;margin-top:6px}
+  .reading .dist-head{flex-direction:column;gap:2px}
+  [data-page="home"] .top-cta{display:none}
+  [data-page="home"] .legend{right:34px;bottom:112px;width:auto}
+  .legend .views{flex-wrap:nowrap;gap:2px;padding:3px;border:1px solid rgba(205,163,73,.3);border-radius:12px;background:rgba(6,9,26,.72)}
+  .legend .views button{border-radius:9px;border-color:transparent;background:none;padding:8px 14px}
+  .legend .views button.on{border-color:var(--beam);background:var(--beam-soft)}
+  .console{align-items:center;gap:6px;padding:8px;border-radius:20px}
+  .console a{flex-direction:row;gap:9px;min-width:0;padding:11px 16px;font-size:14px;letter-spacing:.01em;white-space:nowrap}
+  .console svg{width:18px;height:18px}
+  .console a::before{display:none}
+  .console a:nth-child(n+4){background:none;border-color:transparent;padding:11px 12px}
+  .console a:nth-child(n+4):hover{border-color:var(--gold-soft)}
+  .console a.on{background:rgba(255,106,61,.12)}
+  .console .sep{display:block;width:1px;height:30px;background:rgba(205,163,73,.3);margin:0 4px}
+}
 </style>
 </head>
 <body>
 <aside id="info" hidden aria-live="polite"><button type="button" class="info-x" aria-label="×">×</button><div class="info-img"></div><div class="info-body"><div class="info-src"></div><div class="info-type"></div><h3></h3><dl></dl><p class="info-note"></p></div></aside>
 <nav class="console" aria-label="Разделы" data-i18n-aria="aNav">
   <a data-go="home"><svg viewBox="0 0 24 24"><path d="M5.5 18.5 19 5"/><circle cx="19.5" cy="4.5" r="2"/><circle cx="5" cy="19" r="3"/></svg><span data-i18n="cBeam">Луч</span></a>
-  <a data-go="id"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="8.5" cy="12" r="2.2"/><path d="M13 10h5M13 14h4"/></svg><span>ID</span></a>
+  <a data-go="id"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="8.5" cy="12" r="2.2"/><path d="M13 10h5M13 14h4"/></svg><span data-i18n="cId">Мой ID</span></a>
+  <i class="sep" aria-hidden="true"></i>
   <a data-go="sky"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="1.5"/></svg><span data-i18n="cSky">Небо</span></a>
   <a data-go="chronicle"><svg viewBox="0 0 24 24"><path d="M2 12h20"/><circle cx="6" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2"/></svg><span data-i18n="cRoute">Хроника</span></a>
   <a data-go="worlds"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><ellipse cx="12" cy="12" rx="10.5" ry="3.6" transform="rotate(-20 12 12)"/></svg><span data-i18n="cWorlds">Миры</span></a>
@@ -484,6 +530,10 @@ html[data-page="home"]{scroll-snap-type:y proximity}
       </div>
       <div class="quick" id="cityPresets"></div>
     </div>
+  <div class="dist-scale">
+    <div class="dist-head"><span id="scaleTxt">Шкала: от световой секунды до 2145 года</span><b id="ladderNext"></b></div>
+    <div class="track" id="track"><div class="track-rail"></div><div class="track-fill" id="trackFill"></div><div class="track-head" id="trackHead"></div></div>
+  </div>
   </div>
 
   <aside class="legend">
@@ -504,10 +554,6 @@ html[data-page="home"]{scroll-snap-type:y proximity}
     </div>
   </aside>
 
-  <div class="dist-scale">
-    <div class="dist-head"><span id="scaleTxt">Шкала: от световой секунды до 2145 года</span><b id="ladderNext"></b></div>
-    <div class="track" id="track"><div class="track-rail"></div><div class="track-fill" id="trackFill"></div><div class="track-head" id="trackHead"></div></div>
-  </div>
 </section>
 
 <main class="page">
@@ -759,7 +805,7 @@ const L = {
     km: 'км', lyS: 'св. л.', lyLong: 'световых лет', sec: 'с', min: 'мин', h: 'ч',
     zen: 'твой луч', front: 'фронт твоего света', copyFail: 'Не удалось скопировать', pngFail: 'Не удалось собрать PNG',
     mNew: 'Новолуние', mFull: 'Полнолуние', mWaxC: 'Растущий серп', mFirst: 'Первая четверть', mWaxG: 'Растущая Луна', mWanC: 'Убывающий серп', mLast: 'Последняя четверть', mWanG: 'Убывающая Луна',
-    ladderNext: 'до звезды {name} осталось {d} св. лет', beyond: 'луч за пределами каталога',
+    cId: 'Мой ID', ladderNext: 'до звезды {name} осталось {d} св. лет', beyond: 'луч за пределами каталога',
     voyPassed: 'Твой свет обогнал его {date} и ушёл в <b class="num">{x}</b> раз дальше. Зонду понадобится <b class="num">{y}</b> лет, чтобы догнать.',
     voyAhead: 'Твой свет пройдёт его через {h} ч.',
     tzLocal: 'по местному, UTC {t}', day: 'день', twilight: 'сумерки', night: 'ночь',
@@ -796,7 +842,7 @@ const L = {
     km: 'km', lyS: 'ly', lyLong: 'light years', sec: 's', min: 'min', h: 'h',
     zen: 'your beam', front: 'front of your light', copyFail: 'Could not copy', pngFail: 'Could not build the PNG',
     mNew: 'New Moon', mFull: 'Full Moon', mWaxC: 'Waxing crescent', mFirst: 'First quarter', mWaxG: 'Waxing gibbous', mWanC: 'Waning crescent', mLast: 'Last quarter', mWanG: 'Waning gibbous',
-    ladderNext: '{d} ly to go to {name}', beyond: 'the beam has left the catalogue',
+    cId: 'My ID', ladderNext: '{d} ly to go to {name}', beyond: 'the beam has left the catalogue',
     voyPassed: 'Your light passed it on {date} and is now <b class="num">{x}</b> times farther. The probe would need <b class="num">{y}</b> years to catch up.',
     voyAhead: 'Your light will pass it in {h} h.',
     tzLocal: 'local time, UTC {t}', day: 'day', twilight: 'twilight', night: 'night',
@@ -856,7 +902,7 @@ const L = {
     km: 'km', lyS: 'a. l.', lyLong: 'años luz', sec: 's', min: 'min', h: 'h',
     zen: 'tu rayo', front: 'frente de tu luz', copyFail: 'No se pudo copiar', pngFail: 'No se pudo generar el PNG',
     mNew: 'Luna nueva', mFull: 'Luna llena', mWaxC: 'Luna creciente', mFirst: 'Cuarto creciente', mWaxG: 'Gibosa creciente', mWanC: 'Luna menguante', mLast: 'Cuarto menguante', mWanG: 'Gibosa menguante',
-    ladderNext: 'faltan {d} a. l. hasta {name}', beyond: 'el rayo ya salió del catálogo',
+    cId: 'Mi ID', ladderNext: 'faltan {d} a. l. hasta {name}', beyond: 'el rayo ya salió del catálogo',
     voyPassed: 'Tu luz la superó el {date} y ya está <b class="num">{x}</b> veces más lejos. A la sonda le llevaría <b class="num">{y}</b> años alcanzarla.',
     voyAhead: 'Tu luz la va a superar en {h} h.',
     tzLocal: 'hora local, UTC {t}', day: 'de día', twilight: 'crepúsculo', night: 'de noche',
